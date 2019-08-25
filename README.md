@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  ![PineScript](images/pinescript.png)
+  <img src="https://i.hizliresim.com/p55kga.png" alt="PineScript">
   <br>
   Pine Script Syntax Highlight
   <br>
