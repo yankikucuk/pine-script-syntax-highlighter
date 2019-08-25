@@ -1,0 +1,39 @@
+{
+    "name": "pine-script-syntax-highlight",
+    "displayName": "Pine Script Syntax Highlight",
+    "description": "Write awesome indicators or strategies with me!",
+    "version": "1.0.0",
+    "author": "Yankı Küçük <kendinikertenkelebek@me.com> (https://github.com/kendinikertenkelebek)",
+    "publisher": "ex.codes",
+    "icon": "images/pinescript.png",
+    "engines": {
+        "vscode": "^1.37.0"
+    },
+    "categories": [
+        "Language Packs",
+        "Programming Languages",
+        "Themes"
+    ],
+    "contributes": {
+        "languages": [{
+            "id": "pinescript",
+            "aliases": ["Pine Script", "pinescript", "Pine"],
+            "extensions": [".pine"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "pinescript",
+            "scopeName": "source.pine",
+            "path": "./syntaxes/pinescript.tmLanguage.json"
+        }]
+    },
+    "homepage": "https://github.com/kendinikertenkelebek/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight.git",
+        "bugs": {
+            "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight/issues"
+        }
+    },
+    "license": "MIT"
+}
