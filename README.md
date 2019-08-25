@@ -5,7 +5,7 @@
 </h1>
 <h4 align="center">Create amazing indicators and strategies!</h4>
 <p align="center">
-  <a><img src="https://img.shields.io/badge/Version-1.0.1-blue.svg" alt="Version"></a>
+  <a><img src="https://img.shields.io/badge/Version-1.0.4-blue.svg" alt="Version"></a>
   <a><img src="https://img.shields.io/badge/status-BETA-orenge.svg" alt="Status"></a>
   <a><img src="https://img.shields.io/badge/platform-vscode-red.svg" alt="platforms"></a>
 </p>
