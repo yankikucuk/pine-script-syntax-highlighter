@@ -1,7 +1,5 @@
 <h1 align="center">
   <br>
-  <a><img src="https://i.hizliresim.com/p55kga.png" alt="PineScript"></a>
-  <br>
   Pine Script Syntax Highlight
   <br>
 </h1>
