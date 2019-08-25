@@ -49,8 +49,7 @@ And you can see also all contributors [here][contributors].
 
 MIT
 
-[twitter]: https://developer.twitter.com/en/docs/basics/twitter-ids.html
-[repository]: https://github.com/kendinikertenkelebek/cyberpoints
+[repository]: https://github.com/kendinikertenkelebek/pine-script-syntax-highlighter
 [semver]: https://semver.org
 [yk]: https://twitter.com/seviyorumstop
-[contributors]: https://github.com/kendinikertenkelebek/cyberpoints/graphs/contributors
+[contributors]: https://github.com/kendinikertenkelebek/pine-script-syntax-highlighter/graphs/contributors
