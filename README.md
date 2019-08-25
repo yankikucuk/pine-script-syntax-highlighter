@@ -5,9 +5,10 @@
 </h1>
 <h4 align="center">Create amazing indicators and strategies!</h4>
 <p align="center">
-  <a><img src="https://img.shields.io/badge/Version-1.0.4-blue.svg" alt="Version"></a>
-  <a><img src="https://img.shields.io/badge/status-BETA-orenge.svg" alt="Status"></a>
-  <a><img src="https://img.shields.io/badge/platform-vscode-red.svg" alt="platforms"></a>
+  <a><img src="https://img.shields.io/github/package-json/v/kendinikertenkelebek/pine-script-syntax-highlighter?color=green&style=flat-square" alt="Version"></a>
+  <a><img src="https://img.shields.io/github/issues/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Issues"></a>
+  <a><img src="https://img.shields.io/visual-studio-marketplace/i/ex-codes.pine-script-syntax-highlighter?color=red&style=flat-square" alt="Downloads"></a>
+  <a><img src="https://img.shields.io/github/license/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Licance"></a>
 </p>
 
 ## About
