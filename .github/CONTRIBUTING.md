@@ -1,6 +1,6 @@
 # Contributing
 
-**The issue tracker is only for bug reports and enhancement suggestions. If you have a question, please ask it in the [Pine Script Syntax Highlighter Server](https://discord.gg/jJpT8h2) instead of opening an issue – you will get redirected there anyway.**
+**The issue tracker is only for bug reports and enhancement suggestions. If you have a question, please ask it in the [Pine Script Syntax Highlighter Server](https://discord.gg/NYxmN6t) instead of opening an issue – you will get redirected there anyway.**
 
 If you wish to contribute to the Pine Script Syntax Highlighter codebase or documentation, feel free to fork the repository and submit a
 pull request.

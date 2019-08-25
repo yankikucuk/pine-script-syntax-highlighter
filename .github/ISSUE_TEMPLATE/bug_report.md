@@ -5,7 +5,7 @@ about: Report incorrect or unexpected behavior of Pine Script Syntax Highlighter
 
 <!--
 If you need help with Pine Script Syntax Highlighter installation or usage, please go to the Pine Script Syntax Highlighter Discord server instead:
-  [https://discord.gg/jJpT8h2]
+  [https://discord.gg/NYxmN6t]
 This issue tracker is only for bug reports and enhancement suggestions. You won't receive any basic help here.
 -->
 
