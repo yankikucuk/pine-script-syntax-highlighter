@@ -4,7 +4,7 @@
     "description": "Write awesome indicators or strategies with me!",
     "version": "1.0.0",
     "author": "Yankı Küçük <kendinikertenkelebek@me.com> (https://github.com/kendinikertenkelebek)",
-    "publisher": "ex.codes",
+    "publisher": "ex-codes",
     "icon": "images/pinescript.png",
     "engines": {
         "vscode": "^1.37.0"
@@ -32,7 +32,8 @@
         "type": "git",
         "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight.git",
         "bugs": {
-            "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight/issues"
+            "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight/issues",
+            "email": "kendinikertenkelebek@me.com"
         }
     },
     "license": "MIT"
