@@ -1,6 +1,6 @@
 {
-    "name": "pine-script-syntax-highlight",
-    "displayName": "Pine Script Syntax Highlight",
+    "name": "pine-script-syntax-highlighter",
+    "displayName": "Pine Script Syntax Highlighter",
     "description": "Write awesome indicators or strategies with me!",
     "version": "1.0.0",
     "author": "Yankı Küçük <kendinikertenkelebek@me.com> (https://github.com/kendinikertenkelebek)",
