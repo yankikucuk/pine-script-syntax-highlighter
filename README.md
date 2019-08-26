@@ -8,7 +8,8 @@
   <a><img src="https://img.shields.io/github/package-json/v/kendinikertenkelebek/pine-script-syntax-highlighter?color=green&style=flat-square" alt="Version"></a>
   <a><img src="https://img.shields.io/github/issues/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Issues"></a>
   <a><img src="https://img.shields.io/visual-studio-marketplace/i/ex-codes.pine-script-syntax-highlighter?color=red&style=flat-square" alt="Downloads"></a>
-  <a><img src="https://img.shields.io/github/stars/kendinikertenkelebek/pine-script-syntax-highlighter?color=red&style=flat-square" alt="Downloads"></a>
+  <a><img src="https://img.shields.io/github/stars/kendinikertenkelebek/pine-script-syntax-highlighter?color=red&style=flat-square" alt="Stars"></a>
+  <a><img src="https://img.shields.io/github/contributors/kendinikertenkelebek/pine-script-syntax-highlighter?color=green&style=flat-square" alt="Contributors"></a>
   <a><img src="https://img.shields.io/github/license/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Licance"></a>
 </p>
 
