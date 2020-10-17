@@ -2,7 +2,7 @@
     "name": "pine-script-syntax-highlighter",
     "displayName": "Pine Script Syntax Highlighter",
     "description": "Write awesome indicators or strategies with me!",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "author": "Yankı Küçük <kendinikertenkelebek@me.com> (https://github.com/kendinikertenkelebek)",
     "publisher": "ex-codes",
     "icon": "images/pinescript.png",
