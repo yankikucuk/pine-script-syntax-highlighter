@@ -9,8 +9,9 @@
 <h4 align="center">Syntax highlighting, snippets and editor support for TradingView Pine Script® v6 in Visual Studio Code.</h4>
 
 <p align="center">
-  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://img.shields.io/visual-studio-marketplace/v/ex-codes.pine-script-syntax-highlighter?style=flat-square&label=marketplace" alt="Marketplace version"></a>
-  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://img.shields.io/visual-studio-marketplace/i/ex-codes.pine-script-syntax-highlighter?style=flat-square" alt="Installs"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://vsmarketplacebadges.dev/version-short/ex-codes.pine-script-syntax-highlighter.svg?style=flat-square&label=marketplace&color=blue" alt="Marketplace version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://vsmarketplacebadges.dev/installs-short/ex-codes.pine-script-syntax-highlighter.svg?style=flat-square&color=green" alt="Installs"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter&ssr=false#review-details"><img src="https://vsmarketplacebadges.dev/rating-short/ex-codes.pine-script-syntax-highlighter.svg?style=flat-square&color=orange" alt="Rating"></a>
   <a href="https://github.com/yankikucuk/pine-script-syntax-highlighter/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/yankikucuk/pine-script-syntax-highlighter/ci.yml?style=flat-square&label=ci" alt="CI"></a>
   <a href="https://github.com/yankikucuk/pine-script-syntax-highlighter/issues"><img src="https://img.shields.io/github/issues/yankikucuk/pine-script-syntax-highlighter?style=flat-square" alt="Issues"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/yankikucuk/pine-script-syntax-highlighter?style=flat-square" alt="License"></a>
