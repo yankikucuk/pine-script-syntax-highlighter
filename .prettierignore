@@ -1,0 +1,5 @@
+syntaxes/
+tests/**/*.snap
+node_modules/
+*.vsix
+CHANGELOG.md

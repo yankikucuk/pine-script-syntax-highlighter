@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Build, test, package
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Verify generated grammar is committed
+        run: npm run build:check
+
+      - name: Run grammar tests
+        run: npm test
+
+      - name: Package extension
+        run: npx vsce package --no-dependencies --out pine-script-syntax-highlighter.vsix
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vsix
+          path: pine-script-syntax-highlighter.vsix

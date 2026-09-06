@@ -1,0 +1,898 @@
+>//@version=6
+#^^ source.pine comment.line.double-slash.pine punctuation.definition.comment.pine
+#  ^^^^^^^^ source.pine comment.line.double-slash.pine storage.type.annotation.version.pine
+#          ^ source.pine comment.line.double-slash.pine keyword.operator.assignment.pine
+#           ^ source.pine comment.line.double-slash.pine constant.numeric.integer.pine
+>//@strategy_alert_message {{strategy.order.action}} {{strategy.order.contracts}} @ {{close}}
+#^^ source.pine comment.line.double-slash.pine punctuation.definition.comment.pine
+#  ^^^^^^^^^^^^^^^^^^^^^^^ source.pine comment.line.double-slash.pine storage.type.annotation.pine
+#                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.pine comment.line.double-slash.pine
+>strategy("Regime Strategy", overlay = false, initial_capital = 25000, currency = currency.USD,
+#^^^^^^^^ source.pine support.function.pine
+#        ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#         ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#          ^^^^^^^^^^^^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                         ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                          ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                           ^ source.pine meta.parens.pine
+#                            ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                   ^ source.pine meta.parens.pine
+#                                    ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                     ^ source.pine meta.parens.pine
+#                                      ^^^^^ source.pine meta.parens.pine constant.language.pine
+#                                           ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                            ^ source.pine meta.parens.pine
+#                                             ^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                            ^ source.pine meta.parens.pine
+#                                                             ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                              ^ source.pine meta.parens.pine
+#                                                               ^^^^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                                    ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                     ^ source.pine meta.parens.pine
+#                                                                      ^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                              ^ source.pine meta.parens.pine
+#                                                                               ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                                ^ source.pine meta.parens.pine
+#                                                                                 ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                                                                         ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                                                          ^^^ source.pine meta.parens.pine support.constant.pine
+#                                                                                             ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+>     default_qty_type = strategy.percent_of_equity, default_qty_value = 15,
+#^^^^^ source.pine meta.parens.pine
+#     ^^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                     ^ source.pine meta.parens.pine
+#                      ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                 ^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                  ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                   ^ source.pine meta.parens.pine
+#                                                    ^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                     ^ source.pine meta.parens.pine
+#                                                                      ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                       ^ source.pine meta.parens.pine
+#                                                                        ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                                          ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+>     commission_type = strategy.commission.percent, commission_value = 0.05,
+#^^^^^ source.pine meta.parens.pine
+#     ^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                    ^ source.pine meta.parens.pine
+#                     ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                      ^ source.pine meta.parens.pine
+#                       ^^^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                          ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                           ^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                  ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                   ^ source.pine meta.parens.pine
+#                                                    ^^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                    ^ source.pine meta.parens.pine
+#                                                                     ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                      ^ source.pine meta.parens.pine
+#                                                                       ^^^^ source.pine meta.parens.pine constant.numeric.float.pine
+#                                                                           ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+>     calc_on_every_tick = false, process_orders_on_close = true)
+#^^^^^ source.pine meta.parens.pine
+#     ^^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                         ^ source.pine meta.parens.pine
+#                          ^^^^^ source.pine meta.parens.pine constant.language.pine
+#                               ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                ^ source.pine meta.parens.pine
+#                                 ^^^^^^^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                        ^ source.pine meta.parens.pine
+#                                                         ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                          ^ source.pine meta.parens.pine
+#                                                           ^^^^ source.pine meta.parens.pine constant.language.pine
+#                                                               ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>import someone/regimeLib/4 as regime
+#^^^^^^ source.pine keyword.control.import.pine
+#      ^ source.pine
+#       ^^^^^^^^^^^^^^^^^^^ source.pine entity.name.namespace.import.pine
+#                          ^ source.pine
+#                           ^^ source.pine keyword.control.import.as.pine
+#                             ^ source.pine
+#                              ^^^^^^ source.pine entity.name.namespace.alias.pine
+>
+>enum Regime
+#^^^^ source.pine storage.type.declaration.enum.pine
+#    ^ source.pine
+#     ^^^^^^ source.pine entity.name.type.enum.pine
+>    bull  = "Bull"
+#^^^^ source.pine
+#    ^^^^ source.pine variable.other.assignment.pine
+#        ^^ source.pine
+#          ^ source.pine keyword.operator.assignment.pine
+#           ^ source.pine
+#            ^ source.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#             ^^^^ source.pine string.quoted.double.pine
+#                 ^ source.pine string.quoted.double.pine punctuation.definition.string.end.pine
+>    bear  = "Bear"
+#^^^^ source.pine
+#    ^^^^ source.pine variable.other.assignment.pine
+#        ^^ source.pine
+#          ^ source.pine keyword.operator.assignment.pine
+#           ^ source.pine
+#            ^ source.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#             ^^^^ source.pine string.quoted.double.pine
+#                 ^ source.pine string.quoted.double.pine punctuation.definition.string.end.pine
+>    range = "Range"
+#^^^^ source.pine
+#    ^^^^^ source.pine variable.other.assignment.pine
+#         ^ source.pine
+#          ^ source.pine keyword.operator.assignment.pine
+#           ^ source.pine
+#            ^ source.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#             ^^^^^ source.pine string.quoted.double.pine
+#                  ^ source.pine string.quoted.double.pine punctuation.definition.string.end.pine
+>
+>type Stats
+#^^^^ source.pine storage.type.declaration.pine
+#    ^ source.pine
+#     ^^^^^ source.pine entity.name.type.pine
+>    int   wins  = 0
+#^^^^ source.pine
+#    ^^^ source.pine support.type.pine
+#       ^^^ source.pine
+#          ^^^^ source.pine variable.other.assignment.pine
+#              ^^ source.pine
+#                ^ source.pine keyword.operator.assignment.pine
+#                 ^ source.pine
+#                  ^ source.pine constant.numeric.integer.pine
+>    int   total = 0
+#^^^^ source.pine
+#    ^^^ source.pine support.type.pine
+#       ^^^ source.pine
+#          ^^^^^ source.pine variable.other.assignment.pine
+#               ^ source.pine
+#                ^ source.pine keyword.operator.assignment.pine
+#                 ^ source.pine
+#                  ^ source.pine constant.numeric.integer.pine
+>    array<float> returns = na
+#^^^^ source.pine
+#    ^^^^^ source.pine support.type.pine
+#         ^ source.pine meta.generic.pine punctuation.definition.generic.begin.pine
+#          ^^^^^ source.pine meta.generic.pine support.type.pine
+#               ^ source.pine meta.generic.pine punctuation.definition.generic.end.pine
+#                ^ source.pine
+#                 ^^^^^^^ source.pine variable.other.assignment.pine
+#                        ^ source.pine
+#                         ^ source.pine keyword.operator.assignment.pine
+#                          ^ source.pine
+#                           ^^ source.pine constant.language.pine
+>
+>var Stats stats = Stats.new(returns = array.new<float>())
+#^^^ source.pine storage.modifier.pine
+#   ^ source.pine
+#    ^^^^^ source.pine variable.other.pine
+#         ^ source.pine
+#          ^^^^^ source.pine variable.other.assignment.pine
+#               ^ source.pine
+#                ^ source.pine keyword.operator.assignment.pine
+#                 ^ source.pine
+#                  ^^^^^ source.pine entity.name.type.pine
+#                       ^ source.pine punctuation.accessor.pine
+#                        ^^^ source.pine support.function.constructor.pine
+#                           ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                            ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                   ^ source.pine meta.parens.pine
+#                                    ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                     ^ source.pine meta.parens.pine
+#                                      ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                           ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                            ^^^ source.pine meta.parens.pine support.function.pine
+#                                               ^ source.pine meta.parens.pine meta.generic.pine punctuation.definition.generic.begin.pine
+#                                                ^^^^^ source.pine meta.parens.pine meta.generic.pine support.type.pine
+#                                                     ^ source.pine meta.parens.pine meta.generic.pine punctuation.definition.generic.end.pine
+#                                                      ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                       ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                        ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>var map<string, Regime> memo = map.new<string, Regime>()
+#^^^ source.pine storage.modifier.pine
+#   ^ source.pine
+#    ^^^ source.pine support.type.pine
+#       ^ source.pine meta.generic.pine punctuation.definition.generic.begin.pine
+#        ^^^^^^ source.pine meta.generic.pine support.type.pine
+#              ^ source.pine meta.generic.pine punctuation.separator.comma.pine
+#               ^ source.pine meta.generic.pine
+#                ^^^^^^ source.pine meta.generic.pine entity.name.type.pine
+#                      ^ source.pine meta.generic.pine punctuation.definition.generic.end.pine
+#                       ^ source.pine
+#                        ^^^^ source.pine variable.other.assignment.pine
+#                            ^ source.pine
+#                             ^ source.pine keyword.operator.assignment.pine
+#                              ^ source.pine
+#                               ^^^ source.pine support.class.pine
+#                                  ^ source.pine punctuation.accessor.pine
+#                                   ^^^ source.pine support.function.pine
+#                                      ^ source.pine meta.generic.pine punctuation.definition.generic.begin.pine
+#                                       ^^^^^^ source.pine meta.generic.pine support.type.pine
+#                                             ^ source.pine meta.generic.pine punctuation.separator.comma.pine
+#                                              ^ source.pine meta.generic.pine
+#                                               ^^^^^^ source.pine meta.generic.pine entity.name.type.pine
+#                                                     ^ source.pine meta.generic.pine punctuation.definition.generic.end.pine
+#                                                      ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                       ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>fast = ta.ema(close, 21)
+#^^^^ source.pine variable.other.assignment.pine
+#    ^ source.pine
+#     ^ source.pine keyword.operator.assignment.pine
+#      ^ source.pine
+#       ^^ source.pine support.class.pine
+#         ^ source.pine punctuation.accessor.pine
+#          ^^^ source.pine support.function.pine
+#             ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#              ^^^^^ source.pine meta.parens.pine support.variable.pine
+#                   ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                    ^ source.pine meta.parens.pine
+#                     ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                       ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>slow = ta.ema(close, 55)
+#^^^^ source.pine variable.other.assignment.pine
+#    ^ source.pine
+#     ^ source.pine keyword.operator.assignment.pine
+#      ^ source.pine
+#       ^^ source.pine support.class.pine
+#         ^ source.pine punctuation.accessor.pine
+#          ^^^ source.pine support.function.pine
+#             ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#              ^^^^^ source.pine meta.parens.pine support.variable.pine
+#                   ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                    ^ source.pine meta.parens.pine
+#                     ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                       ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>[diPlus, diMinus, adx] = ta.dmi(14, 14)
+#^ source.pine meta.tuple.destructuring.pine punctuation.definition.tuple.begin.pine
+# ^^^^^^ source.pine meta.tuple.destructuring.pine variable.other.assignment.pine
+#       ^ source.pine meta.tuple.destructuring.pine punctuation.separator.comma.pine
+#        ^ source.pine meta.tuple.destructuring.pine
+#         ^^^^^^^ source.pine meta.tuple.destructuring.pine variable.other.assignment.pine
+#                ^ source.pine meta.tuple.destructuring.pine punctuation.separator.comma.pine
+#                 ^ source.pine meta.tuple.destructuring.pine
+#                  ^^^ source.pine meta.tuple.destructuring.pine variable.other.assignment.pine
+#                     ^ source.pine meta.tuple.destructuring.pine punctuation.definition.tuple.end.pine
+#                      ^ source.pine
+#                       ^ source.pine keyword.operator.assignment.pine
+#                        ^ source.pine
+#                         ^^ source.pine support.class.pine
+#                           ^ source.pine punctuation.accessor.pine
+#                            ^^^ source.pine support.function.pine
+#                               ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                  ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                   ^ source.pine meta.parens.pine
+#                                    ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                      ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>classify(float f, float s, float strength) =>
+#^^^^^^^^ source.pine entity.name.function.pine
+#        ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#         ^^^^^ source.pine meta.parens.pine support.type.pine
+#              ^ source.pine meta.parens.pine
+#               ^ source.pine meta.parens.pine variable.other.pine
+#                ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                 ^ source.pine meta.parens.pine
+#                  ^^^^^ source.pine meta.parens.pine support.type.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^ source.pine meta.parens.pine variable.other.pine
+#                         ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                          ^ source.pine meta.parens.pine
+#                           ^^^^^ source.pine meta.parens.pine support.type.pine
+#                                ^ source.pine meta.parens.pine
+#                                 ^^^^^^^^ source.pine meta.parens.pine variable.other.pine
+#                                         ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                          ^ source.pine
+#                                           ^^ source.pine keyword.operator.arrow.pine
+>    switch
+#^^^^ source.pine
+#    ^^^^^^ source.pine keyword.control.pine
+>        f > s and strength > 25 => Regime.bull
+#^^^^^^^^ source.pine
+#        ^ source.pine variable.other.pine
+#         ^ source.pine
+#          ^ source.pine keyword.operator.comparison.pine
+#           ^ source.pine
+#            ^ source.pine variable.other.pine
+#             ^ source.pine
+#              ^^^ source.pine keyword.operator.logical.pine
+#                 ^ source.pine
+#                  ^^^^^^^^ source.pine variable.other.pine
+#                          ^ source.pine
+#                           ^ source.pine keyword.operator.comparison.pine
+#                            ^ source.pine
+#                             ^^ source.pine constant.numeric.integer.pine
+#                               ^ source.pine
+#                                ^^ source.pine keyword.operator.arrow.pine
+#                                  ^ source.pine
+#                                   ^^^^^^ source.pine variable.other.pine
+#                                         ^ source.pine punctuation.accessor.pine
+#                                          ^^^^ source.pine variable.other.member.pine
+>        f < s and strength > 25 => Regime.bear
+#^^^^^^^^ source.pine
+#        ^ source.pine variable.other.pine
+#         ^ source.pine
+#          ^ source.pine keyword.operator.comparison.pine
+#           ^ source.pine
+#            ^ source.pine variable.other.pine
+#             ^ source.pine
+#              ^^^ source.pine keyword.operator.logical.pine
+#                 ^ source.pine
+#                  ^^^^^^^^ source.pine variable.other.pine
+#                          ^ source.pine
+#                           ^ source.pine keyword.operator.comparison.pine
+#                            ^ source.pine
+#                             ^^ source.pine constant.numeric.integer.pine
+#                               ^ source.pine
+#                                ^^ source.pine keyword.operator.arrow.pine
+#                                  ^ source.pine
+#                                   ^^^^^^ source.pine variable.other.pine
+#                                         ^ source.pine punctuation.accessor.pine
+#                                          ^^^^ source.pine variable.other.member.pine
+>        => Regime.range
+#^^^^^^^^ source.pine
+#        ^^ source.pine keyword.operator.arrow.pine
+#          ^ source.pine
+#           ^^^^^^ source.pine variable.other.pine
+#                 ^ source.pine punctuation.accessor.pine
+#                  ^^^^^ source.pine variable.other.member.pine
+>
+>current = classify(fast, slow, adx)
+#^^^^^^^ source.pine variable.other.assignment.pine
+#       ^ source.pine
+#        ^ source.pine keyword.operator.assignment.pine
+#         ^ source.pine
+#          ^^^^^^^^ source.pine entity.name.function.call.pine
+#                  ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                   ^^^^ source.pine meta.parens.pine variable.other.pine
+#                       ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                        ^ source.pine meta.parens.pine
+#                         ^^^^ source.pine meta.parens.pine variable.other.pine
+#                             ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                              ^ source.pine meta.parens.pine
+#                               ^^^ source.pine meta.parens.pine variable.other.pine
+#                                  ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>memo.put(str.tostring(bar_index), current)
+#^^^^ source.pine variable.other.pine
+#    ^ source.pine punctuation.accessor.pine
+#     ^^^ source.pine entity.name.function.member.pine
+#        ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#         ^^^ source.pine meta.parens.pine support.class.pine
+#            ^ source.pine meta.parens.pine punctuation.accessor.pine
+#             ^^^^^^^^ source.pine meta.parens.pine support.function.pine
+#                     ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                      ^^^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.variable.pine
+#                               ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                 ^ source.pine meta.parens.pine
+#                                  ^^^^^^^ source.pine meta.parens.pine variable.other.pine
+#                                         ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>once barstate.isrealtime
+#^^^^ source.pine keyword.control.pine
+#    ^ source.pine
+#     ^^^^^^^^ source.pine support.class.pine
+#             ^ source.pine punctuation.accessor.pine
+#              ^^^^^^^^^^ source.pine support.variable.pine
+>    log.warning("Realtime bars started at {0}", str.format_time(timenow))
+#^^^^ source.pine
+#    ^^^ source.pine support.class.pine
+#       ^ source.pine punctuation.accessor.pine
+#        ^^^^^^^ source.pine support.function.pine
+#               ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                 ^^^^^^^^^^^^^^^^^^^^^^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                                          ^^^ source.pine meta.parens.pine string.quoted.double.pine constant.other.placeholder.pine
+#                                             ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                                              ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                               ^ source.pine meta.parens.pine
+#                                                ^^^ source.pine meta.parens.pine support.class.pine
+#                                                   ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                    ^^^^^^^^^^^ source.pine meta.parens.pine support.function.pine
+#                                                               ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                                ^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.variable.pine
+#                                                                       ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                                        ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>longSignal  = current == Regime.bull and ta.crossover(fast, slow)
+#^^^^^^^^^^ source.pine variable.other.assignment.pine
+#          ^^ source.pine
+#            ^ source.pine keyword.operator.assignment.pine
+#             ^ source.pine
+#              ^^^^^^^ source.pine variable.other.pine
+#                     ^ source.pine
+#                      ^^ source.pine keyword.operator.comparison.pine
+#                        ^ source.pine
+#                         ^^^^^^ source.pine variable.other.pine
+#                               ^ source.pine punctuation.accessor.pine
+#                                ^^^^ source.pine variable.other.member.pine
+#                                    ^ source.pine
+#                                     ^^^ source.pine keyword.operator.logical.pine
+#                                        ^ source.pine
+#                                         ^^ source.pine support.class.pine
+#                                           ^ source.pine punctuation.accessor.pine
+#                                            ^^^^^^^^^ source.pine support.function.pine
+#                                                     ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                      ^^^^ source.pine meta.parens.pine variable.other.pine
+#                                                          ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                           ^ source.pine meta.parens.pine
+#                                                            ^^^^ source.pine meta.parens.pine variable.other.pine
+#                                                                ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>shortSignal = current == Regime.bear and ta.crossunder(fast, slow)
+#^^^^^^^^^^^ source.pine variable.other.assignment.pine
+#           ^ source.pine
+#            ^ source.pine keyword.operator.assignment.pine
+#             ^ source.pine
+#              ^^^^^^^ source.pine variable.other.pine
+#                     ^ source.pine
+#                      ^^ source.pine keyword.operator.comparison.pine
+#                        ^ source.pine
+#                         ^^^^^^ source.pine variable.other.pine
+#                               ^ source.pine punctuation.accessor.pine
+#                                ^^^^ source.pine variable.other.member.pine
+#                                    ^ source.pine
+#                                     ^^^ source.pine keyword.operator.logical.pine
+#                                        ^ source.pine
+#                                         ^^ source.pine support.class.pine
+#                                           ^ source.pine punctuation.accessor.pine
+#                                            ^^^^^^^^^^ source.pine support.function.pine
+#                                                      ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                       ^^^^ source.pine meta.parens.pine variable.other.pine
+#                                                           ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                            ^ source.pine meta.parens.pine
+#                                                             ^^^^ source.pine meta.parens.pine variable.other.pine
+#                                                                 ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>if longSignal
+#^^ source.pine keyword.control.pine
+#  ^ source.pine
+#   ^^^^^^^^^^ source.pine variable.other.pine
+>    strategy.entry("L", strategy.long, comment = "long")
+#^^^^ source.pine
+#    ^^^^^^^^ source.pine support.class.pine
+#            ^ source.pine punctuation.accessor.pine
+#             ^^^^^ source.pine support.function.pine
+#                  ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                   ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                    ^ source.pine meta.parens.pine string.quoted.double.pine
+#                     ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                      ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                 ^^^^ source.pine meta.parens.pine support.constant.pine
+#                                     ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                      ^ source.pine meta.parens.pine
+#                                       ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                              ^ source.pine meta.parens.pine
+#                                               ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                ^ source.pine meta.parens.pine
+#                                                 ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                                                  ^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                                                      ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                                                       ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>    strategy.exit("L-x", "L", stop = low - ta.atr(14) * 1.5, trail_points = 200, trail_offset = 50)
+#^^^^ source.pine
+#    ^^^^^^^^ source.pine support.class.pine
+#            ^ source.pine punctuation.accessor.pine
+#             ^^^^ source.pine support.function.pine
+#                 ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                  ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                   ^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                      ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                       ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                        ^ source.pine meta.parens.pine
+#                         ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                          ^ source.pine meta.parens.pine string.quoted.double.pine
+#                           ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                            ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                             ^ source.pine meta.parens.pine
+#                              ^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                  ^ source.pine meta.parens.pine
+#                                   ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                    ^ source.pine meta.parens.pine
+#                                     ^^^ source.pine meta.parens.pine support.variable.pine
+#                                        ^ source.pine meta.parens.pine
+#                                         ^ source.pine meta.parens.pine keyword.operator.arithmetic.pine
+#                                          ^ source.pine meta.parens.pine
+#                                           ^^ source.pine meta.parens.pine support.class.pine
+#                                             ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                              ^^^ source.pine meta.parens.pine support.function.pine
+#                                                 ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                  ^^ source.pine meta.parens.pine meta.parens.pine constant.numeric.integer.pine
+#                                                    ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                     ^ source.pine meta.parens.pine
+#                                                      ^ source.pine meta.parens.pine keyword.operator.arithmetic.pine
+#                                                       ^ source.pine meta.parens.pine
+#                                                        ^^^ source.pine meta.parens.pine constant.numeric.float.pine
+#                                                           ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                            ^ source.pine meta.parens.pine
+#                                                             ^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                         ^ source.pine meta.parens.pine
+#                                                                          ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                           ^ source.pine meta.parens.pine
+#                                                                            ^^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                                               ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                                ^ source.pine meta.parens.pine
+#                                                                                 ^^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                                             ^ source.pine meta.parens.pine
+#                                                                                              ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                                               ^ source.pine meta.parens.pine
+#                                                                                                ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                                                                  ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>if shortSignal
+#^^ source.pine keyword.control.pine
+#  ^ source.pine
+#   ^^^^^^^^^^^ source.pine variable.other.pine
+>    strategy.entry("S", strategy.short)
+#^^^^ source.pine
+#    ^^^^^^^^ source.pine support.class.pine
+#            ^ source.pine punctuation.accessor.pine
+#             ^^^^^ source.pine support.function.pine
+#                  ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                   ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                    ^ source.pine meta.parens.pine string.quoted.double.pine
+#                     ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                      ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                 ^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                      ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>if strategy.position_size != 0 and current == Regime.range
+#^^ source.pine keyword.control.pine
+#  ^ source.pine
+#   ^^^^^^^^ source.pine support.class.pine
+#           ^ source.pine punctuation.accessor.pine
+#            ^^^^^^^^^^^^^ source.pine support.variable.pine
+#                         ^ source.pine
+#                          ^^ source.pine keyword.operator.comparison.pine
+#                            ^ source.pine
+#                             ^ source.pine constant.numeric.integer.pine
+#                              ^ source.pine
+#                               ^^^ source.pine keyword.operator.logical.pine
+#                                  ^ source.pine
+#                                   ^^^^^^^ source.pine variable.other.pine
+#                                          ^ source.pine
+#                                           ^^ source.pine keyword.operator.comparison.pine
+#                                             ^ source.pine
+#                                              ^^^^^^ source.pine variable.other.pine
+#                                                    ^ source.pine punctuation.accessor.pine
+#                                                     ^^^^^ source.pine variable.other.member.pine
+>    strategy.close_all(comment = "range")
+#^^^^ source.pine
+#    ^^^^^^^^ source.pine support.class.pine
+#            ^ source.pine punctuation.accessor.pine
+#             ^^^^^^^^^ source.pine support.function.pine
+#                      ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                       ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                              ^ source.pine meta.parens.pine
+#                               ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                ^ source.pine meta.parens.pine
+#                                 ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                                  ^^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                                       ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                                        ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>for i = 0 to strategy.closedtrades - 1 by 1
+#^^^ source.pine keyword.control.loop.pine
+#   ^ source.pine
+#    ^ source.pine variable.other.assignment.pine
+#     ^ source.pine
+#      ^ source.pine keyword.operator.assignment.pine
+#       ^ source.pine
+#        ^ source.pine constant.numeric.integer.pine
+#         ^ source.pine
+#          ^^ source.pine keyword.control.loop.pine
+#            ^ source.pine
+#             ^^^^^^^^ source.pine support.class.pine
+#                     ^ source.pine punctuation.accessor.pine
+#                      ^^^^^^^^^^^^ source.pine support.variable.pine
+#                                  ^ source.pine
+#                                   ^ source.pine keyword.operator.arithmetic.pine
+#                                    ^ source.pine
+#                                     ^ source.pine constant.numeric.integer.pine
+#                                      ^ source.pine
+#                                       ^^ source.pine keyword.control.loop.pine
+#                                         ^ source.pine
+#                                          ^ source.pine constant.numeric.integer.pine
+>    r = strategy.closedtrades.profit_percent(i)
+#^^^^ source.pine
+#    ^ source.pine variable.other.assignment.pine
+#     ^ source.pine
+#      ^ source.pine keyword.operator.assignment.pine
+#       ^ source.pine
+#        ^^^^^^^^^^^^^^^^^^^^^ source.pine support.class.pine
+#                             ^ source.pine punctuation.accessor.pine
+#                              ^^^^^^^^^^^^^^ source.pine support.function.pine
+#                                            ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                             ^ source.pine meta.parens.pine variable.other.pine
+#                                              ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>    stats.returns.push(r)
+#^^^^ source.pine
+#    ^^^^^ source.pine variable.other.pine
+#         ^ source.pine punctuation.accessor.pine
+#          ^^^^^^^ source.pine variable.other.member.pine
+#                 ^ source.pine punctuation.accessor.pine
+#                  ^^^^ source.pine entity.name.function.member.pine
+#                      ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                       ^ source.pine meta.parens.pine variable.other.pine
+#                        ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>    stats.total += 1
+#^^^^ source.pine
+#    ^^^^^ source.pine variable.other.pine
+#         ^ source.pine punctuation.accessor.pine
+#          ^^^^^ source.pine variable.other.member.pine
+#               ^ source.pine
+#                ^^ source.pine keyword.operator.assignment.pine
+#                  ^ source.pine
+#                   ^ source.pine constant.numeric.integer.pine
+>    if r > 0
+#^^^^ source.pine
+#    ^^ source.pine keyword.control.pine
+#      ^ source.pine
+#       ^ source.pine variable.other.pine
+#        ^ source.pine
+#         ^ source.pine keyword.operator.comparison.pine
+#          ^ source.pine
+#           ^ source.pine constant.numeric.integer.pine
+>        stats.wins += 1
+#^^^^^^^^ source.pine
+#        ^^^^^ source.pine variable.other.pine
+#             ^ source.pine punctuation.accessor.pine
+#              ^^^^ source.pine variable.other.member.pine
+#                  ^ source.pine
+#                   ^^ source.pine keyword.operator.assignment.pine
+#                     ^ source.pine
+#                      ^ source.pine constant.numeric.integer.pine
+>
+>winRate = stats.total > 0 ? stats.wins / stats.total * 100 : 0.0
+#^^^^^^^ source.pine variable.other.assignment.pine
+#       ^ source.pine
+#        ^ source.pine keyword.operator.assignment.pine
+#         ^ source.pine
+#          ^^^^^ source.pine variable.other.pine
+#               ^ source.pine punctuation.accessor.pine
+#                ^^^^^ source.pine variable.other.member.pine
+#                     ^ source.pine
+#                      ^ source.pine keyword.operator.comparison.pine
+#                       ^ source.pine
+#                        ^ source.pine constant.numeric.integer.pine
+#                         ^ source.pine
+#                          ^ source.pine keyword.operator.ternary.pine
+#                           ^ source.pine
+#                            ^^^^^ source.pine variable.other.pine
+#                                 ^ source.pine punctuation.accessor.pine
+#                                  ^^^^ source.pine variable.other.member.pine
+#                                      ^ source.pine
+#                                       ^ source.pine keyword.operator.arithmetic.pine
+#                                        ^ source.pine
+#                                         ^^^^^ source.pine variable.other.pine
+#                                              ^ source.pine punctuation.accessor.pine
+#                                               ^^^^^ source.pine variable.other.member.pine
+#                                                    ^ source.pine
+#                                                     ^ source.pine keyword.operator.arithmetic.pine
+#                                                      ^ source.pine
+#                                                       ^^^ source.pine constant.numeric.integer.pine
+#                                                          ^ source.pine
+#                                                           ^ source.pine keyword.operator.ternary.pine
+#                                                            ^ source.pine
+#                                                             ^^^ source.pine constant.numeric.float.pine
+>
+>note = """
+#^^^^ source.pine variable.other.assignment.pine
+#    ^ source.pine
+#     ^ source.pine keyword.operator.assignment.pine
+#      ^ source.pine
+#       ^^^ source.pine string.quoted.triple.double.pine punctuation.definition.string.begin.pine
+>Regime: {0}
+#^^^^^^^^ source.pine string.quoted.triple.double.pine
+#        ^^^ source.pine string.quoted.triple.double.pine constant.other.placeholder.pine
+>Win rate: {1,number,#.#}%
+#^^^^^^^^^^ source.pine string.quoted.triple.double.pine
+#          ^^^^^^^^^^^^^^ source.pine string.quoted.triple.double.pine constant.other.placeholder.pine
+#                        ^^ source.pine string.quoted.triple.double.pine
+>Net: {2}
+#^^^^^ source.pine string.quoted.triple.double.pine
+#     ^^^ source.pine string.quoted.triple.double.pine constant.other.placeholder.pine
+>"""
+#^^^ source.pine string.quoted.triple.double.pine punctuation.definition.string.end.pine
+>
+>var table dash = table.new(position.top_right, 1, 1, bgcolor = color.new(chart.bg_color, 20))
+#^^^ source.pine storage.modifier.pine
+#   ^ source.pine
+#    ^^^^^ source.pine support.type.pine
+#         ^ source.pine
+#          ^^^^ source.pine variable.other.assignment.pine
+#              ^ source.pine
+#               ^ source.pine keyword.operator.assignment.pine
+#                ^ source.pine
+#                 ^^^^^ source.pine support.class.pine
+#                      ^ source.pine punctuation.accessor.pine
+#                       ^^^ source.pine support.function.pine
+#                          ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                           ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                   ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                    ^^^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                             ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                              ^ source.pine meta.parens.pine
+#                                               ^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                 ^ source.pine meta.parens.pine
+#                                                  ^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                                   ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                    ^ source.pine meta.parens.pine
+#                                                     ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                            ^ source.pine meta.parens.pine
+#                                                             ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                              ^ source.pine meta.parens.pine
+#                                                               ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                                                    ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                                     ^^^ source.pine meta.parens.pine support.function.pine
+#                                                                        ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                                         ^^^^^ source.pine meta.parens.pine meta.parens.pine support.class.pine
+#                                                                              ^ source.pine meta.parens.pine meta.parens.pine punctuation.accessor.pine
+#                                                                               ^^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.variable.pine
+#                                                                                       ^ source.pine meta.parens.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                                        ^ source.pine meta.parens.pine meta.parens.pine
+#                                                                                         ^^ source.pine meta.parens.pine meta.parens.pine constant.numeric.integer.pine
+#                                                                                           ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                                                            ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>if barstate.islast
+#^^ source.pine keyword.control.pine
+#  ^ source.pine
+#   ^^^^^^^^ source.pine support.class.pine
+#           ^ source.pine punctuation.accessor.pine
+#            ^^^^^^ source.pine support.variable.pine
+>    table.cell(dash, 0, 0, str.format(note, str.tostring(current), winRate, strategy.netprofit),
+#^^^^ source.pine
+#    ^^^^^ source.pine support.class.pine
+#         ^ source.pine punctuation.accessor.pine
+#          ^^^^ source.pine support.function.pine
+#              ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#               ^^^^ source.pine meta.parens.pine variable.other.pine
+#                   ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                    ^ source.pine meta.parens.pine
+#                     ^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                      ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                       ^ source.pine meta.parens.pine
+#                        ^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                         ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                          ^ source.pine meta.parens.pine
+#                           ^^^ source.pine meta.parens.pine support.class.pine
+#                              ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                               ^^^^^^ source.pine meta.parens.pine support.function.pine
+#                                     ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                      ^^^^ source.pine meta.parens.pine meta.parens.pine variable.other.pine
+#                                          ^ source.pine meta.parens.pine meta.parens.pine punctuation.separator.comma.pine
+#                                           ^ source.pine meta.parens.pine meta.parens.pine
+#                                            ^^^ source.pine meta.parens.pine meta.parens.pine support.class.pine
+#                                               ^ source.pine meta.parens.pine meta.parens.pine punctuation.accessor.pine
+#                                                ^^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.function.pine
+#                                                        ^ source.pine meta.parens.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                                         ^^^^^^^ source.pine meta.parens.pine meta.parens.pine meta.parens.pine variable.other.pine
+#                                                                ^ source.pine meta.parens.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                                 ^ source.pine meta.parens.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                  ^ source.pine meta.parens.pine meta.parens.pine
+#                                                                   ^^^^^^^ source.pine meta.parens.pine meta.parens.pine variable.other.pine
+#                                                                          ^ source.pine meta.parens.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                           ^ source.pine meta.parens.pine meta.parens.pine
+#                                                                            ^^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.class.pine
+#                                                                                    ^ source.pine meta.parens.pine meta.parens.pine punctuation.accessor.pine
+#                                                                                     ^^^^^^^^^ source.pine meta.parens.pine meta.parens.pine support.variable.pine
+#                                                                                              ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                                                               ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+>         text_color = chart.fg_color, text_halign = text.align_left, text_size = size.small)
+#^^^^^^^^^ source.pine meta.parens.pine
+#         ^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                   ^ source.pine meta.parens.pine
+#                    ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                     ^ source.pine meta.parens.pine
+#                      ^^^^^ source.pine meta.parens.pine support.class.pine
+#                           ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                            ^^^^^^^^ source.pine meta.parens.pine support.variable.pine
+#                                    ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                     ^ source.pine meta.parens.pine
+#                                      ^^^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                 ^ source.pine meta.parens.pine
+#                                                  ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                   ^ source.pine meta.parens.pine
+#                                                    ^^^^ source.pine meta.parens.pine support.class.pine
+#                                                        ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                         ^^^^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                                   ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                                    ^ source.pine meta.parens.pine
+#                                                                     ^^^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                                                              ^ source.pine meta.parens.pine
+#                                                                               ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                                                                ^ source.pine meta.parens.pine
+#                                                                                 ^^^^ source.pine meta.parens.pine support.class.pine
+#                                                                                     ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                                                      ^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                                                           ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>
+>plot(adx, "ADX", color = adx > 25 ? color.green : color.gray)
+#^^^^ source.pine support.function.pine
+#    ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#     ^^^ source.pine meta.parens.pine variable.other.pine
+#        ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#         ^ source.pine meta.parens.pine
+#          ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#           ^^^ source.pine meta.parens.pine string.quoted.double.pine
+#              ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#               ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                ^ source.pine meta.parens.pine
+#                 ^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                      ^ source.pine meta.parens.pine
+#                       ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                        ^ source.pine meta.parens.pine
+#                         ^^^ source.pine meta.parens.pine variable.other.pine
+#                            ^ source.pine meta.parens.pine
+#                             ^ source.pine meta.parens.pine keyword.operator.comparison.pine
+#                              ^ source.pine meta.parens.pine
+#                               ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#                                 ^ source.pine meta.parens.pine
+#                                  ^ source.pine meta.parens.pine keyword.operator.ternary.pine
+#                                   ^ source.pine meta.parens.pine
+#                                    ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                         ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                          ^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                               ^ source.pine meta.parens.pine
+#                                                ^ source.pine meta.parens.pine keyword.operator.ternary.pine
+#                                                 ^ source.pine meta.parens.pine
+#                                                  ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                                       ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                        ^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                            ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>hline(25, "Trend threshold", color.new(color.white, 60), hline.style_dashed)
+#^^^^^ source.pine support.function.pine
+#     ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#      ^^ source.pine meta.parens.pine constant.numeric.integer.pine
+#        ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#         ^ source.pine meta.parens.pine
+#          ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#           ^^^^^^^^^^^^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                          ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                           ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                            ^ source.pine meta.parens.pine
+#                             ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                  ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                   ^^^ source.pine meta.parens.pine support.function.pine
+#                                      ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.begin.pine
+#                                       ^^^^^ source.pine meta.parens.pine meta.parens.pine support.class.pine
+#                                            ^ source.pine meta.parens.pine meta.parens.pine punctuation.accessor.pine
+#                                             ^^^^^ source.pine meta.parens.pine meta.parens.pine support.constant.pine
+#                                                  ^ source.pine meta.parens.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                   ^ source.pine meta.parens.pine meta.parens.pine
+#                                                    ^^ source.pine meta.parens.pine meta.parens.pine constant.numeric.integer.pine
+#                                                      ^ source.pine meta.parens.pine meta.parens.pine punctuation.section.parens.end.pine
+#                                                       ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                                                        ^ source.pine meta.parens.pine
+#                                                         ^^^^^ source.pine meta.parens.pine support.class.pine
+#                                                              ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                               ^^^^^^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                                           ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>plot(strategy.equity, "Equity", display = display.data_window)
+#^^^^ source.pine support.function.pine
+#    ^ source.pine meta.parens.pine punctuation.section.parens.begin.pine
+#     ^^^^^^^^ source.pine meta.parens.pine support.class.pine
+#             ^ source.pine meta.parens.pine punctuation.accessor.pine
+#              ^^^^^^ source.pine meta.parens.pine support.variable.pine
+#                    ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                     ^ source.pine meta.parens.pine
+#                      ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.begin.pine
+#                       ^^^^^^ source.pine meta.parens.pine string.quoted.double.pine
+#                             ^ source.pine meta.parens.pine string.quoted.double.pine punctuation.definition.string.end.pine
+#                              ^ source.pine meta.parens.pine punctuation.separator.comma.pine
+#                               ^ source.pine meta.parens.pine
+#                                ^^^^^^^ source.pine meta.parens.pine variable.parameter.pine
+#                                       ^ source.pine meta.parens.pine
+#                                        ^ source.pine meta.parens.pine keyword.operator.assignment.pine
+#                                         ^ source.pine meta.parens.pine
+#                                          ^^^^^^^ source.pine meta.parens.pine support.class.pine
+#                                                 ^ source.pine meta.parens.pine punctuation.accessor.pine
+#                                                  ^^^^^^^^^^^ source.pine meta.parens.pine support.constant.pine
+#                                                             ^ source.pine meta.parens.pine punctuation.section.parens.end.pine
+>

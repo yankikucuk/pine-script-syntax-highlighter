@@ -1,40 +1,96 @@
 {
-    "name": "pine-script-syntax-highlighter",
-    "displayName": "Pine Script Syntax Highlighter",
-    "description": "Write awesome indicators or strategies with me!",
-    "version": "1.0.5",
-    "author": "Yankı Küçük <kendinikertenkelebek@me.com> (https://github.com/kendinikertenkelebek)",
-    "publisher": "ex-codes",
-    "icon": "images/pinescript.png",
-    "engines": {
-        "vscode": "^1.37.0"
-    },
-    "categories": [
-        "Language Packs",
-        "Programming Languages",
-        "Themes"
-    ],
-    "contributes": {
-        "languages": [{
-            "id": "pinescript",
-            "aliases": ["Pine Script", "pinescript", "Pine"],
-            "extensions": [".pine"],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "pinescript",
-            "scopeName": "source.pine",
-            "path": "./syntaxes/pinescript.tmLanguage.json"
-        }]
-    },
-    "homepage": "https://github.com/kendinikertenkelebek/",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight.git",
-        "bugs": {
-            "url": "https://github.com/kendinikertenkelebek/pine-script-syntax-highlight/issues",
-            "email": "kendinikertenkelebek@me.com"
+  "name": "pine-script-syntax-highlighter",
+  "displayName": "Pine Script Syntax Highlighter",
+  "description": "Syntax highlighting, snippets and language support for TradingView Pine Script v6.",
+  "version": "2.0.0",
+  "publisher": "ex-codes",
+  "author": {
+    "name": "Yankı Küçük",
+    "url": "https://github.com/yankikucuk"
+  },
+  "license": "MIT",
+  "icon": "images/pinescript.png",
+  "galleryBanner": {
+    "color": "#131722",
+    "theme": "dark"
+  },
+  "homepage": "https://github.com/yankikucuk/pine-script-syntax-highlighter#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yankikucuk/pine-script-syntax-highlighter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yankikucuk/pine-script-syntax-highlighter/issues"
+  },
+  "qna": "https://github.com/yankikucuk/pine-script-syntax-highlighter/issues",
+  "engines": {
+    "vscode": "^1.90.0",
+    "node": ">=20"
+  },
+  "type": "module",
+  "categories": ["Programming Languages", "Snippets"],
+  "keywords": [
+    "pine",
+    "pinescript",
+    "pine script",
+    "tradingview",
+    "trading",
+    "indicator",
+    "strategy",
+    "syntax",
+    "highlighting"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "pinescript",
+        "aliases": ["Pine Script", "pinescript", "Pine"],
+        "extensions": [".pine", ".pinescript"],
+        "firstLine": "^//@version=\\d+",
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./images/pinescript.png",
+          "dark": "./images/pinescript.png"
         }
-    },
-    "license": "MIT"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "pinescript",
+        "scopeName": "source.pine",
+        "path": "./syntaxes/pinescript.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "pinescript",
+        "path": "./snippets/pinescript.code-snippets"
+      }
+    ],
+    "configurationDefaults": {
+      "[pinescript]": {
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "editor.detectIndentation": false
+      }
+    }
+  },
+  "scripts": {
+    "build": "node scripts/build-grammar.mjs",
+    "build:check": "node scripts/build-grammar.mjs --check",
+    "test": "npm run build:check && npm run test:unit && npm run test:snap",
+    "test:unit": "vscode-tmgrammar-test -g syntaxes/pinescript.tmLanguage.json \"tests/unit/**/*.pine\"",
+    "test:snap": "vscode-tmgrammar-snap -s source.pine -g syntaxes/pinescript.tmLanguage.json \"tests/snapshots/**/*.pine\"",
+    "test:snap:update": "npm run test:snap -- --updateSnapshot",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "package": "vsce package",
+    "publish": "vsce publish",
+    "vscode:prepublish": "npm test"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.9.2",
+    "prettier": "^3.9.6",
+    "vscode-tmgrammar-test": "^0.1.3"
+  }
 }

@@ -1,0 +1,72 @@
+//@version=6
+//@strategy_alert_message {{strategy.order.action}} {{strategy.order.contracts}} @ {{close}}
+strategy("Regime Strategy", overlay = false, initial_capital = 25000, currency = currency.USD,
+     default_qty_type = strategy.percent_of_equity, default_qty_value = 15,
+     commission_type = strategy.commission.percent, commission_value = 0.05,
+     calc_on_every_tick = false, process_orders_on_close = true)
+
+import someone/regimeLib/4 as regime
+
+enum Regime
+    bull  = "Bull"
+    bear  = "Bear"
+    range = "Range"
+
+type Stats
+    int   wins  = 0
+    int   total = 0
+    array<float> returns = na
+
+var Stats stats = Stats.new(returns = array.new<float>())
+var map<string, Regime> memo = map.new<string, Regime>()
+
+fast = ta.ema(close, 21)
+slow = ta.ema(close, 55)
+[diPlus, diMinus, adx] = ta.dmi(14, 14)
+
+classify(float f, float s, float strength) =>
+    switch
+        f > s and strength > 25 => Regime.bull
+        f < s and strength > 25 => Regime.bear
+        => Regime.range
+
+current = classify(fast, slow, adx)
+memo.put(str.tostring(bar_index), current)
+
+once barstate.isrealtime
+    log.warning("Realtime bars started at {0}", str.format_time(timenow))
+
+longSignal  = current == Regime.bull and ta.crossover(fast, slow)
+shortSignal = current == Regime.bear and ta.crossunder(fast, slow)
+
+if longSignal
+    strategy.entry("L", strategy.long, comment = "long")
+    strategy.exit("L-x", "L", stop = low - ta.atr(14) * 1.5, trail_points = 200, trail_offset = 50)
+if shortSignal
+    strategy.entry("S", strategy.short)
+if strategy.position_size != 0 and current == Regime.range
+    strategy.close_all(comment = "range")
+
+for i = 0 to strategy.closedtrades - 1 by 1
+    r = strategy.closedtrades.profit_percent(i)
+    stats.returns.push(r)
+    stats.total += 1
+    if r > 0
+        stats.wins += 1
+
+winRate = stats.total > 0 ? stats.wins / stats.total * 100 : 0.0
+
+note = """
+Regime: {0}
+Win rate: {1,number,#.#}%
+Net: {2}
+"""
+
+var table dash = table.new(position.top_right, 1, 1, bgcolor = color.new(chart.bg_color, 20))
+if barstate.islast
+    table.cell(dash, 0, 0, str.format(note, str.tostring(current), winRate, strategy.netprofit),
+         text_color = chart.fg_color, text_halign = text.align_left, text_size = size.small)
+
+plot(adx, "ADX", color = adx > 25 ? color.green : color.gray)
+hline(25, "Trend threshold", color.new(color.white, 60), hline.style_dashed)
+plot(strategy.equity, "Equity", display = display.data_window)

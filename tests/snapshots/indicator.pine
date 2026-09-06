@@ -1,0 +1,59 @@
+//@version=6
+//@description Adaptive moving average band with volume confirmation.
+indicator("Adaptive Band", shorttitle = "AB", overlay = true, max_lines_count = 500)
+
+// region Inputs
+grp = "Settings"
+length   = input.int(20, "Length", minval = 2, group = grp)
+mult     = input.float(2.0, "Multiplier", step = 0.1, group = grp)
+src      = input.source(close, "Source", group = grp)
+showFill = input.bool(true, "Fill band", group = grp)
+tf       = input.timeframe("", "Timeframe", group = grp)
+// endregion
+
+//@type Holds the current band values.
+//@field upper Upper band price.
+//@field lower Lower band price.
+type Band
+    float upper
+    float lower
+    color tint = color.new(color.teal, 80)
+
+//@function Builds a band around `basis`.
+//@param basis The center line.
+//@param width Half-width of the band.
+//@returns A new `Band` object.
+band(float basis, float width) =>
+    Band.new(basis + width, basis - width)
+
+method contains(Band this, float price) =>
+    price <= this.upper and price >= this.lower
+
+basis = ta.sma(src, length)
+dev   = mult * ta.stdev(src, length)
+b     = band(basis, dev)
+
+htfClose = request.security(syminfo.tickerid, tf, close, lookahead = barmerge.lookahead_off)
+
+var float lastCross = na
+if ta.crossover(src, b.upper)
+    lastCross := bar_index
+else if ta.crossunder(src, b.lower)
+    lastCross := bar_index
+
+inside = b.contains(close)
+vol_ok = volume > ta.sma(volume, length) * 1.5
+
+pUpper = plot(b.upper, "Upper", color = color.teal, linewidth = 2)
+pLower = plot(b.lower, "Lower", color = color.teal, linewidth = 2)
+plot(basis, "Basis", color = #2962FF, style = plot.style_line)
+fill(pUpper, pLower, color = showFill ? b.tint : na, title = "Band fill")
+
+plotshape(vol_ok and not inside, "Breakout", shape.triangleup, location.belowbar, color.lime, size = size.tiny)
+bgcolor(barstate.islast and inside ? color.new(color.orange, 90) : na)
+
+if barstate.islastconfirmedhistory
+    label.new(bar_index, high, str.format("Basis {0,number,#.##}\nHTF {1}", basis, htfClose),
+         style = label.style_label_down, textcolor = color.white)
+
+alertcondition(vol_ok, "Volume breakout", "Volume breakout on {{ticker}}")
