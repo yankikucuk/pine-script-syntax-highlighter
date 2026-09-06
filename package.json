@@ -2,7 +2,7 @@
   "name": "pine-script-syntax-highlighter",
   "displayName": "Pine Script Syntax Highlighter",
   "description": "Syntax highlighting, snippets and language support for TradingView Pine Script v6.",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "ex-codes",
   "author": {
     "name": "Yankı Küçük",
@@ -28,7 +28,10 @@
     "node": ">=20"
   },
   "type": "module",
-  "categories": ["Programming Languages", "Snippets"],
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
   "keywords": [
     "pine",
     "pinescript",
@@ -44,8 +47,15 @@
     "languages": [
       {
         "id": "pinescript",
-        "aliases": ["Pine Script", "pinescript", "Pine"],
-        "extensions": [".pine", ".pinescript"],
+        "aliases": [
+          "Pine Script",
+          "pinescript",
+          "Pine"
+        ],
+        "extensions": [
+          ".pine",
+          ".pinescript"
+        ],
         "firstLine": "^//@version=\\d+",
         "configuration": "./language-configuration.json",
         "icon": {
