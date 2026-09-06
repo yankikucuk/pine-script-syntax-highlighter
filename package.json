@@ -28,10 +28,7 @@
     "node": ">=20"
   },
   "type": "module",
-  "categories": [
-    "Programming Languages",
-    "Snippets"
-  ],
+  "categories": ["Programming Languages", "Snippets"],
   "keywords": [
     "pine",
     "pinescript",
@@ -47,15 +44,8 @@
     "languages": [
       {
         "id": "pinescript",
-        "aliases": [
-          "Pine Script",
-          "pinescript",
-          "Pine"
-        ],
-        "extensions": [
-          ".pine",
-          ".pinescript"
-        ],
+        "aliases": ["Pine Script", "pinescript", "Pine"],
+        "extensions": [".pine", ".pinescript"],
         "firstLine": "^//@version=\\d+",
         "configuration": "./language-configuration.json",
         "icon": {
