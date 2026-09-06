@@ -5,6 +5,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-09-06
+
+### Fixed
+
+- README badges for Marketplace version, installs and rating. The shields.io Marketplace badges were retired and rendered as "retired badge".
+
 ## [2.0.0] - 2026-09-06
 
 Complete rewrite targeting Pine Script v6. The grammar is now generated from data files, so keeping up with new built-ins is a one-line change.
@@ -57,7 +63,8 @@ Complete rewrite targeting Pine Script v6. The grammar is now generated from dat
 
 - Language operators, built-in variables and built-in functions for Pine Script v3/v4.
 
-[Unreleased]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v1.0.5...v2.0.0
 [1.0.5]: https://github.com/yankikucuk/pine-script-syntax-highlighter/releases/tag/v1.0.5
 [1.0.0]: https://github.com/yankikucuk/pine-script-syntax-highlighter/releases/tag/v1.0.0
