@@ -1,22 +1,20 @@
 ---
 name: Feature request
-about: Request a new feature that Pine Script Syntax Highlighter is missing
+about: A missing built-in, a new Pine Script construct, a snippet, or an editor behavior
+labels: enhancement
 ---
 
-<!--
-If you need help with Pine Script Syntax Highlighter installation or usage, please go to the Pine Script Syntax Highlighter Discord server instead:
-  [https://discord.gg/NYxmN6t]
-This issue tracker is only for bug reports and enhancement suggestions. You won't receive any basic help here.
--->
+**What is missing?**
 
-**Is your feature request related to a problem? Please describe.**
-A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
+For a new built-in, list the identifiers and link their entries in the [Pine Script v6 reference](https://www.tradingview.com/pine-script-reference/v6/) or the relevant [release note](https://www.tradingview.com/pine-script-docs/release-notes/).
 
-**Describe the solution you'd like**
-A clear and concise description of what you want to happen.
+**Example**
 
-**Describe alternatives you've considered**
-A clear and concise description of any alternative solutions or features you've considered.
+```pine
+//@version=6
+
+```
+
+**How should it be highlighted or behave?**
 
 **Additional context**
-Add any other context or screenshots about the feature request here.

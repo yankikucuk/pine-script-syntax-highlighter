@@ -1,0 +1,128 @@
+{
+  "Indicator script": {
+    "prefix": "indicator",
+    "description": "Boilerplate for a Pine Script v6 indicator",
+    "body": [
+      "//@version=6",
+      "indicator(\"${1:My Indicator}\", shorttitle = \"${2:MI}\", overlay = ${3|true,false|})",
+      "",
+      "${4:length} = input.int(${5:14}, \"${6:Length}\", minval = 1)",
+      "",
+      "$0",
+      "plot(close, \"Close\", color = color.blue)"
+    ]
+  },
+  "Strategy script": {
+    "prefix": "strategy",
+    "description": "Boilerplate for a Pine Script v6 strategy",
+    "body": [
+      "//@version=6",
+      "strategy(\"${1:My Strategy}\", overlay = true, initial_capital = ${2:10000},",
+      "     default_qty_type = strategy.percent_of_equity, default_qty_value = ${3:10})",
+      "",
+      "longCondition = ${4:ta.crossover(ta.sma(close, 14), ta.sma(close, 28))}",
+      "shortCondition = ${5:ta.crossunder(ta.sma(close, 14), ta.sma(close, 28))}",
+      "",
+      "if longCondition",
+      "    strategy.entry(\"Long\", strategy.long)",
+      "if shortCondition",
+      "    strategy.entry(\"Short\", strategy.short)",
+      "$0"
+    ]
+  },
+  "Library script": {
+    "prefix": "library",
+    "description": "Boilerplate for a Pine Script v6 library",
+    "body": [
+      "//@version=6",
+      "//@description ${1:Description of the library.}",
+      "library(\"${2:MyLibrary}\")",
+      "",
+      "//@function ${3:What the function does.}",
+      "//@param ${4:source} ${5:Description of the parameter.}",
+      "//@returns ${6:Description of the return value.}",
+      "export ${7:myFunction}(series float ${4:source}) =>",
+      "    $0"
+    ]
+  },
+  "Function": {
+    "prefix": "fn",
+    "description": "User-defined function",
+    "body": ["${1:name}(${2:params}) =>", "    $0"]
+  },
+  "Method": {
+    "prefix": "method",
+    "description": "User-defined method",
+    "body": ["method ${1:name}(${2:TypeName} ${3:this}${4:, params}) =>", "    $0"]
+  },
+  "Type": {
+    "prefix": "type",
+    "description": "User-defined type",
+    "body": ["type ${1:Name}", "    ${2:float} ${3:field}${4: = ${5:na}}", "    $0"]
+  },
+  "Enum": {
+    "prefix": "enum",
+    "description": "Enum declaration",
+    "body": ["enum ${1:Name}", "    ${2:member} = \"${3:Title}\"", "    $0"]
+  },
+  "If / else": {
+    "prefix": "if",
+    "description": "if / else block",
+    "body": ["if ${1:condition}", "    ${2}", "else", "    $0"]
+  },
+  "Switch": {
+    "prefix": "switch",
+    "description": "switch block",
+    "body": ["switch ${1:expression}", "    ${2:value} => ${3}", "    => $0"]
+  },
+  "For loop": {
+    "prefix": "for",
+    "description": "for loop with counter",
+    "body": ["for ${1:i} = ${2:0} to ${3:10}", "    $0"]
+  },
+  "For in loop": {
+    "prefix": "forin",
+    "description": "for ... in loop over a collection",
+    "body": ["for ${1:element} in ${2:collection}", "    $0"]
+  },
+  "While loop": {
+    "prefix": "while",
+    "description": "while loop",
+    "body": ["while ${1:condition}", "    $0"]
+  },
+  "Once block": {
+    "prefix": "once",
+    "description": "once block, runs a single time when the condition is first true",
+    "body": ["once ${1:condition}", "    $0"]
+  },
+  "Input int": {
+    "prefix": "input.int",
+    "description": "Integer input",
+    "body": "${1:name} = input.int(${2:14}, \"${3:Title}\", minval = ${4:1}${5:, group = \"${6:Settings}\"})"
+  },
+  "Input float": {
+    "prefix": "input.float",
+    "description": "Float input",
+    "body": "${1:name} = input.float(${2:1.0}, \"${3:Title}\", step = ${4:0.1}${5:, group = \"${6:Settings}\"})"
+  },
+  "Input source": {
+    "prefix": "input.source",
+    "description": "Source input",
+    "body": "${1:src} = input.source(${2:close}, \"${3:Source}\")"
+  },
+  "Request security": {
+    "prefix": "request.security",
+    "description": "Request data from another symbol or timeframe",
+    "body": "${1:value} = request.security(${2:syminfo.tickerid}, \"${3:D}\", ${4:close}${5:, lookahead = barmerge.lookahead_off})"
+  },
+  "Plot": {
+    "prefix": "plot",
+    "description": "plot() call",
+    "body": "plot(${1:series}, \"${2:Title}\", color = ${3:color.blue}${4:, linewidth = ${5:1}})"
+  },
+  "Alert condition": {
+    "prefix": "alertcondition",
+    "description": "alertcondition() call",
+    "body": "alertcondition(${1:condition}, \"${2:Title}\", \"${3:Message}\")"
+  }
+}

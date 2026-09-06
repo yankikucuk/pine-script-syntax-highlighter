@@ -1,0 +1,218 @@
+// SYNTAX TEST "source.pine" "core language constructs"
+
+//@version=6
+// <- comment.line.double-slash.pine punctuation.definition.comment.pine
+//^^^^^^^^ storage.type.annotation.version.pine
+//         ^ constant.numeric.integer.pine
+
+//@function Returns the `source` smoothed.
+//^^^^^^^^^ storage.type.annotation.pine
+//                      ^^^^^^^^ markup.inline.raw.pine
+
+indicator("Demo", overlay = true)
+// <- support.function.pine
+//        ^^^^^^ string.quoted.double.pine
+//                ^^^^^^^ variable.parameter.pine
+//                          ^^^^ constant.language.pine
+
+var float acc = na
+// <- storage.modifier.pine
+//  ^^^^^ support.type.pine
+//        ^^^ variable.other.assignment.pine
+//              ^^ constant.language.pine
+
+varip int ticks = 0
+// <- storage.modifier.pine
+
+length = input.int(14, "Length", minval = 1)
+// <- variable.other.assignment.pine
+//       ^^^^^ support.class.pine
+//            ^ punctuation.accessor.pine
+//             ^^^ support.function.pine
+//                 ^^ constant.numeric.integer.pine
+//                               ^^^^^^ variable.parameter.pine
+
+ma = ta.sma(close, length)
+//   ^^ support.class.pine
+//      ^^^ support.function.pine
+//          ^^^^^ support.variable.pine
+//                 ^^^^^^ variable.other.pine
+
+acc := math.max(acc, 1.5e3) + 0.25
+//  ^^ keyword.operator.assignment.pine
+//     ^^^^ support.class.pine
+//          ^^^ support.function.pine
+//                   ^^^^^ constant.numeric.float.pine
+//                          ^ keyword.operator.arithmetic.pine
+//                            ^^^^ constant.numeric.float.pine
+
+c = #FF5733AA
+//  ^^^^^^^^^ constant.other.color.hex.pine
+
+col = color.new(color.red, 50)
+//    ^^^^^ support.class.pine
+//          ^^^ support.function.pine
+//              ^^^^^ support.class.pine
+//                    ^^^ support.constant.pine
+
+s = strategy.long
+//  ^^^^^^^^ support.class.pine
+//           ^^^^ support.constant.pine
+
+p = strategy.closedtrades.entry_price(0)
+//  ^^^^^^^^^^^^^^^^^^^^^ support.class.pine
+//                        ^^^^^^^^^^^ support.function.pine
+
+n = strategy.closedtrades
+//  ^^^^^^^^ support.class.pine
+//           ^^^^^^^^^^^^ support.variable.pine
+
+label.new(bar_index, high, "hi", style = label.style_label_down)
+// <- support.class.pine
+//    ^^^ support.function.pine
+//        ^^^^^^^^^ support.variable.pine
+//                                       ^^^^^ support.class.pine
+//                                             ^^^^^^^^^^^^^^^^ support.constant.pine
+
+ok = close > open and not na(volume) or high >= low
+//         ^ keyword.operator.comparison.pine
+//                ^^^ keyword.operator.logical.pine
+//                    ^^^ keyword.operator.logical.pine
+//                        ^^ constant.language.pine
+//                                   ^^ keyword.operator.logical.pine
+//                                           ^^ keyword.operator.comparison.pine
+
+x = ok ? 1 : 0
+//     ^ keyword.operator.ternary.pine
+//         ^ keyword.operator.ternary.pine
+
+prev = close[1]
+//          ^ punctuation.section.brackets.begin.pine
+//           ^ constant.numeric.integer.pine
+
+[m, sig, hist] = ta.macd(close, 12, 26, 9)
+// <- punctuation.definition.tuple.begin.pine
+//  ^^^ variable.other.assignment.pine
+//     ^ punctuation.separator.comma.pine
+//       ^^^^ variable.other.assignment.pine
+//           ^ punctuation.definition.tuple.end.pine
+
+f(series float src, int len = 10) =>
+// <- entity.name.function.pine
+//^^^^^^ storage.modifier.qualifier.pine
+//       ^^^^^ support.type.pine
+//             ^^^ variable.other.pine
+//                  ^^^ support.type.pine
+//                      ^^^ variable.parameter.pine
+//                                ^^ keyword.operator.arrow.pine
+    ta.ema(src, len)
+
+export method scale(Point this, float k) =>
+// <- storage.modifier.export.pine
+//     ^^^^^^ storage.modifier.method.pine
+//            ^^^^^ entity.name.function.pine
+//                  ^^^^^ variable.other.pine
+    this.x * k
+//  ^^^^ variable.other.pine
+//       ^ variable.other.member.pine
+
+type Point
+// <- storage.type.declaration.pine
+//   ^^^^^ entity.name.type.pine
+    float x = 0.0
+//  ^^^^^ support.type.pine
+    float y
+
+enum Signal
+// <- storage.type.declaration.enum.pine
+//   ^^^^^^ entity.name.type.enum.pine
+    buy = "Buy"
+    sell = "Sell"
+
+pt = Point.new(1.0, 2.0)
+//   ^^^^^ entity.name.type.pine
+//         ^^^ support.function.constructor.pine
+
+pt2 = pt.copy()
+//       ^^^^ entity.name.function.member.pine
+
+import someone/utils/3 as u
+// <- keyword.control.import.pine
+//     ^^^^^^^^^^^^^^^ entity.name.namespace.import.pine
+//                     ^^ keyword.control.import.as.pine
+//                        ^ entity.name.namespace.alias.pine
+
+v = u.helper(close)
+//  ^ variable.other.pine
+//    ^^^^^^ entity.name.function.member.pine
+
+arr = array.new<float>(0)
+//    ^^^^^ support.class.pine
+//          ^^^ support.function.pine
+//             ^ punctuation.definition.generic.begin.pine
+//              ^^^^^ support.type.pine
+//                   ^ punctuation.definition.generic.end.pine
+
+m2 = map.new<string, Point>()
+//           ^^^^^^ support.type.pine
+//                   ^^^^^ entity.name.type.pine
+
+var points = array<Point>.new()
+//           ^^^^^ support.type.pine
+//                 ^^^^^ entity.name.type.pine
+
+for i = 0 to 10 by 2
+// <- keyword.control.loop.pine
+//  ^ variable.other.assignment.pine
+//        ^^ keyword.control.loop.pine
+//              ^^ keyword.control.loop.pine
+    acc += i
+//      ^^ keyword.operator.assignment.pine
+
+for [idx, el] in arr
+//   ^^^ variable.other.pine
+//            ^^ keyword.control.loop.pine
+    continue
+//  ^^^^^^^^ keyword.control.pine
+
+while ticks < 3
+// <- keyword.control.pine
+    break
+
+switch s
+// <- keyword.control.pine
+    strategy.long => 1
+//                ^^ keyword.operator.arrow.pine
+    => 0
+
+once barstate.islast
+// <- keyword.control.pine
+//   ^^^^^^^^ support.class.pine
+//            ^^^^^^ support.variable.pine
+    log.info("done")
+//  ^^^ support.class.pine
+//      ^^^^ support.function.pine
+
+msg = str.format("{0,number,#.##} at {1}", close, time)
+//               ^ punctuation.definition.string.begin.pine
+//                ^^^^^^^^^^^^^^^ constant.other.placeholder.pine
+//                                   ^^^ constant.other.placeholder.pine
+
+esc = "tab\there"
+//        ^^ constant.character.escape.pine
+
+if ok
+// <- keyword.control.pine
+    plot(ma)
+else if not ok
+//   ^^ keyword.control.pine
+    plot(na)
+else
+    runtime.error("unreachable")
+//  ^^^^^^^ support.class.pine
+//          ^^^^^ support.function.pine
+
+myClose = close
+custom.close
+// <- variable.other.pine
+//     ^^^^^ variable.other.member.pine

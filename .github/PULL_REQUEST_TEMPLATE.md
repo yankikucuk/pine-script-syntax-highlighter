@@ -1,7 +1,13 @@
-**Please describe the changes this PR makes and why it should be merged:**
+**What does this change and why?**
 
-**Semantic versioning classification:**
+**Before / after**
 
-- [ ] This PR changes the library's interface (methods or parameters added)
-  - [ ] This PR includes breaking changes (methods removed or renamed, parameters moved or removed)
-- [ ] This PR **only** includes non-code changes, like changes to documentation, README, etc.
+A short Pine snippet or screenshot showing the highlighting before and after is ideal.
+
+**Checklist**
+
+- [ ] I edited `src/` (not the generated `syntaxes/pinescript.tmLanguage.json`) and ran `npm run build`
+- [ ] I added or updated a test in `tests/unit` or `tests/snapshots` and `npm test` passes
+- [ ] I ran `npm run format`
+- [ ] New built-ins link to their entry in the Pine Script v6 reference
+- [ ] `CHANGELOG.md` has an entry under **Unreleased**

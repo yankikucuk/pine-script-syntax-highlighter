@@ -1,0 +1,6 @@
+node_modules/
+*.vsix
+.vscode-test/
+.DS_Store
+npm-debug.log*
+.gstack/

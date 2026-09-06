@@ -1,58 +1,79 @@
 <h1 align="center">
   <br>
+  <img src="images/pinescript.png" alt="Pine Script" width="96">
+  <br>
   Pine Script Syntax Highlighter
   <br>
 </h1>
-<h4 align="center">Create amazing indicators and strategies!</h4>
+
+<h4 align="center">Syntax highlighting, snippets and editor support for TradingView Pine Script® v6 in Visual Studio Code.</h4>
+
 <p align="center">
-  <a><img src="https://img.shields.io/github/package-json/v/kendinikertenkelebek/pine-script-syntax-highlighter?color=green&style=flat-square" alt="Version"></a>
-  <a><img src="https://img.shields.io/github/issues/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Issues"></a>
-  <a><img src="https://img.shields.io/visual-studio-marketplace/i/ex-codes.pine-script-syntax-highlighter?color=red&style=flat-square" alt="Downloads"></a>
-  <a><img src="https://img.shields.io/github/stars/kendinikertenkelebek/pine-script-syntax-highlighter?color=red&style=flat-square" alt="Stars"></a>
-  <a><img src="https://img.shields.io/github/contributors/kendinikertenkelebek/pine-script-syntax-highlighter?color=green&style=flat-square" alt="Contributors"></a>
-  <a><img src="https://img.shields.io/github/license/kendinikertenkelebek/pine-script-syntax-highlighter?style=flat-square" alt="Licance"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://img.shields.io/visual-studio-marketplace/v/ex-codes.pine-script-syntax-highlighter?style=flat-square&label=marketplace" alt="Marketplace version"></a>
+  <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://img.shields.io/visual-studio-marketplace/i/ex-codes.pine-script-syntax-highlighter?style=flat-square" alt="Installs"></a>
+  <a href="https://github.com/yankikucuk/pine-script-syntax-highlighter/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/yankikucuk/pine-script-syntax-highlighter/ci.yml?style=flat-square&label=ci" alt="CI"></a>
+  <a href="https://github.com/yankikucuk/pine-script-syntax-highlighter/issues"><img src="https://img.shields.io/github/issues/yankikucuk/pine-script-syntax-highlighter?style=flat-square" alt="Issues"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/yankikucuk/pine-script-syntax-highlighter?style=flat-square" alt="License"></a>
 </p>
-
-## About
-
-Pine Script Syntax Highlighter is the simple syntax highlighter for Pine Script. And of course _Pine Script Syntax Highlighter_ itself is open source with a [public repository][repository] on _GitHub_.
 
 ![Example](images/example.png)
 
-### Recommended Extensions
+## Features
 
-- For .pine file extentention icon [VSCode Icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons)
-- For same colors like example image [One Dark Pro](https://marketplace.visualstudio.com/items?itemName=zhuangtongfa.Material-theme)
+- **Pine Script v6 coverage.** Every namespace from the official language reference: `ta`, `math`, `str`, `array`, `matrix`, `map`, `request`, `strategy`, `input`, `label`, `line`, `box`, `table`, `polyline`, `log`, `runtime`, `chart`, `footprint` and the rest. Built-in functions, variables and constants are highlighted with distinct scopes.
+- **Modern language constructs.** `switch`, `while`, `once`, `for ... in`, `method`, `type`, `enum`, `import ... as`, `export`, `varip`, type qualifiers (`series`, `simple`, `const`, `input`) and generics such as `array<float>` or `map<string, Point>`.
+- **Compiler annotations.** `//@version=6`, `//@description`, `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@variable`, `//@enum` and `//@strategy_alert_message` are highlighted inside comments.
+- **Strings done right.** Single, double and the v6 triple-quoted multiline strings, escape sequences and `str.format` placeholders like `{0,number,#.##}`.
+- **Numbers and colors.** Integers, floats, exponents and hex colors with optional alpha (`#RRGGBBAA`).
+- **User code.** Function and method definitions, named arguments, tuple destructuring (`[a, b] = f()`), user-defined type constructors (`Point.new()`) and member access.
+- **Editor support.** Indentation-based folding, auto-closing quotes and brackets, `// region` / `// endregion` markers, four-space indentation defaults for `.pine` files.
+- **Snippets.** `indicator`, `strategy`, `library`, `fn`, `method`, `type`, `enum`, `if`, `switch`, `for`, `forin`, `while`, `once`, `input.int`, `input.float`, `request.security`, `plot`, `alertcondition` and more.
 
-### Semantic Versioning
+Files ending in `.pine` or `.pinescript`, or starting with `//@version=`, are recognized automatically.
 
-We're using [SemVer][semver] for this project.
+## Recommended companions
 
-### Development
+- [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) for a `.pine` file icon.
+- [One Dark Pro](https://marketplace.visualstudio.com/items?itemName=zhuangtongfa.Material-theme) for the colors shown in the screenshot.
 
-Want to contribute? Great!
+## How it works
 
-Make a change in your file and instantanously see your updates!
+The TextMate grammar in `syntaxes/pinescript.tmLanguage.json` is **generated**. Do not edit it by hand.
 
-Open your favorite Terminal and run these commands;
-
-```sh
-$ git clone <url>
-$ cd <cloned_folder_name>
-$ code .
+```
+src/
+  grammar.mjs        grammar rules, expressed as data
+  data/
+    functions.json   built-in functions, grouped by namespace
+    variables.json   built-in variables, grouped by namespace
+    constants.json   built-in constants, grouped by namespace
+    annotations.json compiler annotations
+scripts/
+  build-grammar.mjs  compiles src/ into syntaxes/pinescript.tmLanguage.json
+tests/
+  unit/              scope assertions (vscode-tmgrammar-test)
+  snapshots/         full-file snapshots (vscode-tmgrammar-snap)
 ```
 
-### Our Contributors
+The identifier lists are extracted from the [Pine Script v6 reference](https://www.tradingview.com/pine-script-reference/v6/). When TradingView adds a built-in, add it to the matching JSON file, run the build, and the grammar picks it up.
 
-- Yankı Küçük - [Twitter][yk]
+## Development
 
-And you can see also all contributors [here][contributors].
+```sh
+git clone https://github.com/yankikucuk/pine-script-syntax-highlighter.git
+cd pine-script-syntax-highlighter
+npm install
+npm run build        # regenerate the grammar
+npm test             # grammar freshness + unit + snapshot tests
+npm run package      # build the .vsix
+```
+
+Press <kbd>F5</kbd> in VS Code to launch an Extension Development Host with the extension loaded. Use **Developer: Inspect Editor Tokens and Scopes** from the command palette to see which scope a token receives.
+
+See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the pull request checklist and [CHANGELOG.md](CHANGELOG.md) for release history.
 
 ## License
 
-MIT
+[MIT](LICENSE) © Yankı Küçük
 
-[repository]: https://github.com/kendinikertenkelebek/pine-script-syntax-highlighter
-[semver]: https://semver.org
-[yk]: https://twitter.com/seviyorumstop
-[contributors]: https://github.com/kendinikertenkelebek/pine-script-syntax-highlighter/graphs/contributors
+Pine Script® is a registered trademark of TradingView, Inc. This project is not affiliated with TradingView.
