@@ -21,42 +21,88 @@
 
 ## Features
 
-- **Pine Script v6 coverage.** Every namespace from the official language reference: `ta`, `math`, `str`, `array`, `matrix`, `map`, `request`, `strategy`, `input`, `label`, `line`, `box`, `table`, `polyline`, `log`, `runtime`, `chart`, `footprint` and the rest. Built-in functions, variables and constants are highlighted with distinct scopes.
-- **Modern language constructs.** `switch`, `while`, `once`, `for ... in`, `method`, `type`, `enum`, `import ... as`, `export`, `varip`, type qualifiers (`series`, `simple`, `const`, `input`) and generics such as `array<float>` or `map<string, Point>`.
-- **Compiler annotations.** `//@version=6`, `//@description`, `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@variable`, `//@enum` and `//@strategy_alert_message` are highlighted inside comments.
-- **Strings done right.** Single, double and the v6 triple-quoted multiline strings, escape sequences and `str.format` placeholders like `{0,number,#.##}`.
-- **Numbers and colors.** Integers, floats, exponents and hex colors with optional alpha (`#RRGGBBAA`).
-- **User code.** Function and method definitions, named arguments, tuple destructuring (`[a, b] = f()`), user-defined type constructors (`Point.new()`) and member access.
-- **Editor support.** Indentation-based folding, auto-closing quotes and brackets, `// region` / `// endregion` markers, four-space indentation defaults for `.pine` files.
-- **Snippets.** `indicator`, `strategy`, `library`, `fn`, `method`, `type`, `enum`, `if`, `switch`, `for`, `forin`, `while`, `once`, `input.int`, `input.float`, `request.security`, `plot`, `alertcondition` and more.
+- **Completion.** Built-in functions, variables and constants from every v6 namespace, keywords, types, your own functions, types, enums and variables, named arguments inside calls, `//@` annotations, and `import` paths. Function items insert a call and open parameter hints.
+- **Hover documentation.** Signature, description, parameters, return value and a link to the reference entry for built-ins; declaration and `//@` docs for your own symbols; a library card on `import` lines.
+- **Signature help.** Overloads and the active parameter, including named arguments.
+- **Outline.** Functions, methods, types with fields, enums with members and top-level variables in the Outline view and breadcrumbs.
+- **Libraries.** Workspace files that call `library()` are indexed: their exports complete after the import alias and show up on hover. With `pinescript.libraries.remote` on, `import` completion also lists published TradingView libraries and hover shows their exports.
+- **Compiler diagnostics (opt-in).** Set `pinescript.diagnostics.remote` to `true` to send the document to the TradingView compiler and see its errors and warnings inline.
+- **Commands.** New Indicator / Strategy / Library from a template, Generate Docstring (also a lightbulb on declarations), Add Type Annotations, Open Reference for the built-in under the cursor.
+- **Themes.** Pine Dark and Pine Light, tuned for every scope the grammar produces.
+- **Highlighting, snippets and editor support** as before: the full v6 vocabulary, annotations, triple-quoted strings, format placeholders, hex colors, folding, auto-closing pairs and four-space indentation for `.pine` files.
 
 Files ending in `.pine` or `.pinescript`, or starting with `//@version=`, are recognized automatically.
+
+### Pine Script v6 compatibility
+
+The grammar and the documentation data are generated from the v6 reference, so v6 behaviors such as dynamic `request.*()` calls with `series string` arguments, short-circuit `and`/`or`, point-based text sizes, `text.format_bold` / `text.format_italic`, order trimming and negative array indices are covered wherever they have syntax to highlight or document. They are compiler behaviors; the extension does not emulate them.
+
+## Commands
+
+| Command                           | What it does                                                                                                                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Pine Script: New Indicator        | Opens an untitled document from the indicator template                                                                           |
+| Pine Script: New Strategy         | Opens an untitled document from the strategy template                                                                            |
+| Pine Script: New Library          | Opens an untitled document from the library template                                                                             |
+| Pine Script: Generate Docstring   | Inserts or completes `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@enum` for the declaration at the cursor |
+| Pine Script: Add Type Annotations | Prefixes untyped declarations with their inferred type in the selection or the whole file                                        |
+| Pine Script: Open Reference       | Opens the v6 reference at the built-in under the cursor                                                                          |
+
+## Settings
+
+| Setting                              | Default     | Meaning                                                                      |
+| ------------------------------------ | ----------- | ---------------------------------------------------------------------------- |
+| `pinescript.completion.enabled`      | `true`      | Completion provider                                                          |
+| `pinescript.hover.enabled`           | `true`      | Hover provider                                                               |
+| `pinescript.signatureHelp.enabled`   | `true`      | Parameter hints                                                              |
+| `pinescript.libraries.local.include` | `**/*.pine` | Glob for workspace library discovery                                         |
+| `pinescript.libraries.remote`        | `true`      | Look up published libraries on TradingView for `import` completion and hover |
+| `pinescript.diagnostics.remote`      | `false`     | Send the document to the TradingView compiler for diagnostics                |
+
+## Privacy
+
+Everything works offline. Two features talk to TradingView, both through undocumented endpoints that may change:
+
+- With `pinescript.libraries.remote` on, the prefix you type after `import` and the ids of imported libraries are sent to fetch library metadata and source.
+- With `pinescript.diagnostics.remote` on, the **full text** of each open Pine document is sent to the compiler on open, on save and 600 ms after you stop typing.
+
+Nothing else leaves your machine. When a request fails, the feature is paused for five minutes and the reason is written to the "Pine Script" output channel.
 
 ## Recommended companions
 
 - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) for a `.pine` file icon.
-- [One Dark Pro](https://marketplace.visualstudio.com/items?itemName=zhuangtongfa.Material-theme) for the colors shown in the screenshot.
 
 ## How it works
 
-The TextMate grammar in `syntaxes/pinescript.tmLanguage.json` is **generated**. Do not edit it by hand.
-
 ```
 src/
-  grammar.mjs        grammar rules, expressed as data
+  grammar.mjs           grammar rules, expressed as data
   data/
-    functions.json   built-in functions, grouped by namespace
-    variables.json   built-in variables, grouped by namespace
-    constants.json   built-in constants, grouped by namespace
-    annotations.json compiler annotations
+    functions.json      built-in functions, grouped by namespace (grammar source)
+    variables.json      built-in variables, grouped by namespace (grammar source)
+    constants.json      built-in constants, grouped by namespace (grammar source)
+    annotations.json    compiler annotations
+    reference.json      full v6 documentation, generated by scripts/scrape-reference.mjs
+  extension/
+    core/               pure TypeScript: tokenizer, document model, completion context,
+                        type inference, docstrings, templates, TradingView client
+    providers/          VS Code adapters: completion, hover, signature help, symbols,
+                        code actions, diagnostics, library index
+    commands/           command implementations
 scripts/
-  build-grammar.mjs  compiles src/ into syntaxes/pinescript.tmLanguage.json
+  build-grammar.mjs     compiles src/ into syntaxes/pinescript.tmLanguage.json and
+                        checks it against reference.json
+  build-extension.mjs   bundles src/extension into dist/extension.cjs with esbuild
+  scrape-reference.mjs  regenerates src/data/reference.json (maintainers, needs network)
+  check-themes.mjs      verifies both themes cover every grammar scope
+themes/                 Pine Dark and Pine Light
 tests/
-  unit/              scope assertions (vscode-tmgrammar-test)
-  snapshots/         full-file snapshots (vscode-tmgrammar-snap)
+  core/                 vitest suites for src/extension
+  unit/                 scope assertions (vscode-tmgrammar-test)
+  snapshots/            full-file snapshots (vscode-tmgrammar-snap)
 ```
 
-The identifier lists are extracted from the [Pine Script v6 reference](https://www.tradingview.com/pine-script-reference/v6/). When TradingView adds a built-in, add it to the matching JSON file, run the build, and the grammar picks it up.
+`syntaxes/pinescript.tmLanguage.json`, `src/data/reference.json` and `dist/` are generated. Do not edit them by hand.
 
 ## Development
 
@@ -64,12 +110,13 @@ The identifier lists are extracted from the [Pine Script v6 reference](https://w
 git clone https://github.com/yankikucuk/pine-script-syntax-highlighter.git
 cd pine-script-syntax-highlighter
 npm install
-npm run build        # regenerate the grammar
-npm test             # grammar freshness + unit + snapshot tests
+npm run build        # grammar + extension bundle
+npm run watch        # rebuild the bundle on change
+npm test             # grammar and theme checks, type check, core and grammar tests
 npm run package      # build the .vsix
 ```
 
-Press <kbd>F5</kbd> in VS Code to launch an Extension Development Host with the extension loaded. Use **Developer: Inspect Editor Tokens and Scopes** from the command palette to see which scope a token receives.
+Press <kbd>F5</kbd> in VS Code to launch an Extension Development Host with the extension loaded. Use **Developer: Inspect Editor Tokens and Scopes** to see which scope a token receives.
 
 See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the pull request checklist and [CHANGELOG.md](CHANGELOG.md) for release history.
 

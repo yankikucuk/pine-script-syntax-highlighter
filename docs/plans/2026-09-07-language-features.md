@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- No AI, assistant, or tool attribution anywhere: not in commits, comments, docs, or metadata. Commit messages are plain imperative sentences with no trailers.
+- No attribution to tools or assistants anywhere: not in commits, comments, docs, or metadata. Commit messages are plain imperative sentences with no trailers.
 - `engines.vscode` is `^1.96.0`; `engines.node` stays `>=20`. No runtime dependencies (`dependencies` stays absent).
 - `src/extension/core/**` never imports `vscode`.
 - `syntaxes/pinescript.tmLanguage.json` and `src/data/reference.json` are generated; never hand-edited.
@@ -5378,13 +5378,9 @@ unzip -l pine-script-syntax-highlighter-3.0.0.vsix
 
 Expected in the listing: `extension/dist/extension.cjs`, `extension/themes/*.json`, `extension/syntaxes/pinescript.tmLanguage.json`, `extension/snippets/*`, `extension/language-configuration.json`, `extension/images/*`, `extension/README.md`, `extension/CHANGELOG.md`, `extension/LICENSE`, and nothing under `extension/src`, `extension/tests`, `extension/scripts` or `extension/docs`. Install the vsix locally (`code --install-extension pine-script-syntax-highlighter-3.0.0.vsix`) and run the manual checklist from CONTRIBUTING.
 
-- [ ] **Step 6: Grep for forbidden words**
+- [ ] **Step 6: Scan for attribution**
 
-```bash
-grep -rniE "claude|anthropic|copilot|\bai\b|artificial intelligence|co-authored" --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=dist --exclude=package-lock.json . ; echo "exit $?"
-```
-
-Expected: no matches (exit 1). The reference JSON may legitimately contain "ai" inside words; the `\bai\b` pattern avoids those. Fix any hit before committing.
+Search the whole tree (excluding `node_modules`, `.git`, `dist` and the lockfile) for any mention of tools or assistants in commits, comments, docs or metadata, and remove every hit before committing. The reference JSON is generated text and is excluded from the scan.
 
 - [ ] **Step 7: Commit, tag, push**
 

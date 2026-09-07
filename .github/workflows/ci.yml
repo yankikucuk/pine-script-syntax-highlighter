@@ -28,6 +28,9 @@ jobs:
       - name: Verify generated grammar is committed
         run: npm run build:grammar:check
 
+      - name: Verify themes cover every grammar scope
+        run: npm run check:themes
+
       - name: Type check
         run: npm run typecheck
 
