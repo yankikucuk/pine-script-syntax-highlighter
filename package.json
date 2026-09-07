@@ -158,7 +158,19 @@
           "group": "1_pinescript@3"
         }
       ]
-    }
+    },
+    "themes": [
+      {
+        "label": "Pine Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/pine-dark-color-theme.json"
+      },
+      {
+        "label": "Pine Light",
+        "uiTheme": "vs",
+        "path": "./themes/pine-light-color-theme.json"
+      }
+    ]
   },
   "scripts": {
     "build": "npm run build:grammar && npm run build:extension",
@@ -168,7 +180,7 @@
     "watch": "node scripts/build-extension.mjs --watch",
     "scrape:reference": "node scripts/scrape-reference.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "npm run build:grammar:check && npm run typecheck && npm run test:core && npm run test:unit && npm run test:snap",
+    "test": "npm run build:grammar:check && npm run check:themes && npm run typecheck && npm run test:core && npm run test:unit && npm run test:snap",
     "test:core": "vitest run",
     "test:unit": "vscode-tmgrammar-test -g syntaxes/pinescript.tmLanguage.json \"tests/unit/**/*.pine\"",
     "test:snap": "vscode-tmgrammar-snap -s source.pine -g syntaxes/pinescript.tmLanguage.json \"tests/snapshots/**/*.pine\"",
@@ -177,7 +189,8 @@
     "format:check": "prettier --check .",
     "package": "vsce package",
     "publish": "vsce publish",
-    "vscode:prepublish": "npm test && npm run build:extension"
+    "vscode:prepublish": "npm test && npm run build:extension",
+    "check:themes": "node scripts/check-themes.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.20.1",
