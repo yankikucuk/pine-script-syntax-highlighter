@@ -76,6 +76,41 @@
         "editor.insertSpaces": true,
         "editor.detectIndentation": false
       }
+    },
+    "configuration": {
+      "title": "Pine Script",
+      "properties": {
+        "pinescript.completion.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Suggest built-ins, keywords, user symbols and named arguments while typing."
+        },
+        "pinescript.hover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show documentation when hovering built-ins and user symbols."
+        },
+        "pinescript.signatureHelp.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show parameter hints inside function calls."
+        },
+        "pinescript.libraries.local.include": {
+          "type": "string",
+          "default": "**/*.pine",
+          "description": "Glob for workspace files scanned for library() declarations."
+        },
+        "pinescript.libraries.remote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Query TradingView for published libraries when completing import statements and hovering imports. Only the typed prefix and library ids are sent."
+        },
+        "pinescript.diagnostics.remote": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send the document text to the TradingView compiler to show errors and warnings. Off by default because the full script leaves your machine."
+        }
+      }
     }
   },
   "scripts": {
