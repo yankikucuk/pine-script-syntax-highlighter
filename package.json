@@ -111,6 +111,32 @@
           "description": "Send the document text to the TradingView compiler to show errors and warnings. Off by default because the full script leaves your machine."
         }
       }
+    },
+    "commands": [
+      {
+        "command": "pinescript.generateDocstring",
+        "title": "Pine Script: Generate Docstring",
+        "enablement": "editorLangId == pinescript"
+      },
+      {
+        "command": "pinescript.addTypeAnnotations",
+        "title": "Pine Script: Add Type Annotations",
+        "enablement": "editorLangId == pinescript"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "pinescript.generateDocstring",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@1"
+        },
+        {
+          "command": "pinescript.addTypeAnnotations",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@2"
+        }
+      ]
     }
   },
   "scripts": {

@@ -1,4 +1,7 @@
 import * as vscode from 'vscode';
+import { registerAddTypeAnnotations } from './commands/add-type-annotations';
+import { registerGenerateDocstring } from './commands/generate-docstring';
+import { PineCodeActionProvider } from './providers/code-action';
 import { noLibraries, type LibraryLookup } from './core/libraries';
 import { loadReference } from './core/reference';
 import { PineCompletionProvider } from './providers/completion';
@@ -17,7 +20,14 @@ export function activate(context: vscode.ExtensionContext): void {
   const libraries: LibraryLookup = noLibraries;
 
   registerProviders(context, libraries);
+  registerAddTypeAnnotations(context, () => undefined);
+  registerGenerateDocstring(context);
   context.subscriptions.push(
+    vscode.languages.registerCodeActionsProvider(
+      SELECTOR,
+      new PineCodeActionProvider(),
+      PineCodeActionProvider.metadata,
+    ),
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (e.affectsConfiguration('pinescript')) registerProviders(context, libraries);
     }),
