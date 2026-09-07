@@ -23,6 +23,7 @@ jobs:
 
       - run: npm ci
       - run: npm test
+      - run: npm run build:extension
 
       - name: Verify tag matches package version
         run: |
@@ -34,6 +35,9 @@ jobs:
 
       - name: Package
         run: npx vsce package --no-dependencies --out "pine-script-syntax-highlighter-${GITHUB_REF_NAME}.vsix"
+
+      - name: Verify bundle in package
+        run: unzip -l *.vsix | grep -q 'extension/dist/extension.cjs'
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

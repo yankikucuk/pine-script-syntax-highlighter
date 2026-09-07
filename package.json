@@ -1,8 +1,8 @@
 {
   "name": "pine-script-syntax-highlighter",
   "displayName": "Pine Script Syntax Highlighter",
-  "description": "Syntax highlighting, snippets and language support for TradingView Pine Script v6.",
-  "version": "2.0.1",
+  "description": "Pine Script v6 for Visual Studio Code: highlighting, completion, hover documentation, signature help, snippets, themes and compiler diagnostics.",
+  "version": "3.0.0",
   "publisher": "ex-codes",
   "author": {
     "name": "Yankı Küçük",
@@ -24,11 +24,11 @@
   },
   "qna": "https://github.com/yankikucuk/pine-script-syntax-highlighter/issues",
   "engines": {
-    "vscode": "^1.90.0",
+    "vscode": "^1.96.0",
     "node": ">=20"
   },
   "type": "module",
-  "categories": ["Programming Languages", "Snippets"],
+  "categories": ["Programming Languages", "Snippets", "Themes", "Linters"],
   "keywords": [
     "pine",
     "pinescript",
@@ -38,7 +38,10 @@
     "indicator",
     "strategy",
     "syntax",
-    "highlighting"
+    "highlighting",
+    "completion",
+    "hover",
+    "themes"
   ],
   "contributes": {
     "languages": [
@@ -73,12 +76,112 @@
         "editor.insertSpaces": true,
         "editor.detectIndentation": false
       }
-    }
+    },
+    "configuration": {
+      "title": "Pine Script",
+      "properties": {
+        "pinescript.completion.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Suggest built-ins, keywords, user symbols and named arguments while typing."
+        },
+        "pinescript.hover.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show documentation when hovering built-ins and user symbols."
+        },
+        "pinescript.signatureHelp.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show parameter hints inside function calls."
+        },
+        "pinescript.libraries.local.include": {
+          "type": "string",
+          "default": "**/*.pine",
+          "description": "Glob for workspace files scanned for library() declarations."
+        },
+        "pinescript.libraries.remote": {
+          "type": "boolean",
+          "default": true,
+          "description": "Query TradingView for published libraries when completing import statements and hovering imports. Only the typed prefix and library ids are sent."
+        },
+        "pinescript.diagnostics.remote": {
+          "type": "boolean",
+          "default": false,
+          "description": "Send the document text to the TradingView compiler to show errors and warnings. Off by default because the full script leaves your machine."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "pinescript.generateDocstring",
+        "title": "Pine Script: Generate Docstring",
+        "enablement": "editorLangId == pinescript"
+      },
+      {
+        "command": "pinescript.addTypeAnnotations",
+        "title": "Pine Script: Add Type Annotations",
+        "enablement": "editorLangId == pinescript"
+      },
+      {
+        "command": "pinescript.newIndicator",
+        "title": "Pine Script: New Indicator"
+      },
+      {
+        "command": "pinescript.newStrategy",
+        "title": "Pine Script: New Strategy"
+      },
+      {
+        "command": "pinescript.newLibrary",
+        "title": "Pine Script: New Library"
+      },
+      {
+        "command": "pinescript.openReference",
+        "title": "Pine Script: Open Reference"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "pinescript.generateDocstring",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@1"
+        },
+        {
+          "command": "pinescript.addTypeAnnotations",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@2"
+        },
+        {
+          "command": "pinescript.openReference",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@3"
+        }
+      ]
+    },
+    "themes": [
+      {
+        "label": "Pine Dark",
+        "uiTheme": "vs-dark",
+        "path": "./themes/pine-dark-color-theme.json"
+      },
+      {
+        "label": "Pine Light",
+        "uiTheme": "vs",
+        "path": "./themes/pine-light-color-theme.json"
+      }
+    ]
   },
   "scripts": {
-    "build": "node scripts/build-grammar.mjs",
-    "build:check": "node scripts/build-grammar.mjs --check",
-    "test": "npm run build:check && npm run test:unit && npm run test:snap",
+    "build": "npm run build:grammar && npm run build:extension",
+    "build:grammar": "node scripts/build-grammar.mjs",
+    "build:grammar:check": "node scripts/build-grammar.mjs --check",
+    "build:extension": "node scripts/build-extension.mjs",
+    "watch": "node scripts/build-extension.mjs --watch",
+    "scrape:reference": "node scripts/scrape-reference.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build:grammar:check && npm run check:themes && npm run typecheck && npm run test:core && npm run test:unit && npm run test:snap",
+    "test:core": "vitest run",
     "test:unit": "vscode-tmgrammar-test -g syntaxes/pinescript.tmLanguage.json \"tests/unit/**/*.pine\"",
     "test:snap": "vscode-tmgrammar-snap -s source.pine -g syntaxes/pinescript.tmLanguage.json \"tests/snapshots/**/*.pine\"",
     "test:snap:update": "npm run test:snap -- --updateSnapshot",
@@ -86,11 +189,28 @@
     "format:check": "prettier --check .",
     "package": "vsce package",
     "publish": "vsce publish",
-    "vscode:prepublish": "npm test"
+    "vscode:prepublish": "npm test && npm run build:extension",
+    "check:themes": "node scripts/check-themes.mjs"
   },
   "devDependencies": {
+    "@types/node": "^22.20.1",
+    "@types/vscode": "1.96.0",
     "@vscode/vsce": "^3.9.2",
+    "esbuild": "^0.28.2",
     "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.0",
     "vscode-tmgrammar-test": "^0.1.3"
+  },
+  "main": "./dist/extension.cjs",
+  "activationEvents": ["onLanguage:pinescript"],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": "limited",
+      "description": "Workspace library discovery needs files on disk."
+    }
   }
 }

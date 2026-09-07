@@ -4,3 +4,5 @@ node_modules/
 *.vsix
 CHANGELOG.md
 package-lock.json
+dist/
+src/data/reference.json

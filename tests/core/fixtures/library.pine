@@ -1,0 +1,31 @@
+//@version=6
+//@description Helpers for moving averages.
+library("MaHelpers", overlay = true)
+
+//@function Weighted average of two series.
+//@param a First series.
+//@param b Second series.
+//@param w Weight of `a`, between 0 and 1.
+//@returns The weighted average.
+export weighted(float a, float b,
+     float w = 0.5) =>
+    a * w + b * (1 - w)
+
+//@type A price level with a label.
+//@field price The level.
+//@field name Display name.
+export type Level
+    float price
+    string name = "level"
+
+//@enum Trade direction.
+export enum Side
+    long = "Long"
+    short
+
+method describe(Level this) =>
+    str.format("{0}: {1}", this.name, this.price)
+
+internal(x) =>
+    y = x * 2
+    y
