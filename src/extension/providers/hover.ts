@@ -37,8 +37,16 @@ export class PineHoverProvider implements vscode.HoverProvider {
     }
 
     if (tl && isInStringOrComment(tl, position.character)) {
-      const ann = lineText.slice(0, position.character + 1).match(/\/\/\s*(@\w+)$/) ?? lineText.match(/\/\/\s*(@\w+)/);
-      const entry = ann ? this.ref.get(ann[1]!, 'annotation') : undefined;
+      // The annotation under the cursor, else the first one in the comment.
+      let name: string | undefined;
+      for (const m of lineText.matchAll(/@\w+/g)) {
+        if (m.index <= position.character && position.character <= m.index + m[0].length) {
+          name = m[0];
+          break;
+        }
+      }
+      name ??= lineText.match(/\/\/\s*(@\w+)/)?.[1];
+      const entry = name ? this.ref.get(name, 'annotation') : undefined;
       return entry ? new vscode.Hover(new vscode.MarkdownString(entryMarkdown(entry, this.ref))) : null;
     }
 
