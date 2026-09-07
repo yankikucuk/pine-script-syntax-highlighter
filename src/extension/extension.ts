@@ -4,7 +4,10 @@ import { registerGenerateDocstring } from './commands/generate-docstring';
 import { registerNewFileCommands } from './commands/new-file';
 import { registerOpenReference } from './commands/open-reference';
 import { PineCodeActionProvider } from './providers/code-action';
-import { noLibraries, type LibraryLookup } from './core/libraries';
+import { DiagnosticsController } from './providers/diagnostics-controller';
+import { LibraryIndex } from './providers/library-index';
+import type { LibraryLookup } from './core/libraries';
+import { PineFacade } from './core/pine-facade';
 import { loadReference } from './core/reference';
 import { PineCompletionProvider } from './providers/completion';
 import { PineDocumentSymbolProvider } from './providers/document-symbol';
@@ -19,10 +22,14 @@ let providerDisposables: vscode.Disposable[] = [];
 
 export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(output());
-  const libraries: LibraryLookup = noLibraries;
+  const facade = new PineFacade({ log });
+  const libraries = new LibraryIndex(facade, getSettings);
+  libraries.start(context);
+  const diagnostics = new DiagnosticsController(facade, getSettings);
+  diagnostics.start(context);
 
   registerProviders(context, libraries);
-  registerAddTypeAnnotations(context, () => undefined);
+  registerAddTypeAnnotations(context, (uri) => diagnostics.typesFor(uri));
   registerGenerateDocstring(context);
   registerNewFileCommands(context);
   registerOpenReference(context);
