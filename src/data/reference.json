@@ -5043,7 +5043,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -5096,7 +5096,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -5154,17 +5154,24 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "any array type",
        "description": "The ID of the array to search. The function can search an array of \"int\" or \"float\" values, or an array with elements of any user-defined type that contains at least one \"int\" or \"float\" field. The array's elements must be sorted in ascending order by numeric value for correct results.",
        "optional": false,
        "default": null
       },
       {
        "name": "val",
-       "type": "series int/float",
+       "type": "series int/float/string",
        "description": "The target value to locate in the array. If the array contains elements of the \"int\" or \"float\" type, the function searches the elements for the value directly. If the array contains elements of a user-defined type, the function searches for the value in the specified \"int\" or \"float\" field from the objects referenced by the array's elements.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "Optional. If the array contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to search the elements. The function can search the array using any of the type's \"int\" or \"float\" fields. An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. For correct results, the array's elements must be sorted in ascending order by the specified field. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -5221,17 +5228,24 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "any array type",
        "description": "The ID of the array to search. The function can search an array of \"int\" or \"float\" values, or an array with elements of any user-defined type that contains at least one \"int\" or \"float\" field. The array's elements must be sorted in ascending order by numeric value for correct results.",
        "optional": false,
        "default": null
       },
       {
        "name": "val",
-       "type": "series int/float",
+       "type": "series int/float/string",
        "description": "The target value to locate in the array. If the array contains elements of the \"int\" or \"float\" type, the function searches the elements for the value directly. If the array contains elements of a user-defined type, the function searches for the value in the specified \"int\" or \"float\" field from the objects referenced by the array's elements.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "Optional. If the array contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to search the elements. The function can search the array using any of the type's \"int\" or \"float\" fields. An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. For correct results, the array's elements must be sorted in ascending order by the specified field. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -5288,17 +5302,24 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "any array type",
        "description": "The ID of the array to search. The function can search an array of \"int\" or \"float\" values, or an array with elements of any user-defined type that contains at least one \"int\" or \"float\" field. The array's elements must be sorted in ascending order by numeric value for correct results.",
        "optional": false,
        "default": null
       },
       {
        "name": "val",
-       "type": "series int/float",
+       "type": "series int/float/string",
        "description": "The target value to locate in the array. If the array contains elements of the \"int\" or \"float\" type, the function searches the elements for the value directly. If the array contains elements of a user-defined type, the function searches for the value in the specified \"int\" or \"float\" field from the objects referenced by the array's elements.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "Optional. If the array contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to search the elements. The function can search the array using any of the type's \"int\" or \"float\" fields. An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. For correct results, the array's elements must be sorted in ascending order by the specified field. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -6047,7 +6068,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6104,7 +6125,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6162,7 +6183,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6219,7 +6240,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6735,7 +6756,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6802,7 +6823,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -6869,7 +6890,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7010,7 +7031,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7348,7 +7369,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float/string>",
+       "type": "any array type",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7359,6 +7380,13 @@
        "description": "The sort order: order.ascending (default) or order.descending.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "If the `id` collection contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to sort the elements. The function can sort elements using any field of the type \"int\", \"float\", or \"string\". An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. Optional. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -7415,7 +7443,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float/string>",
+       "type": "any array type",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7426,6 +7454,13 @@
        "description": "The sort order: order.ascending or order.descending. Optional. The default is order.ascending.",
        "optional": true,
        "default": "order"
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "If the `id` collection contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to sort the elements. The function can sort elements using any field of the type \"int\", \"float\", or \"string\". An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. Optional. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -7475,7 +7510,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7535,7 +7570,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7593,7 +7628,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7693,7 +7728,7 @@
      "params": [
       {
        "name": "id",
-       "type": "array<int/float>",
+       "type": "array<int>",
        "description": "An array object.",
        "optional": false,
        "default": null
@@ -7897,7 +7932,7 @@
      "params": [
       {
        "name": "x",
-       "type": "simple int/float/bool",
+       "type": "input bool",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -7913,7 +7948,7 @@
      "params": [
       {
        "name": "x",
-       "type": "simple int/float/bool",
+       "type": "simple bool",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -7929,7 +7964,7 @@
      "params": [
       {
        "name": "x",
-       "type": "simple int/float/bool",
+       "type": "series int/float/bool",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -8328,16 +8363,30 @@
      "syntax": "box.new(left, top, right, bottom, border_color, border_width, border_style, extend, xloc, bgcolor, text, text_size, text_color, text_halign, text_valign, text_wrap, text_font_family, force_overlay, text_formatting) → series box",
      "params": [
       {
-       "name": "top_left",
-       "type": "chart.point",
-       "description": "A [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point) object that specifies the top-left corner location of the box.",
+       "name": "left",
+       "type": "series int",
+       "description": "Bar index (if xloc = [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index)) or UNIX time (if xloc = [xloc.bar_time](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_time)) of the left border of the box. Note that objects positioned using [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index) cannot be drawn further than 500 bars into the future.",
        "optional": false,
        "default": null
       },
       {
-       "name": "bottom_right",
-       "type": "chart.point",
-       "description": "A [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point) object that specifies the bottom-right corner location of the box.",
+       "name": "top",
+       "type": "series int/float",
+       "description": "Price of the top border of the box.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "right",
+       "type": "series int",
+       "description": "Bar index (if xloc = [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index)) or UNIX time (if xloc = [xloc.bar_time](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_time)) of the right border of the box. Note that objects positioned using [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index) cannot be drawn further than 500 bars into the future.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "bottom",
+       "type": "series int/float",
+       "description": "Price of the bottom border of the box.",
        "optional": false,
        "default": null
       },
@@ -9612,7 +9661,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const color",
+       "type": "input color",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -9628,7 +9677,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const color",
+       "type": "simple color",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -9644,7 +9693,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const color",
+       "type": "series color",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -9697,7 +9746,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "input color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9713,7 +9762,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "simple color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9729,7 +9778,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "series color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9833,7 +9882,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "input color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9849,7 +9898,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "simple color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9865,7 +9914,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "series color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -9918,14 +9967,14 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "input color",
        "description": "Color to apply transparency to.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Possible values are from 0 (not transparent) to 100 (invisible).",
        "optional": false,
        "default": null
@@ -9941,14 +9990,14 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "simple color",
        "description": "Color to apply transparency to.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Possible values are from 0 (not transparent) to 100 (invisible).",
        "optional": false,
        "default": null
@@ -9964,14 +10013,14 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "series color",
        "description": "Color to apply transparency to.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Possible values are from 0 (not transparent) to 100 (invisible).",
        "optional": false,
        "default": null
@@ -10017,7 +10066,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "input color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10033,7 +10082,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "simple color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10049,7 +10098,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "series color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10116,28 +10165,28 @@
      "params": [
       {
        "name": "red",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Red color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "green",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Green color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "blue",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Blue color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Optional. Color transparency. Possible values are from 0 (opaque) to 100 (invisible). Default value is 0.",
        "optional": true,
        "default": "0"
@@ -10153,28 +10202,28 @@
      "params": [
       {
        "name": "red",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Red color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "green",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Green color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "blue",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Blue color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Optional. Color transparency. Possible values are from 0 (opaque) to 100 (invisible). Default value is 0.",
        "optional": true,
        "default": "0"
@@ -10190,28 +10239,28 @@
      "params": [
       {
        "name": "red",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Red color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "green",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Green color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "blue",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Blue color component. Possible values are from 0 to 255.",
        "optional": false,
        "default": null
       },
       {
        "name": "transp",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Optional. Color transparency. Possible values are from 0 (opaque) to 100 (invisible). Default value is 0.",
        "optional": true,
        "default": "0"
@@ -10257,7 +10306,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "input color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10273,7 +10322,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "simple color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10289,7 +10338,7 @@
      "params": [
       {
        "name": "color",
-       "type": "const color",
+       "type": "series color",
        "description": "Color.",
        "optional": false,
        "default": null
@@ -10470,16 +10519,16 @@
      "syntax": "fill(plot1, plot2, color, title, editable, show_last, fillgaps, display) → void",
      "params": [
       {
-       "name": "hline1",
-       "type": "hline",
-       "description": "The first hline object. Required argument.",
+       "name": "plot1",
+       "type": "plot",
+       "description": "The first plot object. Required argument.",
        "optional": false,
        "default": null
       },
       {
-       "name": "hline2",
-       "type": "hline",
-       "description": "The second hline object. Required argument.",
+       "name": "plot2",
+       "type": "plot",
+       "description": "The second plot object. Required argument.",
        "optional": false,
        "default": null
       },
@@ -10503,6 +10552,13 @@
        "description": "If true then fill style will be editable in Format dialog. Default is true.",
        "optional": false,
        "default": "true"
+      },
+      {
+       "name": "show_last",
+       "type": "input int",
+       "description": "Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.",
+       "optional": true,
+       "default": null
       },
       {
        "name": "fillgaps",
@@ -10528,24 +10584,45 @@
      "syntax": "fill(plot1, plot2, top_value, bottom_value, top_color, bottom_color, title, display, fillgaps, editable) → void",
      "params": [
       {
-       "name": "hline1",
-       "type": "hline",
-       "description": "The first hline object. Required argument.",
+       "name": "plot1",
+       "type": "plot",
+       "description": "The first plot object. Required argument.",
        "optional": false,
        "default": null
       },
       {
-       "name": "hline2",
-       "type": "hline",
-       "description": "The second hline object. Required argument.",
+       "name": "plot2",
+       "type": "plot",
+       "description": "The second plot object. Required argument.",
        "optional": false,
        "default": null
       },
       {
-       "name": "color",
+       "name": "top_value",
+       "type": "series int/float",
+       "description": "Value where the gradient uses the `top_color`.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "bottom_value",
+       "type": "series int/float",
+       "description": "Value where the gradient uses the `bottom_color`.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "top_color",
        "type": "series color",
-       "description": "Color of the background fill. You can use constants like 'color=color.red' or 'color=#ff001a' as well as complex expressions like 'color = close >= open ? color.green : color.red'. Optional argument.",
-       "optional": true,
+       "description": "Color of the gradient at the topmost value.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "bottom_color",
+       "type": "series color",
+       "description": "Color of the gradient at the bottommost value.",
+       "optional": false,
        "default": null
       },
       {
@@ -10556,11 +10633,11 @@
        "default": null
       },
       {
-       "name": "editable",
-       "type": "input bool",
-       "description": "If true then fill style will be editable in Format dialog. Default is true.",
+       "name": "display",
+       "type": "input plot_simple_display",
+       "description": "Controls where the fill is displayed. Possible values are: [display.none](https://www.tradingview.com/pine-script-reference/v6/#const_display.none), [display.all](https://www.tradingview.com/pine-script-reference/v6/#const_display.all). Default is [display.all](https://www.tradingview.com/pine-script-reference/v6/#const_display.all).",
        "optional": false,
-       "default": "true"
+       "default": "[display"
       },
       {
        "name": "fillgaps",
@@ -10570,11 +10647,11 @@
        "default": "false"
       },
       {
-       "name": "display",
-       "type": "input plot_simple_display",
-       "description": "Controls where the fill is displayed. Possible values are: [display.none](https://www.tradingview.com/pine-script-reference/v6/#const_display.none), [display.all](https://www.tradingview.com/pine-script-reference/v6/#const_display.all). Default is [display.all](https://www.tradingview.com/pine-script-reference/v6/#const_display.all).",
+       "name": "editable",
+       "type": "input bool",
+       "description": "If true then fill style will be editable in Format dialog. Default is true.",
        "optional": false,
-       "default": "[display"
+       "default": "true"
       }
      ],
      "returns": {
@@ -10623,7 +10700,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series color",
+       "type": "series int",
        "description": "Source used for the calculation.",
        "optional": false,
        "default": null
@@ -10639,7 +10716,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series color",
+       "type": "series int/float",
        "description": "Source used for the calculation.",
        "optional": false,
        "default": null
@@ -10689,7 +10766,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -10705,7 +10782,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -10721,7 +10798,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -12039,11 +12116,25 @@
        "default": null
       },
       {
-       "name": "options",
-       "type": "tuple of const int/float values: [val1, val2, ...]",
-       "description": "A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the `minval`, `maxval` and `step` parameters cannot be used.",
-       "optional": false,
+       "name": "minval",
+       "type": "const int/float",
+       "description": "Minimal possible value of the input variable. Optional.",
+       "optional": true,
        "default": null
+      },
+      {
+       "name": "maxval",
+       "type": "const int/float",
+       "description": "Maximum possible value of the input variable. Optional.",
+       "optional": true,
+       "default": null
+      },
+      {
+       "name": "step",
+       "type": "const int/float",
+       "description": "Step value used for incrementing/decrementing the input. Optional. The default is 1.",
+       "optional": true,
+       "default": "1"
       },
       {
        "name": "tooltip",
@@ -12209,11 +12300,25 @@
        "default": null
       },
       {
-       "name": "options",
-       "type": "tuple of const int values: [val1, val2, ...]",
-       "description": "A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the `minval`, `maxval` and `step` parameters cannot be used.",
-       "optional": false,
+       "name": "minval",
+       "type": "const int",
+       "description": "Minimal possible value of the input variable. Optional.",
+       "optional": true,
        "default": null
+      },
+      {
+       "name": "maxval",
+       "type": "const int",
+       "description": "Maximum possible value of the input variable. Optional.",
+       "optional": true,
+       "default": null
+      },
+      {
+       "name": "step",
+       "type": "const int",
+       "description": "Step value used for incrementing/decrementing the input. Optional. The default is 1.",
+       "optional": true,
+       "default": "1"
       },
       {
        "name": "tooltip",
@@ -13052,7 +13157,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -13068,7 +13173,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -13084,7 +13189,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -13418,9 +13523,16 @@
      "syntax": "label.new(x, y, text, xloc, yloc, color, style, textcolor, size, textalign, tooltip, text_font_family, force_overlay, text_formatting) → series label",
      "params": [
       {
-       "name": "point",
-       "type": "chart.point",
-       "description": "A [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point) object that specifies the label's location.",
+       "name": "x",
+       "type": "series int",
+       "description": "Bar index (if xloc = [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index)) or bar UNIX time (if xloc = [xloc.bar_time](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_time)) of the label position. Note that objects positioned using [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index) cannot be drawn further than 500 bars into the future.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "y",
+       "type": "series int/float",
+       "description": "Price of the label position. It is taken into account only if yloc=[yloc.price](https://www.tradingview.com/pine-script-reference/v6/#const_yloc.price).",
        "optional": false,
        "default": null
       },
@@ -14543,16 +14655,30 @@
      "syntax": "line.new(x1, y1, x2, y2, xloc, extend, color, style, width, force_overlay) → series line",
      "params": [
       {
-       "name": "first_point",
-       "type": "chart.point",
-       "description": "A [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point) object that specifies the line's starting coordinate.",
+       "name": "x1",
+       "type": "series int",
+       "description": "Bar index (if xloc = [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index)) or bar UNIX time (if xloc = [xloc.bar_time](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_time)) of the first point of the line. Note that objects positioned using [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index) cannot be drawn further than 500 bars into the future.",
        "optional": false,
        "default": null
       },
       {
-       "name": "second_point",
-       "type": "chart.point",
-       "description": "A [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point) object that specifies the line's ending coordinate.",
+       "name": "y1",
+       "type": "series int/float",
+       "description": "Price of the first point of the line.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "x2",
+       "type": "series int",
+       "description": "Bar index (if xloc = [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index)) or bar UNIX time (if xloc = [xloc.bar_time](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_time)) of the second point of the line. Note that objects positioned using [xloc.bar_index](https://www.tradingview.com/pine-script-reference/v6/#const_xloc.bar_index) cannot be drawn further than 500 bars into the future.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "y2",
+       "type": "series int/float",
+       "description": "Price of the second point of the line.",
        "optional": false,
        "default": null
       },
@@ -15403,9 +15529,9 @@
      "syntax": "log.error(formatString, arg0, arg1, ...) → void",
      "params": [
       {
-       "name": "message",
+       "name": "formatString",
        "type": "series string",
-       "description": "Log message.",
+       "description": "Format string.",
        "optional": false,
        "default": null
       }
@@ -15449,9 +15575,9 @@
      "syntax": "log.info(formatString, arg0, arg1, ...) → void",
      "params": [
       {
-       "name": "message",
+       "name": "formatString",
        "type": "series string",
-       "description": "Log message.",
+       "description": "Format string.",
        "optional": false,
        "default": null
       }
@@ -15495,9 +15621,9 @@
      "syntax": "log.warning(formatString, arg0, arg1, ...) → void",
      "params": [
       {
-       "name": "message",
+       "name": "formatString",
        "type": "series string",
-       "description": "Log message.",
+       "description": "Format string.",
        "optional": false,
        "default": null
       }
@@ -15973,7 +16099,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "input int",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -15989,7 +16115,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "const int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16005,7 +16131,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "simple int",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16021,7 +16147,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16037,7 +16163,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "series int",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16053,7 +16179,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16069,7 +16195,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16115,7 +16241,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16131,7 +16257,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16147,7 +16273,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16193,7 +16319,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16209,7 +16335,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16225,7 +16351,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16271,7 +16397,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16287,7 +16413,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16303,7 +16429,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value, in radians, to use in the calculation.",
        "optional": false,
        "default": null
@@ -16383,7 +16509,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16399,7 +16525,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16415,7 +16541,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16464,7 +16590,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -16480,7 +16606,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -16496,7 +16622,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -16542,7 +16668,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16558,7 +16684,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16574,7 +16700,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16622,7 +16748,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16638,7 +16764,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16654,7 +16780,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to round.",
        "optional": false,
        "default": null
@@ -16703,7 +16829,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16719,7 +16845,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16735,7 +16861,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16783,7 +16909,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16799,7 +16925,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -16815,7 +16941,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17030,14 +17156,14 @@
      "params": [
       {
        "name": "base",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Specify the base to use.",
        "optional": false,
        "default": null
       },
       {
        "name": "exponent",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Specifies the exponent.",
        "optional": false,
        "default": null
@@ -17053,14 +17179,14 @@
      "params": [
       {
        "name": "base",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Specify the base to use.",
        "optional": false,
        "default": null
       },
       {
        "name": "exponent",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Specifies the exponent.",
        "optional": false,
        "default": null
@@ -17076,14 +17202,14 @@
      "params": [
       {
        "name": "base",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Specify the base to use.",
        "optional": false,
        "default": null
       },
       {
        "name": "exponent",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Specifies the exponent.",
        "optional": false,
        "default": null
@@ -17176,7 +17302,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value to be rounded.",
        "optional": false,
        "default": null
@@ -17192,7 +17318,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value to be rounded.",
        "optional": false,
        "default": null
@@ -17208,7 +17334,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value to be rounded.",
        "optional": false,
        "default": null
@@ -17228,6 +17354,13 @@
        "description": "The value to be rounded.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "precision",
+       "type": "simple int",
+       "description": "Optional argument. Decimal places to which `number` will be rounded. When no argument is supplied, rounding is to the nearest integer.",
+       "optional": true,
+       "default": null
       }
      ],
      "returns": {
@@ -17240,9 +17373,16 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The value to be rounded.",
        "optional": false,
+       "default": null
+      },
+      {
+       "name": "precision",
+       "type": "simple int",
+       "description": "Optional argument. Decimal places to which `number` will be rounded. When no argument is supplied, rounding is to the nearest integer.",
+       "optional": true,
        "default": null
       }
      ],
@@ -17256,9 +17396,16 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The value to be rounded.",
        "optional": false,
+       "default": null
+      },
+      {
+       "name": "precision",
+       "type": "simple int",
+       "description": "Optional argument. Decimal places to which `number` will be rounded. When no argument is supplied, rounding is to the nearest integer.",
+       "optional": true,
        "default": null
       }
      ],
@@ -17272,9 +17419,16 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The value to be rounded.",
        "optional": false,
+       "default": null
+      },
+      {
+       "name": "precision",
+       "type": "series int",
+       "description": "Optional argument. Decimal places to which `number` will be rounded. When no argument is supplied, rounding is to the nearest integer.",
+       "optional": true,
        "default": null
       }
      ],
@@ -17321,7 +17475,7 @@
      "params": [
       {
        "name": "number",
-       "type": "simple int/float",
+       "type": "series int/float",
        "description": "The value to be rounded.",
        "optional": false,
        "default": null
@@ -17370,7 +17524,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17386,7 +17540,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17402,7 +17556,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17448,7 +17602,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17464,7 +17618,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17480,7 +17634,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17526,7 +17680,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17542,7 +17696,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17558,7 +17712,7 @@
      "params": [
       {
        "name": "number",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "The number to use in the calculation.",
        "optional": false,
        "default": null
@@ -17646,7 +17800,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "input int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17662,7 +17816,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "simple int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17678,7 +17832,7 @@
      "params": [
       {
        "name": "angle",
-       "type": "const int/float",
+       "type": "series int/float",
        "description": "Angle, in radians.",
        "optional": false,
        "default": null
@@ -17886,7 +18040,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18097,7 +18251,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18154,14 +18308,14 @@
      "params": [
       {
        "name": "id1",
-       "type": "matrix<int>",
+       "type": "matrix<int/float>",
        "description": "Matrix to subtract from.",
        "optional": false,
        "default": null
       },
       {
        "name": "id2",
-       "type": "series int/float/matrix<int>",
+       "type": "series int/float/matrix<int/float>",
        "description": "Matrix object or a scalar value to be subtracted.",
        "optional": false,
        "default": null
@@ -18213,7 +18367,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18263,7 +18417,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18468,7 +18622,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18874,14 +19028,14 @@
      "params": [
       {
        "name": "id1",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "First matrix object.",
        "optional": false,
        "default": null
       },
       {
        "name": "id2",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "Second matrix object.",
        "optional": false,
        "default": null
@@ -18932,7 +19086,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -18983,7 +19137,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -19034,7 +19188,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -19085,7 +19239,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -19144,14 +19298,14 @@
      "params": [
       {
        "name": "id1",
-       "type": "matrix<int>",
+       "type": "matrix<int/float>",
        "description": "First matrix object.",
        "optional": false,
        "default": null
       },
       {
        "name": "id2",
-       "type": "array<int>",
+       "type": "array<int/float>",
        "description": "Second matrix object, value or array.",
        "optional": false,
        "default": null
@@ -19174,7 +19328,7 @@
       },
       {
        "name": "id2",
-       "type": "array<int>",
+       "type": "series int/float/matrix<int>",
        "description": "Second matrix object, value or array.",
        "optional": false,
        "default": null
@@ -19190,14 +19344,14 @@
      "params": [
       {
        "name": "id1",
-       "type": "matrix<int>",
+       "type": "matrix<int/float>",
        "description": "First matrix object.",
        "optional": false,
        "default": null
       },
       {
        "name": "id2",
-       "type": "array<int>",
+       "type": "series int/float/matrix<int/float>",
        "description": "Second matrix object, value or array.",
        "optional": false,
        "default": null
@@ -19297,7 +19451,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -19354,7 +19508,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -19764,7 +19918,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float/string>",
+       "type": "any matrix type",
        "description": "A matrix object to be sorted.",
        "optional": false,
        "default": null
@@ -19782,6 +19936,13 @@
        "description": "The sort order. Possible values: [order.ascending](https://www.tradingview.com/pine-script-reference/v6/#const_order.ascending) (default), [order.descending](https://www.tradingview.com/pine-script-reference/v6/#const_order.descending).",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "sort_field",
+       "type": "const int/string",
+       "description": "If the `id` collection contains elements of a user-defined type, this parameter specifies which of the type's fields the function uses to sort the elements. The function can sort elements using any field of the type \"int\", \"float\", or \"string\". An \"int\" `sort_field` argument specifies a field by its index, where 0 refers to the first field in the type declaration. A \"string\" argument specifies a field by its name. Optional. The default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -19900,14 +20061,14 @@
      "params": [
       {
        "name": "id1",
-       "type": "matrix<int>",
+       "type": "matrix<int/float>",
        "description": "First matrix object.",
        "optional": false,
        "default": null
       },
       {
        "name": "id2",
-       "type": "series int/float/matrix<int>",
+       "type": "series int/float/matrix<int/float>",
        "description": "Second matrix object, or scalar value.",
        "optional": false,
        "default": null
@@ -20059,7 +20220,7 @@
      "params": [
       {
        "name": "id",
-       "type": "matrix<int/float>",
+       "type": "matrix<int>",
        "description": "A matrix object.",
        "optional": false,
        "default": null
@@ -20279,7 +20440,7 @@
      "params": [
       {
        "name": "x",
-       "type": "simple int/float",
+       "type": "series int/float/color/string/label/line/box/table/linefill/polyline/array<>/matrix<>/map<>",
        "description": "Value to be tested.",
        "optional": false,
        "default": null
@@ -20336,14 +20497,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple color",
+       "type": "simple int",
        "description": "The source series to process.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple color",
+       "type": "simple int",
        "description": "Optional. The value the function uses to replace [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) values in the `source` series. The default depends on the `source` type: `0` for \"int\", `0.0` for \"float\", or `#00000000` for \"color\".",
        "optional": true,
        "default": null
@@ -20359,14 +20520,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple color",
+       "type": "series color",
        "description": "The source series to process.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple color",
+       "type": "series color",
        "description": "Optional. The value the function uses to replace [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) values in the `source` series. The default depends on the `source` type: `0` for \"int\", `0.0` for \"float\", or `#00000000` for \"color\".",
        "optional": true,
        "default": null
@@ -20382,14 +20543,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple color",
+       "type": "series int",
        "description": "The source series to process.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple color",
+       "type": "series int",
        "description": "Optional. The value the function uses to replace [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) values in the `source` series. The default depends on the `source` type: `0` for \"int\", `0.0` for \"float\", or `#00000000` for \"color\".",
        "optional": true,
        "default": null
@@ -20405,14 +20566,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple color",
+       "type": "simple int/float",
        "description": "The source series to process.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple color",
+       "type": "simple int/float",
        "description": "Optional. The value the function uses to replace [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) values in the `source` series. The default depends on the `source` type: `0` for \"int\", `0.0` for \"float\", or `#00000000` for \"color\".",
        "optional": true,
        "default": null
@@ -20428,14 +20589,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple color",
+       "type": "series int/float",
        "description": "The source series to process.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple color",
+       "type": "series int/float",
        "description": "Optional. The value the function uses to replace [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) values in the `source` series. The default depends on the `source` type: `0` for \"int\", `0.0` for \"float\", or `#00000000` for \"color\".",
        "optional": true,
        "default": null
@@ -22144,14 +22305,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "simple string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22167,14 +22328,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "series string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22230,14 +22391,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "simple string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22253,14 +22414,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "series string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22308,7 +22469,7 @@
      "params": [
       {
        "name": "formatString",
-       "type": "simple string",
+       "type": "series string",
        "description": "Format string.",
        "optional": false,
        "default": null
@@ -22398,7 +22559,7 @@
      "params": [
       {
        "name": "string",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
@@ -22414,7 +22575,7 @@
      "params": [
       {
        "name": "string",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
@@ -22460,7 +22621,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to be converted.",
        "optional": false,
        "default": null
@@ -22476,7 +22637,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "String to be converted.",
        "optional": false,
        "default": null
@@ -22531,14 +22692,14 @@
      "params": [
       {
        "name": "source",
-       "type": "simple string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "regex",
-       "type": "simple string",
+       "type": "series string",
        "description": "The regular expression to which this string is to be matched.",
        "optional": false,
        "default": null
@@ -22594,14 +22755,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "simple string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22617,14 +22778,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "series string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -22688,21 +22849,21 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "input string",
        "description": "String to repeat.",
        "optional": false,
        "default": null
       },
       {
        "name": "repeat",
-       "type": "const int",
+       "type": "input int",
        "description": "Number of times to repeat the `source` string. Must be greater than or equal to 0.",
        "optional": false,
        "default": null
       },
       {
        "name": "separator",
-       "type": "const string",
+       "type": "input string",
        "description": "String to inject between repeated values. Optional. The default is empty string.",
        "optional": true,
        "default": "empty string"
@@ -22718,21 +22879,21 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to repeat.",
        "optional": false,
        "default": null
       },
       {
        "name": "repeat",
-       "type": "const int",
+       "type": "simple int",
        "description": "Number of times to repeat the `source` string. Must be greater than or equal to 0.",
        "optional": false,
        "default": null
       },
       {
        "name": "separator",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to inject between repeated values. Optional. The default is empty string.",
        "optional": true,
        "default": "empty string"
@@ -22748,21 +22909,21 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "String to repeat.",
        "optional": false,
        "default": null
       },
       {
        "name": "repeat",
-       "type": "const int",
+       "type": "series int",
        "description": "Number of times to repeat the `source` string. Must be greater than or equal to 0.",
        "optional": false,
        "default": null
       },
       {
        "name": "separator",
-       "type": "const string",
+       "type": "series string",
        "description": "String to inject between repeated values. Optional. The default is empty string.",
        "optional": true,
        "default": "empty string"
@@ -22829,28 +22990,28 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "target",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to be replaced.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to be inserted instead of the target string.",
        "optional": false,
        "default": null
       },
       {
        "name": "occurrence",
-       "type": "const int",
+       "type": "simple int",
        "description": "N-th occurrence of the target string to replace. Indexing starts at 0 for the first match. Optional. Default value is 0.",
        "optional": true,
        "default": "0"
@@ -22866,28 +23027,28 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "target",
-       "type": "const string",
+       "type": "series string",
        "description": "String to be replaced.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "const string",
+       "type": "series string",
        "description": "String to be inserted instead of the target string.",
        "optional": false,
        "default": null
       },
       {
        "name": "occurrence",
-       "type": "const int",
+       "type": "series int",
        "description": "N-th occurrence of the target string to replace. Indexing starts at 0 for the first match. Optional. Default value is 0.",
        "optional": true,
        "default": "0"
@@ -22950,21 +23111,21 @@
      "params": [
       {
        "name": "source",
-       "type": "simple string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "target",
-       "type": "simple string",
+       "type": "series string",
        "description": "String to be replaced.",
        "optional": false,
        "default": null
       },
       {
        "name": "replacement",
-       "type": "simple string",
+       "type": "series string",
        "description": "String to be substituted for each occurrence of target string.",
        "optional": false,
        "default": null
@@ -23054,14 +23215,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "simple string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -23077,14 +23238,14 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string.",
        "optional": false,
        "default": null
       },
       {
        "name": "str",
-       "type": "const string",
+       "type": "series string",
        "description": "The substring to search for.",
        "optional": false,
        "default": null
@@ -23146,21 +23307,21 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "Source string from which to extract the substring.",
        "optional": false,
        "default": null
       },
       {
        "name": "begin_pos",
-       "type": "const int",
+       "type": "simple int",
        "description": "The beginning position of the extracted substring. It is inclusive (the extracted substring includes the character at that position).",
        "optional": false,
        "default": null
       },
       {
        "name": "end_pos",
-       "type": "const int",
+       "type": "simple int",
        "description": "The ending position. It is exclusive (the extracted string does NOT include that position's character). Optional. The default is the length of the `source` string.",
        "optional": true,
        "default": "the length of the `source` string"
@@ -23176,21 +23337,21 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "Source string from which to extract the substring.",
        "optional": false,
        "default": null
       },
       {
        "name": "begin_pos",
-       "type": "const int",
+       "type": "series int",
        "description": "The beginning position of the extracted substring. It is inclusive (the extracted substring includes the character at that position).",
        "optional": false,
        "default": null
       },
       {
        "name": "end_pos",
-       "type": "const int",
+       "type": "series int",
        "description": "The ending position. It is exclusive (the extracted string does NOT include that position's character). Optional. The default is the length of the `source` string.",
        "optional": true,
        "default": "the length of the `source` string"
@@ -23240,7 +23401,7 @@
      "params": [
       {
        "name": "string",
-       "type": "const string",
+       "type": "input string",
        "description": "String containing the representation of an integer or floating point value.",
        "optional": false,
        "default": null
@@ -23256,7 +23417,7 @@
      "params": [
       {
        "name": "string",
-       "type": "const string",
+       "type": "simple string",
        "description": "String containing the representation of an integer or floating point value.",
        "optional": false,
        "default": null
@@ -23272,7 +23433,7 @@
      "params": [
       {
        "name": "string",
-       "type": "const string",
+       "type": "series string",
        "description": "String containing the representation of an integer or floating point value.",
        "optional": false,
        "default": null
@@ -23318,10 +23479,17 @@
      "params": [
       {
        "name": "value",
-       "type": "const enum",
+       "type": "simple int/float",
        "description": "Value or array ID whose elements are converted to a string.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "format",
+       "type": "simple string",
+       "description": "Format string. Accepts these format.* constants: [format.mintick](https://www.tradingview.com/pine-script-reference/v6/#const_format.mintick), [format.percent](https://www.tradingview.com/pine-script-reference/v6/#const_format.percent), [format.volume](https://www.tradingview.com/pine-script-reference/v6/#const_format.volume). Optional. The default value is '#.##########'.",
+       "optional": true,
+       "default": "'#"
       }
      ],
      "returns": {
@@ -23334,10 +23502,17 @@
      "params": [
       {
        "name": "value",
-       "type": "const enum",
+       "type": "series int/float/array<int/float>/matrix<int/float>",
        "description": "Value or array ID whose elements are converted to a string.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "format",
+       "type": "series string",
+       "description": "Format string. Accepts these format.* constants: [format.mintick](https://www.tradingview.com/pine-script-reference/v6/#const_format.mintick), [format.percent](https://www.tradingview.com/pine-script-reference/v6/#const_format.percent), [format.volume](https://www.tradingview.com/pine-script-reference/v6/#const_format.volume). Optional. The default value is '#.##########'.",
+       "optional": true,
+       "default": "'#"
       }
      ],
      "returns": {
@@ -23350,7 +23525,7 @@
      "params": [
       {
        "name": "value",
-       "type": "const enum",
+       "type": "simple int/float/bool/string/enum",
        "description": "Value or array ID whose elements are converted to a string.",
        "optional": false,
        "default": null
@@ -23366,7 +23541,7 @@
      "params": [
       {
        "name": "value",
-       "type": "const enum",
+       "type": "series int/float/bool/string/enum/array<int/float/bool/string>/matrix<int/float/bool/string>",
        "description": "Value or array ID whose elements are converted to a string.",
        "optional": false,
        "default": null
@@ -23412,7 +23587,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "input string",
        "description": "String to trim.",
        "optional": false,
        "default": null
@@ -23428,7 +23603,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to trim.",
        "optional": false,
        "default": null
@@ -23444,7 +23619,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "String to trim.",
        "optional": false,
        "default": null
@@ -23490,7 +23665,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "simple string",
        "description": "String to be converted.",
        "optional": false,
        "default": null
@@ -23506,7 +23681,7 @@
      "params": [
       {
        "name": "source",
-       "type": "const string",
+       "type": "series string",
        "description": "String to be converted.",
        "optional": false,
        "default": null
@@ -25706,7 +25881,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const string",
+       "type": "input string",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -25722,7 +25897,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const string",
+       "type": "simple string",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -25738,7 +25913,7 @@
      "params": [
       {
        "name": "x",
-       "type": "const string",
+       "type": "series string",
        "description": "The value to convert to the specified type, usually [na](https://www.tradingview.com/pine-script-reference/v6/#var_na).",
        "optional": false,
        "default": null
@@ -25791,7 +25966,7 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol. Note that the symbol should be passed with a prefix. For example: \"NASDAQ:AAPL\" instead of \"AAPL\".",
        "optional": false,
        "default": null
@@ -25843,7 +26018,7 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol. Note that the symbol should be passed with a prefix. For example: \"NASDAQ:AAPL\" instead of \"AAPL\".",
        "optional": false,
        "default": null
@@ -26169,7 +26344,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series int",
+       "type": "series int/float",
        "description": "Source series.",
        "optional": false,
        "default": null
@@ -26192,7 +26367,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series int",
+       "type": "series bool",
        "description": "Source series.",
        "optional": false,
        "default": null
@@ -27144,7 +27319,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series int",
+       "type": "series int/float",
        "description": "Series of values to process.",
        "optional": false,
        "default": null
@@ -27274,7 +27449,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series int",
+       "type": "series int/float",
        "description": "Series of values to process.",
        "optional": false,
        "default": null
@@ -27546,6 +27721,13 @@
      "syntax": "ta.pivothigh(source, leftbars, rightbars) → series float",
      "params": [
       {
+       "name": "source",
+       "type": "series int/float",
+       "description": "An optional parameter. Data series to calculate the value. 'High' by default.",
+       "optional": true,
+       "default": null
+      },
+      {
        "name": "leftbars",
        "type": "series int/float",
        "description": "Left strength.",
@@ -27605,6 +27787,13 @@
     {
      "syntax": "ta.pivotlow(source, leftbars, rightbars) → series float",
      "params": [
+      {
+       "name": "source",
+       "type": "series int/float",
+       "description": "An optional parameter. Data series to calculate the value. 'Low' by default.",
+       "optional": true,
+       "default": null
+      },
       {
        "name": "leftbars",
        "type": "series int/float",
@@ -27667,7 +27856,7 @@
      "params": [
       {
        "name": "source",
-       "type": "series int",
+       "type": "series int/float",
        "description": "Series of values to process.",
        "optional": false,
        "default": null
@@ -28279,7 +28468,7 @@
       },
       {
        "name": "source",
-       "type": "series color",
+       "type": "series int",
        "description": "The value to be returned from the bar where the condition is met.",
        "optional": false,
        "default": null
@@ -28309,7 +28498,7 @@
       },
       {
        "name": "source",
-       "type": "series color",
+       "type": "series int/float",
        "description": "The value to be returned from the bar where the condition is met.",
        "optional": false,
        "default": null
@@ -28339,7 +28528,7 @@
       },
       {
        "name": "source",
-       "type": "series color",
+       "type": "series bool",
        "description": "The value to be returned from the bar where the condition is met.",
        "optional": false,
        "default": null
@@ -28463,6 +28652,13 @@
        "description": "The condition that triggers the reset of VWAP calculations. When [true](https://www.tradingview.com/pine-script-reference/v6/#const_true), calculations reset; when [false](https://www.tradingview.com/pine-script-reference/v6/#const_false), calculations proceed using the values accumulated since the previous reset. Optional. The default is equivalent to passing [timeframe.change()](https://www.tradingview.com/pine-script-reference/v6/#fun_timeframe.change) with \"1D\" as its argument.",
        "optional": true,
        "default": "equivalent to passing [timeframe"
+      },
+      {
+       "name": "stdev_mult",
+       "type": "series int/float",
+       "description": "If specified, the function will calculate the standard deviation bands based on the main VWAP series and return a [vwap, upper_band, lower_band] tuple. The `upper_band`/`lower_band` values are calculated using the VWAP to which the standard deviation multiplied by this argument is added/subtracted. Optional. The default is [na](https://www.tradingview.com/pine-script-reference/v6/#var_na), in which case the function returns a single value, not a tuple.",
+       "optional": true,
+       "default": "[na](https://www"
       }
      ],
      "returns": {
@@ -29982,7 +30178,7 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
@@ -30043,14 +30239,14 @@
      "params": [
       {
        "name": "from_tickerid",
-       "type": "simple string",
+       "type": "series string",
        "description": "The ticker ID to inherit modifiers from.",
        "optional": false,
        "default": null
       },
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "The symbol to construct the new ticker ID for.",
        "optional": false,
        "default": null
@@ -30103,14 +30299,14 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
       },
       {
        "name": "reversal",
-       "type": "simple int/float",
+       "type": "series int/float",
        "description": "Reversal amount (absolute price value).",
        "optional": false,
        "default": null
@@ -30132,9 +30328,16 @@
        "default": null
       },
       {
-       "name": "reversal",
+       "name": "param",
        "type": "simple int/float",
-       "description": "Reversal amount (absolute price value).",
+       "description": "Represents the ticker's \"ATR length\" value if the `style` value is \"ATR\", \"Reversal amount\" value if the `style` is \"Traditional\", or \"Percentage\" value if the `style` is \"PercentageLTP\".",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "style",
+       "type": "series string",
+       "description": "Specifies the ticker's box size assignment method. Possible values: \"ATR\" for Average True Range sizing, \"Traditional\" to use a fixed size, or \"PercentageLTP\" to use a percentage of the last trading price.",
        "optional": false,
        "default": null
       }
@@ -30149,15 +30352,22 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
       },
       {
-       "name": "reversal",
-       "type": "simple int/float",
-       "description": "Reversal amount (absolute price value).",
+       "name": "param",
+       "type": "series int/float",
+       "description": "Represents the ticker's \"ATR length\" value if the `style` value is \"ATR\", \"Reversal amount\" value if the `style` is \"Traditional\", or \"Percentage\" value if the `style` is \"PercentageLTP\".",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "style",
+       "type": "series string",
+       "description": "Specifies the ticker's box size assignment method. Possible values: \"ATR\" for Average True Range sizing, \"Traditional\" to use a fixed size, or \"PercentageLTP\" to use a percentage of the last trading price.",
        "optional": false,
        "default": null
       }
@@ -30217,14 +30427,14 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
       },
       {
        "name": "number_of_lines",
-       "type": "simple int",
+       "type": "series int",
        "description": "Number of line.",
        "optional": false,
        "default": null
@@ -30306,21 +30516,21 @@
      "params": [
       {
        "name": "tickerid",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol name with exchange prefix, e.g. 'BATS:MSFT', 'NASDAQ:MSFT' or tickerid with session and adjustment from the [ticker.new()](https://www.tradingview.com/pine-script-reference/v6/#fun_ticker.new) function.",
        "optional": false,
        "default": null
       },
       {
        "name": "session",
-       "type": "simple string",
+       "type": "series string",
        "description": "Session type. Optional argument. Possible values: [session.regular](https://www.tradingview.com/pine-script-reference/v6/#const_session.regular), [session.extended](https://www.tradingview.com/pine-script-reference/v6/#const_session.extended). Session type of the current chart is [syminfo.session](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.session). If session is not given, then [syminfo.session](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.session) value is used.",
        "optional": true,
        "default": null
       },
       {
        "name": "adjustment",
-       "type": "simple string",
+       "type": "series string",
        "description": "Adjustment type. Optional argument. Possible values: [adjustment.none](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.none), [adjustment.splits](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.splits), [adjustment.dividends](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.dividends). If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).",
        "optional": true,
        "default": null
@@ -30431,28 +30641,28 @@
      "params": [
       {
        "name": "prefix",
-       "type": "simple string",
+       "type": "series string",
        "description": "Exchange prefix. For example: 'BATS', 'NYSE', 'NASDAQ'. Exchange prefix of main series is [syminfo.prefix](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.prefix).",
        "optional": false,
        "default": null
       },
       {
        "name": "ticker",
-       "type": "simple string",
+       "type": "series string",
        "description": "Ticker name. For example 'AAPL', 'MSFT', 'EURUSD'. Ticker name of the main series is [syminfo.ticker](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.ticker).",
        "optional": false,
        "default": null
       },
       {
        "name": "session",
-       "type": "simple string",
+       "type": "series string",
        "description": "Session type. Optional argument. Possible values: [session.regular](https://www.tradingview.com/pine-script-reference/v6/#const_session.regular), [session.extended](https://www.tradingview.com/pine-script-reference/v6/#const_session.extended). Session type of the current chart is [syminfo.session](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.session). If session is not given, then [syminfo.session](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.session) value is used.",
        "optional": true,
        "default": null
       },
       {
        "name": "adjustment",
-       "type": "simple string",
+       "type": "series string",
        "description": "Adjustment type. Optional argument. Possible values: [adjustment.none](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.none), [adjustment.splits](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.splits), [adjustment.dividends](https://www.tradingview.com/pine-script-reference/v6/#const_adjustment.dividends). If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).",
        "optional": true,
        "default": null
@@ -30556,35 +30766,35 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
       },
       {
        "name": "source",
-       "type": "simple string",
+       "type": "series string",
        "description": "The source for calculating Point & Figure. Possible values are: 'hl', 'close'.",
        "optional": false,
        "default": null
       },
       {
        "name": "style",
-       "type": "simple string",
+       "type": "series string",
        "description": "Specifies the ticker's box size assignment method. Possible values: \"ATR\" for Average True Range sizing, \"Traditional\" to use a fixed size, or \"PercentageLTP\" to use a percentage of the last trading price.",
        "optional": false,
        "default": null
       },
       {
        "name": "param",
-       "type": "simple int/float",
+       "type": "series int/float",
        "description": "Represents the ticker's \"ATR length\" value if the `style` value is \"ATR\", \"Box size\" value if the `style` is \"Traditional\", or \"Percentage\" value if the `style` is \"PercentageLTP\".",
        "optional": false,
        "default": null
       },
       {
        "name": "reversal",
-       "type": "simple int",
+       "type": "series int",
        "description": "Reversal amount.",
        "optional": false,
        "default": null
@@ -30666,35 +30876,35 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "Symbol ticker identifier.",
        "optional": false,
        "default": null
       },
       {
        "name": "style",
-       "type": "simple string",
+       "type": "series string",
        "description": "Specifies the ticker's box size assignment method. Possible values: \"ATR\" for Average True Range sizing, \"Traditional\" to use a fixed size, or \"PercentageLTP\" to use a percentage of the last trading price.",
        "optional": false,
        "default": null
       },
       {
        "name": "param",
-       "type": "simple int/float",
+       "type": "series int/float",
        "description": "Represents the ticker's \"ATR length\" value if the `style` value is \"ATR\", \"Box size\" value if the `style` is \"Traditional\", or \"Percentage\" value if the `style` is \"PercentageLTP\".",
        "optional": false,
        "default": null
       },
       {
        "name": "request_wicks",
-       "type": "simple bool",
+       "type": "series bool",
        "description": "Specifies if wick values are returned for Renko bricks. When [true](https://www.tradingview.com/pine-script-reference/v6/#const_true), [high](https://www.tradingview.com/pine-script-reference/v6/#var_high) and [low](https://www.tradingview.com/pine-script-reference/v6/#var_low) values requested from a symbol using the ticker formed by this function will include wick values when they are present. When [false](https://www.tradingview.com/pine-script-reference/v6/#const_false), [high](https://www.tradingview.com/pine-script-reference/v6/#var_high) and [low](https://www.tradingview.com/pine-script-reference/v6/#var_low) will always be equal to either [open](https://www.tradingview.com/pine-script-reference/v6/#var_open) or [close](https://www.tradingview.com/pine-script-reference/v6/#var_close). Optional. The default is [false](https://www.tradingview.com/pine-script-reference/v6/#const_false). A detailed explanation of how Renko wicks are calculated can be found in our [Help Center](https://www.tradingview.com/pine-script-reference/v6/#https://www.tradingview.com/support/solutions/43000481040-what-do-renko-wicks-mean/).",
        "optional": true,
        "default": "[false](https://www"
       },
       {
        "name": "source",
-       "type": "simple string",
+       "type": "series string",
        "description": "The source used to calculate bricks. Optional. Possible values: \"Close\", \"OHLC\". The default is \"Close\".",
        "optional": true,
        "default": "\"Close\""
@@ -30748,7 +30958,7 @@
      "params": [
       {
        "name": "symbol",
-       "type": "simple string",
+       "type": "series string",
        "description": "A ticker ID to be converted into its standard form. Optional. The default is [syminfo.tickerid](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.tickerid).",
        "optional": true,
        "default": "[syminfo"
@@ -30828,6 +31038,13 @@
        "description": "Optional. The [session string](https://www.tradingview.com/pine-script-reference/v6/#https://www.tradingview.com/pine-script-docs/concepts/sessions/#creating-time-based-sessions) for filtering times. The function returns a timestamp if the time is in the specified session, or [na](https://www.tradingview.com/pine-script-reference/v6/#var_na) if the time is outside the session. If the argument is an empty string, the function uses the default, which is the symbol's session.",
        "optional": true,
        "default": null
+      },
+      {
+       "name": "timezone",
+       "type": "series string",
+       "description": "Optional. The time zone of the session calculation. Usable only if the call includes a `session` argument. Accepts a [time zone string](https://www.tradingview.com/pine-script-reference/v6/#https://www.tradingview.com/pine-script-docs/concepts/time/#time-zone-strings) in UTC/GMT offset notation (e.g., `\"UTC-5\"`) or a string containing a valid identifier from the [IANA time zone database](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g., `\"America/New_York\"`). The default is [syminfo.timezone](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.timezone).",
+       "optional": true,
+       "default": "[syminfo"
       },
       {
        "name": "bars_back",
@@ -30920,6 +31137,13 @@
        "default": null
       },
       {
+       "name": "timezone",
+       "type": "series string",
+       "description": "Optional. The time zone of the session calculation. Usable only if the call includes a `session` argument. Accepts a [time zone string](https://www.tradingview.com/pine-script-reference/v6/#https://www.tradingview.com/pine-script-docs/concepts/time/#time-zone-strings) in UTC/GMT offset notation (e.g., `\"UTC-5\"`) or a string containing a valid identifier from the [IANA time zone database](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g., `\"America/New_York\"`). The default is [syminfo.timezone](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.timezone).",
+       "optional": true,
+       "default": "[syminfo"
+      },
+      {
        "name": "bars_back",
        "type": "series int",
        "description": "Optional. The bar offset on the script's main timeframe. If the value is positive, the function finds the bar that is N bars before the current bar on the main timeframe, then retrieves the timestamp of the corresponding bar on the timeframe specified by the `timeframe` argument. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the `timeframe` bar corresponding to N bars after the current bar on the main timeframe. The default is 0.",
@@ -31006,7 +31230,7 @@
      "params": [
       {
        "name": "seconds",
-       "type": "simple int",
+       "type": "series int",
        "description": "The number of seconds in the timeframe.",
        "optional": false,
        "default": null
@@ -31056,7 +31280,7 @@
      "params": [
       {
        "name": "timeframe",
-       "type": "simple string",
+       "type": "series string",
        "description": "Timeframe string in [timeframe string specifications](https://www.tradingview.com/pine-script-reference/v6/#https://www.tradingview.com/pine-script-docs/concepts/timeframes/#timeframe-string-specifications) format. Optional. The default is [timeframe.period](https://www.tradingview.com/pine-script-reference/v6/#var_timeframe.period).",
        "optional": true,
        "default": "[timeframe"
@@ -31106,7 +31330,7 @@
      "params": [
       {
        "name": "dateString",
-       "type": "const string",
+       "type": "series string",
        "description": "A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://www.tradingview.com/pine-script-reference/v6/#https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/ISO_8601) standards (\"DD MMM YYYY hh:mm:ss ±hhmm\" or \"YYYY-MM-DDThh:mm:ss±hh:mm\", so \"20 Feb 2020\" or \"2020-02-20\"). If no time is supplied, \"00:00\" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.",
        "optional": false,
        "default": null
@@ -31121,11 +31345,46 @@
      "syntax": "timestamp(year, month, day, hour, minute, second) → simple int",
      "params": [
       {
-       "name": "dateString",
-       "type": "const string",
-       "description": "A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://www.tradingview.com/pine-script-reference/v6/#https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/ISO_8601) standards (\"DD MMM YYYY hh:mm:ss ±hhmm\" or \"YYYY-MM-DDThh:mm:ss±hh:mm\", so \"20 Feb 2020\" or \"2020-02-20\"). If no time is supplied, \"00:00\" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.",
+       "name": "year",
+       "type": "simple int",
+       "description": "Year.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "month",
+       "type": "simple int",
+       "description": "Month.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "day",
+       "type": "simple int",
+       "description": "Day.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "hour",
+       "type": "simple int",
+       "description": "(Optional argument) Hour. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "minute",
+       "type": "simple int",
+       "description": "(Optional argument) Minute. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "second",
+       "type": "simple int",
+       "description": "(Optional argument) Second. Default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -31137,11 +31396,46 @@
      "syntax": "timestamp(year, month, day, hour, minute, second) → series int",
      "params": [
       {
-       "name": "dateString",
-       "type": "const string",
-       "description": "A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://www.tradingview.com/pine-script-reference/v6/#https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/ISO_8601) standards (\"DD MMM YYYY hh:mm:ss ±hhmm\" or \"YYYY-MM-DDThh:mm:ss±hh:mm\", so \"20 Feb 2020\" or \"2020-02-20\"). If no time is supplied, \"00:00\" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.",
+       "name": "year",
+       "type": "series int",
+       "description": "Year.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "month",
+       "type": "series int",
+       "description": "Month.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "day",
+       "type": "series int",
+       "description": "Day.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "hour",
+       "type": "series int",
+       "description": "(Optional argument) Hour. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "minute",
+       "type": "series int",
+       "description": "(Optional argument) Minute. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "second",
+       "type": "series int",
+       "description": "(Optional argument) Second. Default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -31153,11 +31447,53 @@
      "syntax": "timestamp(timezone, year, month, day, hour, minute, second) → simple int",
      "params": [
       {
-       "name": "dateString",
-       "type": "const string",
-       "description": "A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://www.tradingview.com/pine-script-reference/v6/#https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/ISO_8601) standards (\"DD MMM YYYY hh:mm:ss ±hhmm\" or \"YYYY-MM-DDThh:mm:ss±hh:mm\", so \"20 Feb 2020\" or \"2020-02-20\"). If no time is supplied, \"00:00\" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.",
+       "name": "timezone",
+       "type": "simple string",
+       "description": "Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., \"UTC-5\", \"GMT+0530\") or as an IANA time zone database name (e.g., \"America/New_York\"). Optional. The default is [syminfo.timezone](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.timezone).",
+       "optional": true,
+       "default": "[syminfo"
+      },
+      {
+       "name": "year",
+       "type": "simple int",
+       "description": "Year.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "month",
+       "type": "simple int",
+       "description": "Month.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "day",
+       "type": "simple int",
+       "description": "Day.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "hour",
+       "type": "simple int",
+       "description": "(Optional argument) Hour. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "minute",
+       "type": "simple int",
+       "description": "(Optional argument) Minute. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "second",
+       "type": "simple int",
+       "description": "(Optional argument) Second. Default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {
@@ -31169,11 +31505,53 @@
      "syntax": "timestamp(timezone, year, month, day, hour, minute, second) → series int",
      "params": [
       {
-       "name": "dateString",
-       "type": "const string",
-       "description": "A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://www.tradingview.com/pine-script-reference/v6/#https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://www.tradingview.com/pine-script-reference/v6/#https://en.wikipedia.org/wiki/ISO_8601) standards (\"DD MMM YYYY hh:mm:ss ±hhmm\" or \"YYYY-MM-DDThh:mm:ss±hh:mm\", so \"20 Feb 2020\" or \"2020-02-20\"). If no time is supplied, \"00:00\" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.",
+       "name": "timezone",
+       "type": "series string",
+       "description": "Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., \"UTC-5\", \"GMT+0530\") or as an IANA time zone database name (e.g., \"America/New_York\"). Optional. The default is [syminfo.timezone](https://www.tradingview.com/pine-script-reference/v6/#var_syminfo.timezone).",
+       "optional": true,
+       "default": "[syminfo"
+      },
+      {
+       "name": "year",
+       "type": "series int",
+       "description": "Year.",
        "optional": false,
        "default": null
+      },
+      {
+       "name": "month",
+       "type": "series int",
+       "description": "Month.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "day",
+       "type": "series int",
+       "description": "Day.",
+       "optional": false,
+       "default": null
+      },
+      {
+       "name": "hour",
+       "type": "series int",
+       "description": "(Optional argument) Hour. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "minute",
+       "type": "series int",
+       "description": "(Optional argument) Minute. Default is 0.",
+       "optional": true,
+       "default": "0"
+      },
+      {
+       "name": "second",
+       "type": "series int",
+       "description": "(Optional argument) Second. Default is 0.",
+       "optional": true,
+       "default": "0"
       }
      ],
      "returns": {

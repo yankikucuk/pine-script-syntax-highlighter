@@ -29,6 +29,11 @@ try {
   if (entries.length < 900) {
     throw new Error(`Only ${entries.length} entries extracted; the page structure may have changed.`);
   }
+  // Overload arguments are read after selecting each overload; this known case catches a silent regression.
+  const tostring = entries.find((e) => e.id === 'fun_str.tostring');
+  if (!tostring || !tostring.overloads.some((o) => o.params.length === 2)) {
+    throw new Error('Overload extraction failed: str.tostring should have a two-parameter overload.');
+  }
   const data = { version: '6', generatedAt: new Date().toISOString().slice(0, 10), entries };
   await writeFile(OUT, JSON.stringify(data, null, 1) + '\n');
   console.log(`Wrote ${entries.length} entries to ${path.relative(root, OUT)}`);
