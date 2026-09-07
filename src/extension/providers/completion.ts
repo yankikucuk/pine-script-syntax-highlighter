@@ -95,7 +95,7 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
       case 'annotation':
         return this.ref.byKind('annotation').map((e) => this.entryItem(e, e.name.replace(/^@/, '')));
       case 'import-path':
-        return this.importItems(ctx.prefix);
+        return this.importItems(ctx.prefix, position, lines[position.line] ?? '');
       case 'member':
         return this.memberItems(ctx.receiver, model);
       case 'named-arg':
@@ -200,14 +200,22 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
       });
   }
 
-  private async importItems(prefix: string): Promise<vscode.CompletionItem[]> {
+  private async importItems(
+    prefix: string,
+    position: vscode.Position,
+    lineText: string,
+  ): Promise<vscode.CompletionItem[]> {
     const local = this.libraries.local();
     const remote = await this.libraries.search(prefix);
+    // The default word range stops at `/`; replace everything typed after `import ` instead.
+    const start = lineText.slice(0, position.character).match(/^\s*import\s+/)?.[0].length ?? position.character;
+    const range = new vscode.Range(position.line, start, position.line, position.character);
     return [...local, ...remote].map((lib) => {
       const item = new vscode.CompletionItem(lib.id, vscode.CompletionItemKind.Module);
       item.detail = lib.source === 'local' ? 'workspace library' : 'TradingView library';
       if (lib.description) item.documentation = new vscode.MarkdownString(lib.description);
       item.filterText = lib.id;
+      item.range = range;
       return item;
     });
   }

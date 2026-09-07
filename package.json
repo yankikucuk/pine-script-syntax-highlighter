@@ -203,7 +203,7 @@
     "vscode-tmgrammar-test": "^0.1.3"
   },
   "main": "./dist/extension.cjs",
-  "activationEvents": [],
+  "activationEvents": ["onLanguage:pinescript"],
   "capabilities": {
     "untrustedWorkspaces": {
       "supported": true

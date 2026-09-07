@@ -64,6 +64,7 @@ describe('completion provider', () => {
     expect(labels(a)).toContain('param');
     const i = await provider.provideCompletionItems(doc('import Trad'), end('import Trad'));
     expect(labels(i)).toEqual(expect.arrayContaining(['yankikucuk/MaHelpers/2', 'TradingView/ta/14']));
+    expect(i[0]?.range).toMatchObject({ start: { line: 0, character: 7 }, end: { line: 0, character: 11 } });
     const text = fixture('consumer.pine') + '\nq = ma.';
     const m = await provider.provideCompletionItems(doc(text), end(text));
     expect(labels(m)).toEqual(expect.arrayContaining(['weighted', 'Level', 'Side']));
