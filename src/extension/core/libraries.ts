@@ -1,4 +1,4 @@
-import type { EnumSymbol, FunctionSymbol, ImportDecl, TypeSymbol } from './document-model';
+import { buildModel, type EnumSymbol, type FunctionSymbol, type ImportDecl, type TypeSymbol } from './document-model';
 
 export interface LibraryInfo {
   id: string;
@@ -23,3 +23,26 @@ export const noLibraries: LibraryLookup = {
   local: () => [],
   search: async () => [],
 };
+
+export function parseLibrary(
+  text: string,
+  id: string,
+  source: 'local' | 'remote',
+  meta: { owner?: string; version?: string; description?: string } = {},
+): LibraryInfo | null {
+  const model = buildModel(text);
+  if (model.scriptKind !== 'library') return null;
+  const descriptionLine = text.split(/\r?\n/).find((l) => /^\/\/\s*@description\b/.test(l));
+  return {
+    id,
+    title: model.libraryTitle ?? id,
+    owner: meta.owner ?? null,
+    version: meta.version ?? null,
+    description:
+      meta.description || (descriptionLine ? descriptionLine.replace(/^\/\/\s*@description\s*/, '').trim() : null),
+    functions: model.functions.filter((f) => f.isExport),
+    types: model.types.filter((t) => t.isExport),
+    enums: model.enums.filter((e) => e.isExport),
+    source,
+  };
+}
