@@ -26,13 +26,25 @@ jobs:
         run: npm run format:check
 
       - name: Verify generated grammar is committed
-        run: npm run build:check
+        run: npm run build:grammar:check
 
-      - name: Run grammar tests
-        run: npm test
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Core tests
+        run: npm run test:core
+
+      - name: Grammar tests
+        run: npm run test:unit && npm run test:snap
+
+      - name: Bundle extension
+        run: npm run build:extension
 
       - name: Package extension
         run: npx vsce package --no-dependencies --out pine-script-syntax-highlighter.vsix
+
+      - name: Verify bundle in package
+        run: unzip -l pine-script-syntax-highlighter.vsix | grep -q 'extension/dist/extension.cjs'
 
       - uses: actions/upload-artifact@v5
         with:
