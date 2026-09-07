@@ -1,0 +1,14 @@
+//@version=6
+indicator("Consumer", shorttitle = "C", overlay = false)
+import yankikucuk/MaHelpers/2 as ma
+import TradingView/ta/14
+
+length = input.int(14, "Length")
+var float acc = na
+src = close
+[dc, up] = ta.dmi(14, 14)
+fast = ta.ema(src, length)
+plot(fast, title = "Fast",
+     color = color.new(color.blue, 0))
+if fast > src
+    label.new(bar_index, high, "up")
