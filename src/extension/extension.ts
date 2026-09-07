@@ -1,6 +1,8 @@
 import * as vscode from 'vscode';
 import { registerAddTypeAnnotations } from './commands/add-type-annotations';
 import { registerGenerateDocstring } from './commands/generate-docstring';
+import { registerNewFileCommands } from './commands/new-file';
+import { registerOpenReference } from './commands/open-reference';
 import { PineCodeActionProvider } from './providers/code-action';
 import { noLibraries, type LibraryLookup } from './core/libraries';
 import { loadReference } from './core/reference';
@@ -22,6 +24,8 @@ export function activate(context: vscode.ExtensionContext): void {
   registerProviders(context, libraries);
   registerAddTypeAnnotations(context, () => undefined);
   registerGenerateDocstring(context);
+  registerNewFileCommands(context);
+  registerOpenReference(context);
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
       SELECTOR,
