@@ -143,15 +143,21 @@ async function extractReference() {
           });
         }
       } else {
-        for (const anchor of anchors) {
-          anchor.click();
+        for (let n = 0; n < anchors.length; n++) {
+          // Selecting an overload re-renders the item, so re-query it by id after every click.
+          const fresh = () => document.getElementById(id).querySelector('.tv-pine-reference-item__content');
+          const anchor = fresh().querySelectorAll('a[data-href^="' + id + '-"]')[n];
           const wanted = codeText(anchor.querySelector('pre'));
-          for (let tries = 0; tries < 20; tries++) {
-            const selected = content.querySelector('pre.tv-pine-reference-item__syntax.selected');
+          anchor.click();
+          let selected = null;
+          for (let tries = 0; tries < 40; tries++) {
+            selected = fresh().querySelector('pre.tv-pine-reference-item__syntax.selected');
             if (selected && codeText(selected) === wanted) break;
+            selected = null;
             await sleep(25);
           }
-          const block = readOverloadBlock(item.querySelector('.tv-pine-reference-item__content'));
+          if (!selected) throw new Error('Overload ' + n + ' of ' + id + ' did not become selected');
+          const block = readOverloadBlock(fresh());
           overloads.push({
             syntax: wanted,
             params: block.params,
