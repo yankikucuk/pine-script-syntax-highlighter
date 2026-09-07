@@ -92,6 +92,14 @@
       }
     },
     {
+      "name": "Operators inside comments",
+      "scope": ["comment keyword.operator", "comment punctuation"],
+      "settings": {
+        "foreground": "#787b86",
+        "fontStyle": "italic"
+      }
+    },
+    {
       "name": "Raw text in comments",
       "scope": "markup.inline.raw",
       "settings": {
