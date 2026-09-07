@@ -1,0 +1,121 @@
+import data from '../../data/reference.json';
+
+export type EntryKind = 'function' | 'variable' | 'constant' | 'keyword' | 'type' | 'annotation' | 'operator';
+
+export interface RefParam {
+  name: string;
+  type: string;
+  description: string;
+  optional: boolean;
+  default: string | null;
+}
+
+export interface RefOverload {
+  syntax: string;
+  params: RefParam[];
+  returns: { type: string; description: string } | null;
+}
+
+export interface RefEntry {
+  id: string;
+  kind: EntryKind;
+  name: string;
+  namespace: string;
+  description: string;
+  overloads: RefOverload[];
+  fields: RefParam[];
+  type: string | null;
+  remarks: string;
+  example: string;
+  seeAlso: string[];
+}
+
+export interface ReferenceData {
+  version: string;
+  generatedAt: string;
+  entries: RefEntry[];
+}
+
+export const REFERENCE_URL = 'https://www.tradingview.com/pine-script-reference/v6/';
+
+const KIND_PRIORITY: EntryKind[] = ['function', 'variable', 'constant', 'type', 'keyword', 'annotation', 'operator'];
+const QUALIFIERS = /^(?:series|simple|const|input|literal)\s+/;
+
+export class ReferenceIndex {
+  private readonly byName = new Map<string, RefEntry[]>();
+  private readonly byNamespace = new Map<string, RefEntry[]>();
+  private readonly children = new Map<string, Set<string>>();
+  private readonly kinds = new Map<EntryKind, RefEntry[]>();
+
+  constructor(public readonly data: ReferenceData) {
+    for (const entry of data.entries) {
+      push(this.byName, entry.name, entry);
+      push(this.byNamespace, entry.namespace, entry);
+      push(this.kinds, entry.kind, entry);
+      // Register every namespace segment as a child of its parent: 'a.b.c' -> ''→a, a→b
+      const parts = entry.name.split('.');
+      for (let i = 1; i < parts.length; i++) {
+        const parent = parts.slice(0, i - 1).join('.');
+        const child = parts[i - 1]!;
+        if (!this.children.has(parent)) this.children.set(parent, new Set());
+        this.children.get(parent)!.add(child);
+      }
+    }
+    for (const list of this.byNamespace.values()) list.sort((a, b) => a.name.localeCompare(b.name));
+  }
+
+  get(name: string, kind?: EntryKind): RefEntry | undefined {
+    const all = this.byName.get(name);
+    if (!all) return undefined;
+    if (kind) return all.find((e) => e.kind === kind);
+    for (const k of KIND_PRIORITY) {
+      const hit = all.find((e) => e.kind === k);
+      if (hit) return hit;
+    }
+    return all[0];
+  }
+
+  getAll(name: string): RefEntry[] {
+    return this.byName.get(name) ?? [];
+  }
+
+  members(namespace: string): RefEntry[] {
+    return this.byNamespace.get(namespace) ?? [];
+  }
+
+  childNamespaces(namespace: string): string[] {
+    return [...(this.children.get(namespace) ?? [])].sort();
+  }
+
+  bare(): RefEntry[] {
+    return this.members('').filter((e) => e.kind === 'function' || e.kind === 'variable' || e.kind === 'constant');
+  }
+
+  byKind(kind: EntryKind): RefEntry[] {
+    return this.kinds.get(kind) ?? [];
+  }
+
+  url(entry: RefEntry): string {
+    return `${REFERENCE_URL}#${entry.id}`;
+  }
+
+  static baseType(qualified: string): string {
+    const stripped = qualified.trim().replace(QUALIFIERS, '');
+    // 'int/float' means either; the wider type is float.
+    if (stripped === 'int/float') return 'float';
+    return stripped;
+  }
+}
+
+function push<K, V>(map: Map<K, V[]>, key: K, value: V): void {
+  const list = map.get(key);
+  if (list) list.push(value);
+  else map.set(key, [value]);
+}
+
+let singleton: ReferenceIndex | undefined;
+
+export function loadReference(): ReferenceIndex {
+  if (!singleton) singleton = new ReferenceIndex(data as ReferenceData);
+  return singleton;
+}
