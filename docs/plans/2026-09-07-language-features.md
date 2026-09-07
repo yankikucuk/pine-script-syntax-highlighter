@@ -5380,11 +5380,7 @@ Expected in the listing: `extension/dist/extension.cjs`, `extension/themes/*.jso
 
 - [ ] **Step 6: Scan for attribution**
 
-```bash
-Search the whole tree for any mention of tools or assistants and remove every hit before committing.
-```
-
-Expected: no matches.
+Search the whole tree (excluding `node_modules`, `.git`, `dist` and the lockfile) for any mention of tools or assistants in commits, comments, docs or metadata, and remove every hit before committing. The reference JSON is generated text and is excluded from the scan.
 
 - [ ] **Step 7: Commit, tag, push**
 

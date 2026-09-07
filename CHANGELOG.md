@@ -5,6 +5,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-09-07
+
+The extension becomes a full language extension. Highlighting is unchanged; everything below is new.
+
+### Added
+
+- Completion for built-ins, keywords, types, user symbols, named arguments, annotations and import paths, with documentation and signatures.
+- Hover documentation for built-ins, user functions, types, enums, variables and imports.
+- Signature help with overloads and named-argument awareness.
+- Document outline (functions, methods, types, enums, top-level variables).
+- Workspace library indexing and published TradingView library lookup for `import` completion and hover.
+- Opt-in diagnostics from the TradingView compiler (`pinescript.diagnostics.remote`, off by default).
+- Commands: New Indicator, New Strategy, New Library, Generate Docstring (with a code action), Add Type Annotations, Open Reference.
+- Pine Dark and Pine Light color themes.
+- `src/data/reference.json`, generated from the v6 reference, and a build check that keeps it in step with the grammar data.
+
+### Changed
+
+- Minimum VS Code version is 1.96.
+- The package now ships a bundled extension entry point (`dist/extension.cjs`) built with esbuild.
+- `npm run build` builds both the grammar and the extension; grammar-only scripts are `build:grammar` and `build:grammar:check`.
+- `line.set_xy` was removed from the grammar data; it is not part of Pine Script v6.
+
 ## [2.0.1] - 2026-09-06
 
 ### Fixed
@@ -63,7 +86,8 @@ Complete rewrite targeting Pine Script v6. The grammar is now generated from dat
 
 - Language operators, built-in variables and built-in functions for Pine Script v3/v4.
 
-[Unreleased]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.1...v3.0.0
 [2.0.1]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v1.0.5...v2.0.0
 [1.0.5]: https://github.com/yankikucuk/pine-script-syntax-highlighter/releases/tag/v1.0.5
