@@ -1138,7 +1138,7 @@
           }
         },
         {
-          "match": "(?<![\\w.])(line)(\\.)(set_second_point|set_first_point|set_extend|get_price|set_color|set_style|set_width|set_xloc|set_xy1|set_xy2|delete|get_x1|get_x2|get_y1|get_y2|set_x1|set_x2|set_xy|set_y1|set_y2|copy|new)\\b(?=\\s*(?:<[^<>]*>\\s*)?\\()",
+          "match": "(?<![\\w.])(line)(\\.)(set_second_point|set_first_point|set_extend|get_price|set_color|set_style|set_width|set_xloc|set_xy1|set_xy2|delete|get_x1|get_x2|get_y1|get_y2|set_x1|set_x2|set_y1|set_y2|copy|new)\\b(?=\\s*(?:<[^<>]*>\\s*)?\\()",
           "captures": {
             "1": {
               "name": "support.class.pine"
