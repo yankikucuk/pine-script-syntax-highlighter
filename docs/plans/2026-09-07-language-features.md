@@ -26,55 +26,57 @@
 
 ## File map
 
-| Path | Responsibility |
-|------|----------------|
-| `tsconfig.json` | strict TS config, `noEmit` |
-| `vitest.config.ts` | test discovery for `tests/core` |
-| `scripts/build-extension.mjs` | esbuild bundle, `--watch` mode |
-| `scripts/scrape-reference.mjs` | headless scrape to `src/data/reference.json` |
-| `scripts/lib/extract-reference.js` | browser-side extraction code shared by the scraper |
-| `scripts/build-grammar.mjs` | + consistency check against `reference.json` |
-| `src/data/reference.json` | generated documentation |
-| `src/extension/extension.ts` | `activate`/`deactivate`, registration, settings reload |
-| `src/extension/vscode/settings.ts` | typed settings reader |
-| `src/extension/vscode/output.ts` | output channel logger |
-| `src/extension/vscode/document-cache.ts` | model + tokens cache per document version |
-| `src/extension/core/reference.ts` | `ReferenceIndex` |
-| `src/extension/core/tokenizer.ts` | `tokenize`, token helpers |
-| `src/extension/core/document-model.ts` | `buildModel`, symbols |
-| `src/extension/core/call-resolver.ts` | `enclosingCall` |
-| `src/extension/core/context.ts` | `completionContext` |
-| `src/extension/core/markdown.ts` | documentation strings |
-| `src/extension/core/type-inference.ts` | `inferType`, `planTypeAnnotations` |
-| `src/extension/core/docstring.ts` | `docstringLines`, `annotationBlockRange` |
-| `src/extension/core/templates.ts` | file templates |
-| `src/extension/core/pine-facade.ts` | HTTP client with cache and backoff |
-| `src/extension/core/diagnostics.ts` | compiler result mapping |
-| `src/extension/core/libraries.ts` | `parseLibrary`, library models |
-| `src/extension/providers/completion.ts` | CompletionItemProvider |
-| `src/extension/providers/hover.ts` | HoverProvider |
-| `src/extension/providers/signature-help.ts` | SignatureHelpProvider |
-| `src/extension/providers/document-symbol.ts` | DocumentSymbolProvider |
-| `src/extension/providers/code-action.ts` | docstring code action |
-| `src/extension/providers/diagnostics-controller.ts` | debounced remote diagnostics |
-| `src/extension/providers/library-index.ts` | workspace library discovery + remote lookup |
-| `src/extension/commands/new-file.ts` | three template commands |
-| `src/extension/commands/generate-docstring.ts` | docstring command |
-| `src/extension/commands/add-type-annotations.ts` | type annotation command |
-| `src/extension/commands/open-reference.ts` | open reference URL |
-| `themes/pine-dark-color-theme.json`, `themes/pine-light-color-theme.json` | themes |
-| `tests/core/*.test.ts`, `tests/core/fixtures/*.pine` | vitest suites |
+| Path                                                                      | Responsibility                                         |
+| ------------------------------------------------------------------------- | ------------------------------------------------------ |
+| `tsconfig.json`                                                           | strict TS config, `noEmit`                             |
+| `vitest.config.ts`                                                        | test discovery for `tests/core`                        |
+| `scripts/build-extension.mjs`                                             | esbuild bundle, `--watch` mode                         |
+| `scripts/scrape-reference.mjs`                                            | headless scrape to `src/data/reference.json`           |
+| `scripts/lib/extract-reference.js`                                        | browser-side extraction code shared by the scraper     |
+| `scripts/build-grammar.mjs`                                               | + consistency check against `reference.json`           |
+| `src/data/reference.json`                                                 | generated documentation                                |
+| `src/extension/extension.ts`                                              | `activate`/`deactivate`, registration, settings reload |
+| `src/extension/vscode/settings.ts`                                        | typed settings reader                                  |
+| `src/extension/vscode/output.ts`                                          | output channel logger                                  |
+| `src/extension/vscode/document-cache.ts`                                  | model + tokens cache per document version              |
+| `src/extension/core/reference.ts`                                         | `ReferenceIndex`                                       |
+| `src/extension/core/tokenizer.ts`                                         | `tokenize`, token helpers                              |
+| `src/extension/core/document-model.ts`                                    | `buildModel`, symbols                                  |
+| `src/extension/core/call-resolver.ts`                                     | `enclosingCall`                                        |
+| `src/extension/core/context.ts`                                           | `completionContext`                                    |
+| `src/extension/core/markdown.ts`                                          | documentation strings                                  |
+| `src/extension/core/type-inference.ts`                                    | `inferType`, `planTypeAnnotations`                     |
+| `src/extension/core/docstring.ts`                                         | `docstringLines`, `annotationBlockRange`               |
+| `src/extension/core/templates.ts`                                         | file templates                                         |
+| `src/extension/core/pine-facade.ts`                                       | HTTP client with cache and backoff                     |
+| `src/extension/core/diagnostics.ts`                                       | compiler result mapping                                |
+| `src/extension/core/libraries.ts`                                         | `parseLibrary`, library models                         |
+| `src/extension/providers/completion.ts`                                   | CompletionItemProvider                                 |
+| `src/extension/providers/hover.ts`                                        | HoverProvider                                          |
+| `src/extension/providers/signature-help.ts`                               | SignatureHelpProvider                                  |
+| `src/extension/providers/document-symbol.ts`                              | DocumentSymbolProvider                                 |
+| `src/extension/providers/code-action.ts`                                  | docstring code action                                  |
+| `src/extension/providers/diagnostics-controller.ts`                       | debounced remote diagnostics                           |
+| `src/extension/providers/library-index.ts`                                | workspace library discovery + remote lookup            |
+| `src/extension/commands/new-file.ts`                                      | three template commands                                |
+| `src/extension/commands/generate-docstring.ts`                            | docstring command                                      |
+| `src/extension/commands/add-type-annotations.ts`                          | type annotation command                                |
+| `src/extension/commands/open-reference.ts`                                | open reference URL                                     |
+| `themes/pine-dark-color-theme.json`, `themes/pine-light-color-theme.json` | themes                                                 |
+| `tests/core/*.test.ts`, `tests/core/fixtures/*.pine`                      | vitest suites                                          |
 
 ---
 
 ### Task 1: Toolchain and empty extension
 
 **Files:**
+
 - Modify: `package.json`
 - Create: `tsconfig.json`, `vitest.config.ts`, `scripts/build-extension.mjs`, `src/extension/extension.ts`, `src/extension/vscode/output.ts`, `tests/core/smoke.test.ts`
 - Modify: `.gitignore`, `.vscodeignore`, `.prettierignore`, `.github/workflows/ci.yml`
 
 **Interfaces:**
+
 - Produces: `npm run build:extension` → `dist/extension.cjs`; `npm run typecheck`; `npm run test:core`; `log(msg)` from `vscode/output.ts`.
 
 - [ ] **Step 1: Install dev dependencies**
@@ -277,15 +279,15 @@ Expected: no type errors, `dist/extension.cjs` written, 1 test passed.
 In `.github/workflows/ci.yml`, after the `npm run build:grammar:check` step (rename from `build:check`), add:
 
 ```yaml
-      - run: npm run typecheck
-      - run: npm run test:core
+- run: npm run typecheck
+- run: npm run test:core
 ```
 
 and before `npx vsce package` add `- run: npm run build:extension`. After packaging add:
 
 ```yaml
-      - name: Verify bundle in package
-        run: unzip -l *.vsix | grep -q 'extension/dist/extension.cjs'
+- name: Verify bundle in package
+  run: unzip -l *.vsix | grep -q 'extension/dist/extension.cjs'
 ```
 
 Update `release.yml` the same way (build extension before `vsce package`).
@@ -303,10 +305,12 @@ git commit -m "Add TypeScript, esbuild and vitest toolchain with an empty extens
 ### Task 2: Reference scraper and consistency check
 
 **Files:**
+
 - Create: `scripts/lib/extract-reference.js`, `scripts/scrape-reference.mjs`, `src/data/reference.json`
 - Modify: `scripts/build-grammar.mjs`, `src/data/functions.json`, `src/data/variables.json`, `src/data/constants.json` (reconciliation only)
 
 **Interfaces:**
+
 - Produces: `src/data/reference.json` with the schema in spec §4.2 plus `fields: RefParam[]` on every entry (empty for non-types).
 
 - [ ] **Step 1: Write the browser-side extractor `scripts/lib/extract-reference.js`**
@@ -317,12 +321,23 @@ This file is loaded as text and evaluated in the page. It must be self-contained
 // Runs inside the reference page. Returns { entries: [...] }.
 // Kept in its own file so it can be pasted into a browser console for debugging.
 async function extractReference() {
-  const KIND = { fun: 'function', var: 'variable', const: 'constant', kw: 'keyword', type: 'type', an: 'annotation', op: 'operator' };
+  const KIND = {
+    fun: 'function',
+    var: 'variable',
+    const: 'constant',
+    kw: 'keyword',
+    type: 'type',
+    an: 'annotation',
+    op: 'operator',
+  };
   const BASE = 'https://www.tradingview.com/pine-script-reference/v6/#';
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
   function clean(text) {
-    return (text || '').replace(/ /g, ' ').replace(/[ \t]+\n/g, '\n').trim();
+    return (text || '')
+      .replace(/ /g, ' ')
+      .replace(/[ \t]+\n/g, '\n')
+      .trim();
   }
 
   // Converts an element's inline HTML to markdown: <code> → backticks, <a> → link, <br> → newline.
@@ -379,7 +394,8 @@ async function extractReference() {
       const clone = node.cloneNode(true);
       clone.querySelector('.tv-pine-reference-item__arg-type').remove();
       const description = md(clone);
-      const defMatch = description.match(/[Dd]efault(?: value)? is ([^.\n]+)/) || description.match(/[Dd]efault:\s*([^.\n]+)/);
+      const defMatch =
+        description.match(/[Dd]efault(?: value)? is ([^.\n]+)/) || description.match(/[Dd]efault:\s*([^.\n]+)/);
       args.push({
         name: m[1],
         type: m[2].trim(),
@@ -394,7 +410,9 @@ async function extractReference() {
   function readOverloadBlock(content) {
     const s = sections(content);
     const syntaxKey = Object.keys(s).find((k) => k.startsWith('Syntax'));
-    const syntax = syntaxKey ? s[syntaxKey].map((n) => codeText(n.matches('pre') ? n : n.querySelector('pre'))).filter(Boolean) : [];
+    const syntax = syntaxKey
+      ? s[syntaxKey].map((n) => codeText(n.matches('pre') ? n : n.querySelector('pre'))).filter(Boolean)
+      : [];
     const returnsNodes = s['Returns'] || [];
     const returns = returnsNodes.length ? returnsNodes.map(md).filter(Boolean).join('\n\n') : '';
     return { s, syntax, params: parseArgs(s['Arguments'] || []), returns };
@@ -421,8 +439,13 @@ async function extractReference() {
     const s = first.s;
     const description = (s.intro || []).map(md).filter(Boolean).join('\n\n');
     const remarks = (s['Remarks'] || []).map(md).filter(Boolean).join('\n\n');
-    const example = (s['Example'] || []).map((n) => codeText(n.matches('pre') ? n : n.querySelector('pre'))).filter(Boolean).join('\n\n');
-    const seeAlso = [...(s['See also'] || []).flatMap((n) => [...n.querySelectorAll('a[data-href]')])].map((a) => a.getAttribute('data-href'));
+    const example = (s['Example'] || [])
+      .map((n) => codeText(n.matches('pre') ? n : n.querySelector('pre')))
+      .filter(Boolean)
+      .join('\n\n');
+    const seeAlso = [...(s['See also'] || []).flatMap((n) => [...n.querySelectorAll('a[data-href]')])].map((a) =>
+      a.getAttribute('data-href'),
+    );
     const fields = parseArgs(s['Fields'] || []);
     const typeNodes = s['Type'] || [];
     const type = typeNodes.length ? clean(typeNodes[0].textContent) : null;
@@ -432,7 +455,11 @@ async function extractReference() {
       const anchors = [...content.querySelectorAll('a[data-href^="' + id + '-"]')];
       if (anchors.length <= 1) {
         for (const syntax of first.syntax) {
-          overloads.push({ syntax, params: first.params, returns: { type: returnType(syntax), description: first.returns } });
+          overloads.push({
+            syntax,
+            params: first.params,
+            returns: { type: returnType(syntax), description: first.returns },
+          });
         }
       } else {
         for (const anchor of anchors) {
@@ -444,7 +471,11 @@ async function extractReference() {
             await sleep(25);
           }
           const block = readOverloadBlock(item.querySelector('.tv-pine-reference-item__content'));
-          overloads.push({ syntax: wanted, params: block.params, returns: { type: returnType(wanted), description: block.returns } });
+          overloads.push({
+            syntax: wanted,
+            params: block.params,
+            returns: { type: returnType(wanted), description: block.returns },
+          });
         }
       }
     }
@@ -474,7 +505,9 @@ let chromium;
 try {
   ({ chromium } = await import('playwright-core'));
 } catch {
-  console.error('playwright-core is not installed. Run: npm install --no-save playwright-core && npx playwright-core install chromium');
+  console.error(
+    'playwright-core is not installed. Run: npm install --no-save playwright-core && npx playwright-core install chromium',
+  );
   process.exit(1);
 }
 
@@ -538,8 +571,10 @@ function checkReferenceConsistency() {
   const grammar = { function: flatten(functions), variable: flatten(variables), constant: flatten(constants) };
   const problems = [];
   for (const kind of Object.keys(byKind)) {
-    for (const n of grammar[kind]) if (!byKind[kind].has(n)) problems.push(`${kind} "${n}" is in grammar data but not in reference.json`);
-    for (const n of byKind[kind]) if (!grammar[kind].has(n)) problems.push(`${kind} "${n}" is in reference.json but not in grammar data`);
+    for (const n of grammar[kind])
+      if (!byKind[kind].has(n)) problems.push(`${kind} "${n}" is in grammar data but not in reference.json`);
+    for (const n of byKind[kind])
+      if (!grammar[kind].has(n)) problems.push(`${kind} "${n}" is in reference.json but not in grammar data`);
   }
   if (problems.length) {
     console.error(problems.join('\n'));
@@ -574,27 +609,52 @@ git commit -m "Scrape the v6 reference into reference.json and keep grammar data
 ### Task 3: Reference index
 
 **Files:**
+
 - Create: `src/extension/core/reference.ts`, `tests/core/reference.test.ts`
 
 **Interfaces:**
+
 - Produces:
+
   ```ts
   type EntryKind = 'function' | 'variable' | 'constant' | 'keyword' | 'type' | 'annotation' | 'operator';
-  interface RefParam { name: string; type: string; description: string; optional: boolean; default: string | null }
-  interface RefOverload { syntax: string; params: RefParam[]; returns: { type: string; description: string } | null }
-  interface RefEntry { id: string; kind: EntryKind; name: string; namespace: string; description: string; overloads: RefOverload[]; fields: RefParam[]; type: string | null; remarks: string; example: string; seeAlso: string[] }
+  interface RefParam {
+    name: string;
+    type: string;
+    description: string;
+    optional: boolean;
+    default: string | null;
+  }
+  interface RefOverload {
+    syntax: string;
+    params: RefParam[];
+    returns: { type: string; description: string } | null;
+  }
+  interface RefEntry {
+    id: string;
+    kind: EntryKind;
+    name: string;
+    namespace: string;
+    description: string;
+    overloads: RefOverload[];
+    fields: RefParam[];
+    type: string | null;
+    remarks: string;
+    example: string;
+    seeAlso: string[];
+  }
   class ReferenceIndex {
     constructor(data: ReferenceData);
-    get(name: string, kind?: EntryKind): RefEntry | undefined;   // kind priority: function, variable, constant, type, keyword, annotation, operator
+    get(name: string, kind?: EntryKind): RefEntry | undefined; // kind priority: function, variable, constant, type, keyword, annotation, operator
     getAll(name: string): RefEntry[];
-    members(namespace: string): RefEntry[];                      // direct members, sorted by name
-    childNamespaces(namespace: string): string[];                // e.g. 'chart' -> ['point']; '' -> top-level namespaces
-    bare(): RefEntry[];                                          // namespace === '' and kind in function|variable|constant
+    members(namespace: string): RefEntry[]; // direct members, sorted by name
+    childNamespaces(namespace: string): string[]; // e.g. 'chart' -> ['point']; '' -> top-level namespaces
+    bare(): RefEntry[]; // namespace === '' and kind in function|variable|constant
     byKind(kind: EntryKind): RefEntry[];
     url(entry: RefEntry): string;
-    static baseType(qualified: string): string;                  // 'series float' -> 'float', 'series int/float' -> 'float'
+    static baseType(qualified: string): string; // 'series float' -> 'float', 'series int/float' -> 'float'
   }
-  function loadReference(): ReferenceIndex;                      // lazy singleton over the bundled JSON
+  function loadReference(): ReferenceIndex; // lazy singleton over the bundled JSON
   ```
 
 - [ ] **Step 1: Write the failing test `tests/core/reference.test.ts`**
@@ -616,7 +676,12 @@ describe('ReferenceIndex', () => {
   it('prefers the function when a name is both function and variable', () => {
     expect(ref.get('time')?.kind).toBe('function');
     expect(ref.get('time', 'variable')?.kind).toBe('variable');
-    expect(ref.getAll('time').map((e) => e.kind).sort()).toEqual(['function', 'variable']);
+    expect(
+      ref
+        .getAll('time')
+        .map((e) => e.kind)
+        .sort(),
+    ).toEqual(['function', 'variable']);
   });
 
   it('lists namespace members and child namespaces', () => {
@@ -790,16 +855,29 @@ git commit -m "Add reference index over the scraped v6 documentation"
 ### Task 4: Tokenizer
 
 **Files:**
+
 - Create: `src/extension/core/tokenizer.ts`, `tests/core/tokenizer.test.ts`
 
 **Interfaces:**
+
 - Produces:
+
   ```ts
   type TokenKind = 'comment' | 'string' | 'number' | 'ident' | 'op' | 'open' | 'close' | 'comma' | 'ws';
-  interface Token { kind: TokenKind; start: number; end: number; text: string; line: number }
-  interface TokenizedLine { tokens: Token[]; depthAtStart: number; continuesString: boolean }
+  interface Token {
+    kind: TokenKind;
+    start: number;
+    end: number;
+    text: string;
+    line: number;
+  }
+  interface TokenizedLine {
+    tokens: Token[];
+    depthAtStart: number;
+    continuesString: boolean;
+  }
   function tokenize(text: string): TokenizedLine[];
-  function tokenAt(tokens: Token[], col: number): Token | undefined;   // token with start <= col < end, else the token ending exactly at col
+  function tokenAt(tokens: Token[], col: number): Token | undefined; // token with start <= col < end, else the token ending exactly at col
   function isInStringOrComment(line: TokenizedLine, col: number): boolean;
   function wordAt(lineText: string, col: number): { text: string; start: number; end: number } | null; // dotted identifier around col
   ```
@@ -810,18 +888,37 @@ git commit -m "Add reference index over the scraped v6 documentation"
 import { describe, expect, it } from 'vitest';
 import { isInStringOrComment, tokenAt, tokenize, wordAt } from '../../src/extension/core/tokenizer';
 
-const kinds = (line: string) => tokenize(line)[0]!.tokens.filter((t) => t.kind !== 'ws').map((t) => `${t.kind}:${t.text}`);
+const kinds = (line: string) =>
+  tokenize(line)[0]!
+    .tokens.filter((t) => t.kind !== 'ws')
+    .map((t) => `${t.kind}:${t.text}`);
 
 describe('tokenize', () => {
   it('splits a plot call', () => {
     expect(kinds('plot(ta.sma(close, 14), color = #ff0000aa)')).toEqual([
-      'ident:plot', 'open:(', 'ident:ta.sma', 'open:(', 'ident:close', 'comma:,', 'number:14', 'close:)',
-      'comma:,', 'ident:color', 'op:=', 'number:#ff0000aa', 'close:)',
+      'ident:plot',
+      'open:(',
+      'ident:ta.sma',
+      'open:(',
+      'ident:close',
+      'comma:,',
+      'number:14',
+      'close:)',
+      'comma:,',
+      'ident:color',
+      'op:=',
+      'number:#ff0000aa',
+      'close:)',
     ]);
   });
 
   it('keeps strings and comments whole', () => {
-    expect(kinds('x = "a // not comment" // real')).toEqual(['ident:x', 'op:=', 'string:"a // not comment"', 'comment:// real']);
+    expect(kinds('x = "a // not comment" // real')).toEqual([
+      'ident:x',
+      'op:=',
+      'string:"a // not comment"',
+      'comment:// real',
+    ]);
     expect(kinds("s = 'it\\'s'")).toEqual(['ident:s', 'op:=', "string:'it\\'s'"]);
   });
 
@@ -838,7 +935,17 @@ describe('tokenize', () => {
   });
 
   it('recognizes multi-character operators', () => {
-    expect(kinds('a := b == c ? d => e')).toEqual(['ident:a', 'op::=', 'ident:b', 'op:==', 'ident:c', 'op:?', 'ident:d', 'op:=>', 'ident:e']);
+    expect(kinds('a := b == c ? d => e')).toEqual([
+      'ident:a',
+      'op::=',
+      'ident:b',
+      'op:==',
+      'ident:c',
+      'op:?',
+      'ident:d',
+      'op:=>',
+      'ident:e',
+    ]);
   });
 
   it('tells strings and comments apart from code', () => {
@@ -885,7 +992,30 @@ export interface TokenizedLine {
 
 const IDENT = /[A-Za-z_][A-Za-z0-9_]*(?:\.[A-Za-z_][A-Za-z0-9_]*)*/y;
 const NUMBER = /#[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?|(?:\d+\.\d*|\.\d+|\d+)(?:[eE][+-]?\d+)?/y;
-const OPS = ['=>', ':=', '==', '!=', '<=', '>=', '+=', '-=', '*=', '/=', '%=', '?', ':', '+', '-', '*', '/', '%', '=', '<', '>', '!'];
+const OPS = [
+  '=>',
+  ':=',
+  '==',
+  '!=',
+  '<=',
+  '>=',
+  '+=',
+  '-=',
+  '*=',
+  '/=',
+  '%=',
+  '?',
+  ':',
+  '+',
+  '-',
+  '*',
+  '/',
+  '%',
+  '=',
+  '<',
+  '>',
+  '!',
+];
 
 export function tokenize(text: string): TokenizedLine[] {
   const lines = text.split(/\r?\n/);
@@ -1002,7 +1132,8 @@ export function tokenAt(tokens: Token[], col: number): Token | undefined {
 }
 
 export function isInStringOrComment(line: TokenizedLine, col: number): boolean {
-  const t = line.tokens.find((t) => t.start <= col && col < t.end) ?? line.tokens.find((t) => t.start < col && col <= t.end);
+  const t =
+    line.tokens.find((t) => t.start <= col && col < t.end) ?? line.tokens.find((t) => t.start < col && col <= t.end);
   if (!t) return line.continuesString && line.tokens.length === 0;
   return t.kind === 'string' || t.kind === 'comment';
 }
@@ -1039,26 +1170,102 @@ git commit -m "Add line tokenizer for Pine Script"
 ### Task 5: Document model
 
 **Files:**
+
 - Create: `src/extension/core/document-model.ts`, `tests/core/document-model.test.ts`, `tests/core/fixtures/library.pine`, `tests/core/fixtures/consumer.pine`
 
 **Interfaces:**
+
 - Consumes: `tokenize` from Task 4.
 - Produces:
+
   ```ts
-  interface LineRange { start: number; end: number }             // inclusive line numbers
-  interface Annotations { function: string | null; description: string | null; params: Record<string, string>; returns: string | null; type: string | null; fields: Record<string, string>; enum: string | null; raw: string[] }
-  interface ParamDecl { name: string; type: string | null; default: string | null }
-  interface FunctionSymbol { kind: 'function'; name: string; isMethod: boolean; isExport: boolean; params: ParamDecl[]; docs: Annotations; line: number; range: LineRange }
-  interface FieldDecl { name: string; type: string; default: string | null }
-  interface TypeSymbol { kind: 'type'; name: string; isExport: boolean; fields: FieldDecl[]; docs: Annotations; line: number; range: LineRange }
-  interface EnumMember { name: string; title: string | null }
-  interface EnumSymbol { kind: 'enum'; name: string; isExport: boolean; members: EnumMember[]; docs: Annotations; line: number; range: LineRange }
-  interface VariableSymbol { kind: 'variable'; name: string; declaredType: string | null; qualifier: 'var' | 'varip' | null; initializer: string | null; line: number; column: number; scope: LineRange }
-  interface ImportDecl { owner: string; name: string; version: string; alias: string | null; line: number }
-  interface DocumentModel { version: number | null; scriptKind: 'indicator' | 'strategy' | 'library' | null; libraryTitle: string | null; imports: ImportDecl[]; functions: FunctionSymbol[]; types: TypeSymbol[]; enums: EnumSymbol[]; variables: VariableSymbol[]; lineCount: number }
+  interface LineRange {
+    start: number;
+    end: number;
+  } // inclusive line numbers
+  interface Annotations {
+    function: string | null;
+    description: string | null;
+    params: Record<string, string>;
+    returns: string | null;
+    type: string | null;
+    fields: Record<string, string>;
+    enum: string | null;
+    raw: string[];
+  }
+  interface ParamDecl {
+    name: string;
+    type: string | null;
+    default: string | null;
+  }
+  interface FunctionSymbol {
+    kind: 'function';
+    name: string;
+    isMethod: boolean;
+    isExport: boolean;
+    params: ParamDecl[];
+    docs: Annotations;
+    line: number;
+    range: LineRange;
+  }
+  interface FieldDecl {
+    name: string;
+    type: string;
+    default: string | null;
+  }
+  interface TypeSymbol {
+    kind: 'type';
+    name: string;
+    isExport: boolean;
+    fields: FieldDecl[];
+    docs: Annotations;
+    line: number;
+    range: LineRange;
+  }
+  interface EnumMember {
+    name: string;
+    title: string | null;
+  }
+  interface EnumSymbol {
+    kind: 'enum';
+    name: string;
+    isExport: boolean;
+    members: EnumMember[];
+    docs: Annotations;
+    line: number;
+    range: LineRange;
+  }
+  interface VariableSymbol {
+    kind: 'variable';
+    name: string;
+    declaredType: string | null;
+    qualifier: 'var' | 'varip' | null;
+    initializer: string | null;
+    line: number;
+    column: number;
+    scope: LineRange;
+  }
+  interface ImportDecl {
+    owner: string;
+    name: string;
+    version: string;
+    alias: string | null;
+    line: number;
+  }
+  interface DocumentModel {
+    version: number | null;
+    scriptKind: 'indicator' | 'strategy' | 'library' | null;
+    libraryTitle: string | null;
+    imports: ImportDecl[];
+    functions: FunctionSymbol[];
+    types: TypeSymbol[];
+    enums: EnumSymbol[];
+    variables: VariableSymbol[];
+    lineCount: number;
+  }
   type DeclSymbol = FunctionSymbol | TypeSymbol | EnumSymbol;
   function buildModel(text: string): DocumentModel;
-  function declarationAt(model: DocumentModel, line: number): DeclSymbol | null;   // header line only
+  function declarationAt(model: DocumentModel, line: number): DeclSymbol | null; // header line only
   function visibleVariables(model: DocumentModel, line: number): VariableSymbol[];
   function emptyAnnotations(): Annotations;
   ```
@@ -1204,7 +1411,11 @@ describe('buildModel on a consumer script', () => {
 
   it('reads variable declarations with types, qualifiers and tuples', () => {
     const byName = Object.fromEntries(m.variables.map((v) => [v.name, v]));
-    expect(byName.length).toMatchObject({ declaredType: null, qualifier: null, initializer: 'input.int(14, "Length")' });
+    expect(byName.length).toMatchObject({
+      declaredType: null,
+      qualifier: null,
+      initializer: 'input.int(14, "Length")',
+    });
     expect(byName.acc).toMatchObject({ declaredType: 'float', qualifier: 'var', initializer: 'na' });
     expect(byName.dc).toMatchObject({ initializer: null });
     expect(byName.up).toMatchObject({ initializer: null });
@@ -1390,7 +1601,15 @@ export function buildModel(text: string): DocumentModel {
         const f = stripComment(lines[j]!, tokenLines[j]!).trim().match(RE_FIELD);
         if (f) fields.push({ name: f[2]!, type: f[1]!, default: f[3]?.trim() ?? null });
       }
-      model.types.push({ kind: 'type', name: typeMatch[2]!, isExport: !!typeMatch[1], fields, docs: annotationsAbove(lines, i), line: i, range });
+      model.types.push({
+        kind: 'type',
+        name: typeMatch[2]!,
+        isExport: !!typeMatch[1],
+        fields,
+        docs: annotationsAbove(lines, i),
+        line: i,
+        range,
+      });
       i = range.end;
       continue;
     }
@@ -1403,7 +1622,15 @@ export function buildModel(text: string): DocumentModel {
         const m = stripComment(lines[j]!, tokenLines[j]!).trim().match(RE_ENUM_MEMBER);
         if (m) members.push({ name: m[1]!, title: m[2]?.trim() ?? null });
       }
-      model.enums.push({ kind: 'enum', name: enumMatch[2]!, isExport: !!enumMatch[1], members, docs: annotationsAbove(lines, i), line: i, range });
+      model.enums.push({
+        kind: 'enum',
+        name: enumMatch[2]!,
+        isExport: !!enumMatch[1],
+        members,
+        docs: annotationsAbove(lines, i),
+        line: i,
+        range,
+      });
       i = range.end;
       continue;
     }
@@ -1433,8 +1660,20 @@ export function buildModel(text: string): DocumentModel {
 
     const tuple = code.match(RE_TUPLE);
     if (tuple) {
-      for (const name of tuple[1]!.split(',').map((s) => s.trim()).filter(Boolean)) {
-        model.variables.push({ kind: 'variable', name, declaredType: null, qualifier: null, initializer: null, line: i, column: raw.indexOf(name), scope: { start: i, end: lines.length - 1 } });
+      for (const name of tuple[1]!
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)) {
+        model.variables.push({
+          kind: 'variable',
+          name,
+          declaredType: null,
+          qualifier: null,
+          initializer: null,
+          line: i,
+          column: raw.indexOf(name),
+          scope: { start: i, end: lines.length - 1 },
+        });
       }
       continue;
     }
@@ -1463,14 +1702,37 @@ export function buildModel(text: string): DocumentModel {
 }
 
 export function declarationAt(model: DocumentModel, line: number): DeclSymbol | null {
-  return model.functions.find((f) => f.line === line) ?? model.types.find((t) => t.line === line) ?? model.enums.find((e) => e.line === line) ?? null;
+  return (
+    model.functions.find((f) => f.line === line) ??
+    model.types.find((t) => t.line === line) ??
+    model.enums.find((e) => e.line === line) ??
+    null
+  );
 }
 
 export function visibleVariables(model: DocumentModel, line: number): VariableSymbol[] {
   return model.variables.filter((v) => v.scope.start <= line && line <= v.scope.end);
 }
 
-const KEYWORDS = new Set(['if', 'else', 'for', 'while', 'switch', 'once', 'return', 'and', 'or', 'not', 'import', 'export', 'type', 'enum', 'method', 'var', 'varip']);
+const KEYWORDS = new Set([
+  'if',
+  'else',
+  'for',
+  'while',
+  'switch',
+  'once',
+  'return',
+  'and',
+  'or',
+  'not',
+  'import',
+  'export',
+  'type',
+  'enum',
+  'method',
+  'var',
+  'varip',
+]);
 
 function isKeyword(name: string): boolean {
   return KEYWORDS.has(name);
@@ -1495,7 +1757,11 @@ function blockRange(lines: string[], line: number, indent: number): LineRange {
 }
 
 // Joins a function header whose parameter list spans several lines. Returns null when no `)` closes it within 20 lines.
-function joinHeader(lines: string[], tokenLines: TokenizedLine[], start: number): { text: string; endLine: number } | null {
+function joinHeader(
+  lines: string[],
+  tokenLines: TokenizedLine[],
+  start: number,
+): { text: string; endLine: number } | null {
   let text = '';
   for (let j = start; j < Math.min(lines.length, start + 20); j++) {
     text += (j === start ? '' : ' ') + stripComment(lines[j]!, tokenLines[j]!).trim();
@@ -1542,7 +1808,9 @@ export function annotationsAbove(lines: string[], line: number): Annotations {
     if (!t.startsWith('//')) break;
     block.unshift(t);
   }
-  let lastKey: { kind: 'params' | 'fields'; name: string } | 'function' | 'description' | 'returns' | 'type' | 'enum' | null = null;
+  let lastKey:
+    { kind: 'params' | 'fields'; name: string } | 'function' | 'description' | 'returns' | 'type' | 'enum' | null =
+    null;
   for (const text of block) {
     const m = text.match(/^\/\/\s*@(\w+)\s*(.*)$/);
     if (!m) {
@@ -1575,7 +1843,8 @@ function appendDoc(docs: Annotations, key: NonNullable<ReturnType<typeof keyOf>>
   else docs[key.kind][key.name] = docs[key.kind][key.name] ? `${docs[key.kind][key.name]} ${text}` : text;
 }
 
-function keyOf(): { kind: 'params' | 'fields'; name: string } | 'function' | 'description' | 'returns' | 'type' | 'enum' | null {
+function keyOf():
+  { kind: 'params' | 'fields'; name: string } | 'function' | 'description' | 'returns' | 'type' | 'enum' | null {
   return null;
 }
 ```
@@ -1600,13 +1869,23 @@ git commit -m "Add document model for functions, types, enums, variables and imp
 ### Task 6: Call resolver and completion context
 
 **Files:**
+
 - Create: `src/extension/core/call-resolver.ts`, `src/extension/core/context.ts`, `tests/core/call-resolver.test.ts`, `tests/core/context.test.ts`
 
 **Interfaces:**
+
 - Consumes: `tokenize`, `TokenizedLine`, `Token` (Task 4).
 - Produces:
+
   ```ts
-  interface CallInfo { name: string; argIndex: number; namedArg: string | null; usedNamedArgs: string[]; line: number; column: number }
+  interface CallInfo {
+    name: string;
+    argIndex: number;
+    namedArg: string | null;
+    usedNamedArgs: string[];
+    line: number;
+    column: number;
+  }
   function enclosingCall(tokenLines: TokenizedLine[], line: number, col: number): CallInfo | null;
   type CompletionContext =
     | { kind: 'none' }
@@ -1615,7 +1894,12 @@ git commit -m "Add document model for functions, types, enums, variables and imp
     | { kind: 'member'; receiver: string; prefix: string }
     | { kind: 'named-arg'; call: CallInfo; prefix: string }
     | { kind: 'identifier'; prefix: string };
-  function completionContext(tokenLines: TokenizedLine[], lineText: string, line: number, col: number): CompletionContext;
+  function completionContext(
+    tokenLines: TokenizedLine[],
+    lineText: string,
+    line: number,
+    col: number,
+  ): CompletionContext;
   ```
 
 - [ ] **Step 1: Write the failing tests**
@@ -1641,7 +1925,12 @@ describe('enclosingCall', () => {
   });
 
   it('detects named arguments and remembers used ones', () => {
-    expect(at('plot(close, title = "x", color = ')).toMatchObject({ name: 'plot', argIndex: 2, namedArg: 'color', usedNamedArgs: ['title', 'color'] });
+    expect(at('plot(close, title = "x", color = ')).toMatchObject({
+      name: 'plot',
+      argIndex: 2,
+      namedArg: 'color',
+      usedNamedArgs: ['title', 'color'],
+    });
   });
 
   it('ignores commas inside strings and brackets', () => {
@@ -1793,7 +2082,8 @@ export function enclosingCall(tokenLines: TokenizedLine[], line: number, col: nu
     if (seg[0]?.kind === 'ident' && seg[1]?.kind === 'op' && seg[1].text === '=') usedNamedArgs.push(seg[0].text);
   }
   const current = args.at(-1)!;
-  const namedArg = current[0]?.kind === 'ident' && current[1]?.kind === 'op' && current[1].text === '=' ? current[0].text : null;
+  const namedArg =
+    current[0]?.kind === 'ident' && current[1]?.kind === 'op' && current[1].text === '=' ? current[0].text : null;
 
   return { name: callee.text, argIndex: commas, namedArg, usedNamedArgs, line: callee.line, column: callee.start };
 }
@@ -1818,7 +2108,12 @@ const RE_IMPORT = /^\s*import\s+([\w\-/.]*)$/;
 const RE_MEMBER = /([A-Za-z_][\w.]*)\.(\w*)$/;
 const RE_WORD = /(\w*)$/;
 
-export function completionContext(tokenLines: TokenizedLine[], lineText: string, line: number, col: number): CompletionContext {
+export function completionContext(
+  tokenLines: TokenizedLine[],
+  lineText: string,
+  line: number,
+  col: number,
+): CompletionContext {
   const before = lineText.slice(0, col);
   const annotation = before.match(RE_ANNOTATION);
   if (annotation) return { kind: 'annotation', prefix: annotation[1]! };
@@ -1861,15 +2156,18 @@ git commit -m "Resolve enclosing calls and completion context at a cursor positi
 ### Task 7: Markdown builders
 
 **Files:**
+
 - Create: `src/extension/core/markdown.ts`, `tests/core/markdown.test.ts`
 
 **Interfaces:**
+
 - Consumes: `RefEntry`, `RefOverload`, `ReferenceIndex` (Task 3); `FunctionSymbol`, `TypeSymbol`, `EnumSymbol`, `ParamDecl` (Task 5).
 - Produces:
+
   ```ts
   function entryMarkdown(entry: RefEntry, ref: ReferenceIndex, overloadIndex?: number): string;
-  function entryDetail(entry: RefEntry): string;                       // one line: syntax or "kind · type"
-  function functionSignatureLabel(fn: FunctionSymbol): string;         // "weighted(float a, float b, float w = 0.5)"
+  function entryDetail(entry: RefEntry): string; // one line: syntax or "kind · type"
+  function functionSignatureLabel(fn: FunctionSymbol): string; // "weighted(float a, float b, float w = 0.5)"
   function functionMarkdown(fn: FunctionSymbol, origin?: string): string;
   function typeMarkdown(t: TypeSymbol, origin?: string): string;
   function enumMarkdown(e: EnumSymbol, origin?: string): string;
@@ -1877,10 +2175,15 @@ git commit -m "Resolve enclosing calls and completion context at a cursor positi
 
 - [ ] **Step 1: Write the failing test `tests/core/markdown.test.ts`**
 
-```ts
+````ts
 import { describe, expect, it } from 'vitest';
 import { buildModel } from '../../src/extension/core/document-model';
-import { entryDetail, entryMarkdown, functionMarkdown, functionSignatureLabel } from '../../src/extension/core/markdown';
+import {
+  entryDetail,
+  entryMarkdown,
+  functionMarkdown,
+  functionSignatureLabel,
+} from '../../src/extension/core/markdown';
 import { loadReference } from '../../src/extension/core/reference';
 
 describe('markdown', () => {
@@ -1912,7 +2215,7 @@ describe('markdown', () => {
     expect(md).toContain('**Returns** Sum.');
   });
 });
-```
+````
 
 - [ ] **Step 2: Run to verify it fails**
 
@@ -1921,7 +2224,7 @@ Expected: FAIL, module not found.
 
 - [ ] **Step 3: Implement `src/extension/core/markdown.ts`**
 
-```ts
+````ts
 import type { EnumSymbol, FunctionSymbol, ParamDecl, TypeSymbol } from './document-model';
 import type { RefEntry, ReferenceIndex } from './reference';
 
@@ -1941,16 +2244,22 @@ export function entryMarkdown(entry: RefEntry, ref: ReferenceIndex, overloadInde
     parts.push(fence(overload?.syntax ?? `${entry.name}()`) + others);
     if (entry.description) parts.push(entry.description);
     if (overload && overload.params.length) {
-      parts.push('**Parameters**\n\n' + overload.params.map((p) => `- \`${p.name}\` (${p.type}) ${p.description}`).join('\n'));
+      parts.push(
+        '**Parameters**\n\n' + overload.params.map((p) => `- \`${p.name}\` (${p.type}) ${p.description}`).join('\n'),
+      );
     }
     if (overload?.returns?.description || overload?.returns?.type) {
       parts.push(`**Returns** ${overload.returns.description || overload.returns.type}`);
     }
   } else {
-    const label = entry.kind === 'type' ? `(type) ${entry.name}` : `(${entry.kind}) ${entry.name}${entry.type ? `: ${entry.type}` : ''}`;
+    const label =
+      entry.kind === 'type'
+        ? `(type) ${entry.name}`
+        : `(${entry.kind}) ${entry.name}${entry.type ? `: ${entry.type}` : ''}`;
     parts.push(fence(label));
     if (entry.description) parts.push(entry.description);
-    if (entry.fields.length) parts.push('**Fields**\n\n' + entry.fields.map((f) => `- \`${f.name}\` (${f.type}) ${f.description}`).join('\n'));
+    if (entry.fields.length)
+      parts.push('**Fields**\n\n' + entry.fields.map((f) => `- \`${f.name}\` (${f.type}) ${f.description}`).join('\n'));
     if (entry.kind === 'keyword' || entry.kind === 'operator') {
       const syntax = entry.overloads[0]?.syntax;
       if (syntax) parts.push(fence(syntax));
@@ -1974,7 +2283,8 @@ export function functionMarkdown(fn: FunctionSymbol, origin?: string): string {
   if (origin) parts.push(`_${origin}_`);
   if (fn.docs.function || fn.docs.description) parts.push(fn.docs.function ?? fn.docs.description!);
   const documented = fn.params.filter((p) => fn.docs.params[p.name]);
-  if (documented.length) parts.push('**Parameters**\n\n' + documented.map((p) => `- \`${p.name}\` ${fn.docs.params[p.name]}`).join('\n'));
+  if (documented.length)
+    parts.push('**Parameters**\n\n' + documented.map((p) => `- \`${p.name}\` ${fn.docs.params[p.name]}`).join('\n'));
   if (fn.docs.returns) parts.push(`**Returns** ${fn.docs.returns}`);
   return parts.join('\n\n');
 }
@@ -1984,7 +2294,12 @@ export function typeMarkdown(t: TypeSymbol, origin?: string): string {
   if (origin) parts.push(`_${origin}_`);
   if (t.docs.type || t.docs.description) parts.push(t.docs.type ?? t.docs.description!);
   if (t.fields.length) {
-    parts.push('**Fields**\n\n' + t.fields.map((f) => `- \`${f.name}\` (${f.type})${t.docs.fields[f.name] ? ` ${t.docs.fields[f.name]}` : ''}`).join('\n'));
+    parts.push(
+      '**Fields**\n\n' +
+        t.fields
+          .map((f) => `- \`${f.name}\` (${f.type})${t.docs.fields[f.name] ? ` ${t.docs.fields[f.name]}` : ''}`)
+          .join('\n'),
+    );
   }
   return parts.join('\n\n');
 }
@@ -1994,11 +2309,19 @@ export function enumMarkdown(e: EnumSymbol, origin?: string): string {
   if (origin) parts.push(`_${origin}_`);
   if (e.docs.enum || e.docs.description) parts.push(e.docs.enum ?? e.docs.description!);
   if (e.members.length) {
-    parts.push('**Members**\n\n' + e.members.map((m) => `- \`${m.name}\`${m.title ? ` ${m.title}` : ''}${e.docs.fields[m.name] ? ` ${e.docs.fields[m.name]}` : ''}`).join('\n'));
+    parts.push(
+      '**Members**\n\n' +
+        e.members
+          .map(
+            (m) =>
+              `- \`${m.name}\`${m.title ? ` ${m.title}` : ''}${e.docs.fields[m.name] ? ` ${e.docs.fields[m.name]}` : ''}`,
+          )
+          .join('\n'),
+    );
   }
   return parts.join('\n\n');
 }
-```
+````
 
 - [ ] **Step 4: Run to verify it passes**
 
@@ -2018,23 +2341,39 @@ git commit -m "Build hover and completion documentation as markdown"
 ### Task 8: Settings, document cache, and the four read-only providers
 
 **Files:**
+
 - Create: `src/extension/vscode/settings.ts`, `src/extension/vscode/document-cache.ts`, `src/extension/providers/completion.ts`, `src/extension/providers/hover.ts`, `src/extension/providers/signature-help.ts`, `src/extension/providers/document-symbol.ts`
 - Modify: `src/extension/extension.ts`, `package.json` (configuration contribution)
 
 **Interfaces:**
+
 - Consumes: everything from Tasks 3–7.
 - Produces:
+
   ```ts
   // settings.ts
-  interface Settings { completion: boolean; hover: boolean; signatureHelp: boolean; librariesInclude: string; librariesRemote: boolean; diagnosticsRemote: boolean }
+  interface Settings {
+    completion: boolean;
+    hover: boolean;
+    signatureHelp: boolean;
+    librariesInclude: string;
+    librariesRemote: boolean;
+    diagnosticsRemote: boolean;
+  }
   function getSettings(): Settings;
   // document-cache.ts
-  interface Analysis { model: DocumentModel; tokens: TokenizedLine[]; lines: string[] }
-  function analyze(document: vscode.TextDocument): Analysis;      // cached by uri+version, 20 documents LRU
+  interface Analysis {
+    model: DocumentModel;
+    tokens: TokenizedLine[];
+    lines: string[];
+  }
+  function analyze(document: vscode.TextDocument): Analysis; // cached by uri+version, 20 documents LRU
   // extension.ts
-  function registerProviders(context): void;                       // disposes and re-registers on configuration change
+  function registerProviders(context): void; // disposes and re-registers on configuration change
   ```
+
   Library-aware parts of completion and hover call `LibraryIndex` from Task 12; until then they use an interface stub `libraries: LibraryLookup` with `aliasExports(alias, model)` returning `[]`. Define that interface here:
+
   ```ts
   interface LibraryLookup {
     forImport(imp: ImportDecl): Promise<LibraryInfo | null>;
@@ -2042,9 +2381,21 @@ git commit -m "Build hover and completion documentation as markdown"
     search(prefix: string): Promise<LibraryInfo[]>;
   }
   ```
+
   and `LibraryInfo` in `core/libraries.ts` (create the type file now; Task 12 fills the logic):
+
   ```ts
-  interface LibraryInfo { id: string; title: string; owner: string | null; version: string | null; description: string | null; functions: FunctionSymbol[]; types: TypeSymbol[]; enums: EnumSymbol[]; source: 'local' | 'remote' }
+  interface LibraryInfo {
+    id: string;
+    title: string;
+    owner: string | null;
+    version: string | null;
+    description: string | null;
+    functions: FunctionSymbol[];
+    types: TypeSymbol[];
+    enums: EnumSymbol[];
+    source: 'local' | 'remote';
+  }
   ```
 
 - [ ] **Step 1: Add the configuration contribution to `package.json`**
@@ -2165,12 +2516,64 @@ import { completionContext } from '../core/context';
 import type { DocumentModel, EnumSymbol, FunctionSymbol, TypeSymbol } from '../core/document-model';
 import { visibleVariables } from '../core/document-model';
 import type { LibraryInfo, LibraryLookup } from '../core/libraries';
-import { entryDetail, entryMarkdown, enumMarkdown, functionMarkdown, functionSignatureLabel, typeMarkdown } from '../core/markdown';
+import {
+  entryDetail,
+  entryMarkdown,
+  enumMarkdown,
+  functionMarkdown,
+  functionSignatureLabel,
+  typeMarkdown,
+} from '../core/markdown';
 import type { RefEntry, ReferenceIndex } from '../core/reference';
 import { analyze } from '../vscode/document-cache';
 
-const KEYWORDS = ['and', 'or', 'not', 'if', 'else', 'for', 'to', 'by', 'in', 'while', 'switch', 'once', 'var', 'varip', 'import', 'export', 'method', 'type', 'enum', 'true', 'false', 'na', 'series', 'simple', 'const', 'input'];
-const TYPES = ['int', 'float', 'bool', 'string', 'color', 'line', 'label', 'box', 'table', 'linefill', 'polyline', 'array', 'matrix', 'map', 'chart.point', 'footprint', 'volume_row'];
+const KEYWORDS = [
+  'and',
+  'or',
+  'not',
+  'if',
+  'else',
+  'for',
+  'to',
+  'by',
+  'in',
+  'while',
+  'switch',
+  'once',
+  'var',
+  'varip',
+  'import',
+  'export',
+  'method',
+  'type',
+  'enum',
+  'true',
+  'false',
+  'na',
+  'series',
+  'simple',
+  'const',
+  'input',
+];
+const TYPES = [
+  'int',
+  'float',
+  'bool',
+  'string',
+  'color',
+  'line',
+  'label',
+  'box',
+  'table',
+  'linefill',
+  'polyline',
+  'array',
+  'matrix',
+  'map',
+  'chart.point',
+  'footprint',
+  'volume_row',
+];
 
 const KIND: Record<RefEntry['kind'], vscode.CompletionItemKind> = {
   function: vscode.CompletionItemKind.Function,
@@ -2188,7 +2591,10 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
     private readonly libraries: LibraryLookup,
   ) {}
 
-  async provideCompletionItems(document: vscode.TextDocument, position: vscode.Position): Promise<vscode.CompletionItem[]> {
+  async provideCompletionItems(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+  ): Promise<vscode.CompletionItem[]> {
     const { model, tokens, lines } = analyze(document);
     const ctx = completionContext(tokens, lines[position.line] ?? '', position.line, position.character);
     switch (ctx.kind) {
@@ -2201,13 +2607,19 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
       case 'member':
         return this.memberItems(ctx.receiver, model);
       case 'named-arg':
-        return [...this.namedArgItems(ctx.call.name, ctx.call.usedNamedArgs, model), ...this.identifierItems(model, position.line)];
+        return [
+          ...this.namedArgItems(ctx.call.name, ctx.call.usedNamedArgs, model),
+          ...this.identifierItems(model, position.line),
+        ];
       case 'identifier':
         return this.identifierItems(model, position.line);
     }
   }
 
-  private entryItem(entry: RefEntry, label = entry.name.includes('.') ? entry.name.slice(entry.name.lastIndexOf('.') + 1) : entry.name): vscode.CompletionItem {
+  private entryItem(
+    entry: RefEntry,
+    label = entry.name.includes('.') ? entry.name.slice(entry.name.lastIndexOf('.') + 1) : entry.name,
+  ): vscode.CompletionItem {
     const item = new vscode.CompletionItem(label, KIND[entry.kind]);
     item.detail = entryDetail(entry);
     item.documentation = new vscode.MarkdownString(entryMarkdown(entry, this.ref));
@@ -2259,10 +2671,14 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
       ctor.insertText = new vscode.SnippetString('new($1)');
       ctor.detail = `${type.name}.new(${type.fields.map((f) => f.name).join(', ')})`;
       items.push(ctor);
-      for (const f of type.fields) items.push(Object.assign(new vscode.CompletionItem(f.name, vscode.CompletionItemKind.Field), { detail: f.type }));
+      for (const f of type.fields)
+        items.push(
+          Object.assign(new vscode.CompletionItem(f.name, vscode.CompletionItemKind.Field), { detail: f.type }),
+        );
     }
     const en = model.enums.find((e) => e.name === receiver);
-    if (en) for (const m of en.members) items.push(new vscode.CompletionItem(m.name, vscode.CompletionItemKind.EnumMember));
+    if (en)
+      for (const m of en.members) items.push(new vscode.CompletionItem(m.name, vscode.CompletionItemKind.EnumMember));
 
     const imp = model.imports.find((i) => i.alias === receiver);
     if (imp) {
@@ -2305,7 +2721,10 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
 }
 
 export function userFunctionItem(f: FunctionSymbol, origin?: string): vscode.CompletionItem {
-  const item = new vscode.CompletionItem(f.name, f.isMethod ? vscode.CompletionItemKind.Method : vscode.CompletionItemKind.Function);
+  const item = new vscode.CompletionItem(
+    f.name,
+    f.isMethod ? vscode.CompletionItemKind.Method : vscode.CompletionItemKind.Function,
+  );
   item.detail = functionSignatureLabel(f);
   item.documentation = new vscode.MarkdownString(functionMarkdown(f, origin));
   item.insertText = new vscode.SnippetString(`${f.name}($1)`);
@@ -2337,7 +2756,7 @@ export function libraryExportItems(lib: LibraryInfo): vscode.CompletionItem[] {
 
 - [ ] **Step 6: Create `src/extension/providers/hover.ts`**
 
-```ts
+````ts
 import * as vscode from 'vscode';
 import { visibleVariables } from '../core/document-model';
 import type { LibraryLookup } from '../core/libraries';
@@ -2361,8 +2780,18 @@ export class PineHoverProvider implements vscode.HoverProvider {
     if (imp) {
       const lib = await this.libraries.forImport(imp);
       if (!lib) return null;
-      const exports = [...lib.functions.map((f) => `\`${f.name}()\``), ...lib.types.map((t) => `\`${t.name}\``), ...lib.enums.map((e) => `\`${e.name}\``)];
-      const md = [`**${lib.title}** _(${lib.source === 'local' ? 'workspace' : 'TradingView'})_`, lib.description ?? '', exports.length ? `Exports: ${exports.join(', ')}` : ''].filter(Boolean).join('\n\n');
+      const exports = [
+        ...lib.functions.map((f) => `\`${f.name}()\``),
+        ...lib.types.map((t) => `\`${t.name}\``),
+        ...lib.enums.map((e) => `\`${e.name}\``),
+      ];
+      const md = [
+        `**${lib.title}** _(${lib.source === 'local' ? 'workspace' : 'TradingView'})_`,
+        lib.description ?? '',
+        exports.length ? `Exports: ${exports.join(', ')}` : '',
+      ]
+        .filter(Boolean)
+        .join('\n\n');
       return new vscode.Hover(new vscode.MarkdownString(md));
     }
 
@@ -2396,7 +2825,9 @@ export class PineHoverProvider implements vscode.HoverProvider {
     }
 
     // User symbols.
-    const fn = model.functions.find((f) => f.name === word.text || (word.text.includes('.') && f.isMethod && word.text.endsWith(`.${f.name}`)));
+    const fn = model.functions.find(
+      (f) => f.name === word.text || (word.text.includes('.') && f.isMethod && word.text.endsWith(`.${f.name}`)),
+    );
     if (fn) return new vscode.Hover(new vscode.MarkdownString(functionMarkdown(fn)), range);
     const type = model.types.find((t) => t.name === word.text);
     if (type) return new vscode.Hover(new vscode.MarkdownString(typeMarkdown(type)), range);
@@ -2417,14 +2848,16 @@ export class PineHoverProvider implements vscode.HoverProvider {
       if (entries.length) {
         const preferred = this.ref.get(name)!;
         const others = entries.filter((e) => e !== preferred);
-        const text = [entryMarkdown(preferred, this.ref), ...others.map((e) => entryMarkdown(e, this.ref))].join('\n\n---\n\n');
+        const text = [entryMarkdown(preferred, this.ref), ...others.map((e) => entryMarkdown(e, this.ref))].join(
+          '\n\n---\n\n',
+        );
         return new vscode.Hover(new vscode.MarkdownString(text), range);
       }
     }
     return null;
   }
 }
-```
+````
 
 - [ ] **Step 7: Create `src/extension/providers/signature-help.ts`**
 
@@ -2443,7 +2876,10 @@ export class PineSignatureHelpProvider implements vscode.SignatureHelpProvider {
     private readonly libraries: LibraryLookup,
   ) {}
 
-  async provideSignatureHelp(document: vscode.TextDocument, position: vscode.Position): Promise<vscode.SignatureHelp | null> {
+  async provideSignatureHelp(
+    document: vscode.TextDocument,
+    position: vscode.Position,
+  ): Promise<vscode.SignatureHelp | null> {
     const { model, tokens } = analyze(document);
     const call = enclosingCall(tokens, position.line, position.character);
     if (!call) return null;
@@ -2453,7 +2889,9 @@ export class PineSignatureHelpProvider implements vscode.SignatureHelpProvider {
     if (entry) {
       for (const o of entry.overloads) {
         const sig = new vscode.SignatureInformation(o.syntax, new vscode.MarkdownString(entry.description));
-        sig.parameters = o.params.map((p) => new vscode.ParameterInformation(p.name, new vscode.MarkdownString(`(${p.type}) ${p.description}`)));
+        sig.parameters = o.params.map(
+          (p) => new vscode.ParameterInformation(p.name, new vscode.MarkdownString(`(${p.type}) ${p.description}`)),
+        );
         help.signatures.push(sig);
       }
     } else {
@@ -2468,14 +2906,21 @@ export class PineSignatureHelpProvider implements vscode.SignatureHelpProvider {
         if (!fn) {
           const type = model.types.find((t) => t.name === call.name.slice(0, dot));
           if (type && call.name.endsWith('.new')) {
-            const sig = new vscode.SignatureInformation(`${type.name}.new(${type.fields.map((f) => `${f.type} ${f.name}${f.default ? ` = ${f.default}` : ''}`).join(', ')})`);
+            const sig = new vscode.SignatureInformation(
+              `${type.name}.new(${type.fields.map((f) => `${f.type} ${f.name}${f.default ? ` = ${f.default}` : ''}`).join(', ')})`,
+            );
             sig.parameters = type.fields.map((f) => new vscode.ParameterInformation(f.name, type.docs.fields[f.name]));
             help.signatures.push(sig);
           }
         }
       }
       if (fn) {
-        const sig = new vscode.SignatureInformation(functionSignatureLabel(fn), new vscode.MarkdownString(origin ? `_from ${origin}_\n\n${fn.docs.function ?? ''}` : (fn.docs.function ?? '')));
+        const sig = new vscode.SignatureInformation(
+          functionSignatureLabel(fn),
+          new vscode.MarkdownString(
+            origin ? `_from ${origin}_\n\n${fn.docs.function ?? ''}` : (fn.docs.function ?? ''),
+          ),
+        );
         sig.parameters = fn.params.map((p) => new vscode.ParameterInformation(p.name, fn!.docs.params[p.name]));
         help.signatures.push(sig);
       }
@@ -2483,7 +2928,10 @@ export class PineSignatureHelpProvider implements vscode.SignatureHelpProvider {
     if (!help.signatures.length) return null;
 
     // Active signature: first whose parameter count covers the current argument; active parameter: named or positional.
-    help.activeSignature = Math.max(0, help.signatures.findIndex((s) => s.parameters.length > call.argIndex));
+    help.activeSignature = Math.max(
+      0,
+      help.signatures.findIndex((s) => s.parameters.length > call.argIndex),
+    );
     const active = help.signatures[help.activeSignature]!;
     const named = call.namedArg ? active.parameters.findIndex((p) => p.label === call.namedArg) : -1;
     help.activeParameter = named >= 0 ? named : Math.min(call.argIndex, Math.max(0, active.parameters.length - 1));
@@ -2505,21 +2953,67 @@ export class PineDocumentSymbolProvider implements vscode.DocumentSymbolProvider
     const lineRange = (start: number, end: number) => new vscode.Range(start, 0, end, lines[end]?.length ?? 0);
 
     for (const f of model.functions) {
-      symbols.push(new vscode.DocumentSymbol(f.name, f.isMethod ? 'method' : 'function', f.isMethod ? vscode.SymbolKind.Method : vscode.SymbolKind.Function, lineRange(f.range.start, f.range.end), lineRange(f.line, f.line)));
+      symbols.push(
+        new vscode.DocumentSymbol(
+          f.name,
+          f.isMethod ? 'method' : 'function',
+          f.isMethod ? vscode.SymbolKind.Method : vscode.SymbolKind.Function,
+          lineRange(f.range.start, f.range.end),
+          lineRange(f.line, f.line),
+        ),
+      );
     }
     for (const t of model.types) {
-      const s = new vscode.DocumentSymbol(t.name, 'type', vscode.SymbolKind.Struct, lineRange(t.range.start, t.range.end), lineRange(t.line, t.line));
-      s.children = t.fields.map((f, i) => new vscode.DocumentSymbol(f.name, f.type, vscode.SymbolKind.Field, lineRange(t.line + 1 + i, t.line + 1 + i), lineRange(t.line + 1 + i, t.line + 1 + i)));
+      const s = new vscode.DocumentSymbol(
+        t.name,
+        'type',
+        vscode.SymbolKind.Struct,
+        lineRange(t.range.start, t.range.end),
+        lineRange(t.line, t.line),
+      );
+      s.children = t.fields.map(
+        (f, i) =>
+          new vscode.DocumentSymbol(
+            f.name,
+            f.type,
+            vscode.SymbolKind.Field,
+            lineRange(t.line + 1 + i, t.line + 1 + i),
+            lineRange(t.line + 1 + i, t.line + 1 + i),
+          ),
+      );
       symbols.push(s);
     }
     for (const e of model.enums) {
-      const s = new vscode.DocumentSymbol(e.name, 'enum', vscode.SymbolKind.Enum, lineRange(e.range.start, e.range.end), lineRange(e.line, e.line));
-      s.children = e.members.map((m, i) => new vscode.DocumentSymbol(m.name, m.title ?? '', vscode.SymbolKind.EnumMember, lineRange(e.line + 1 + i, e.line + 1 + i), lineRange(e.line + 1 + i, e.line + 1 + i)));
+      const s = new vscode.DocumentSymbol(
+        e.name,
+        'enum',
+        vscode.SymbolKind.Enum,
+        lineRange(e.range.start, e.range.end),
+        lineRange(e.line, e.line),
+      );
+      s.children = e.members.map(
+        (m, i) =>
+          new vscode.DocumentSymbol(
+            m.name,
+            m.title ?? '',
+            vscode.SymbolKind.EnumMember,
+            lineRange(e.line + 1 + i, e.line + 1 + i),
+            lineRange(e.line + 1 + i, e.line + 1 + i),
+          ),
+      );
       symbols.push(s);
     }
     for (const v of model.variables) {
       if (model.functions.some((f) => v.line > f.line && v.line <= f.range.end)) continue; // locals stay out of the outline
-      symbols.push(new vscode.DocumentSymbol(v.name, v.declaredType ?? '', vscode.SymbolKind.Variable, lineRange(v.line, v.line), new vscode.Range(v.line, v.column, v.line, v.column + v.name.length)));
+      symbols.push(
+        new vscode.DocumentSymbol(
+          v.name,
+          v.declaredType ?? '',
+          vscode.SymbolKind.Variable,
+          lineRange(v.line, v.line),
+          new vscode.Range(v.line, v.column, v.line, v.column + v.name.length),
+        ),
+      );
     }
     return symbols.sort((a, b) => a.range.start.line - b.range.start.line);
   }
@@ -2564,10 +3058,24 @@ export function registerProviders(context: vscode.ExtensionContext, libraries: L
   const settings = getSettings();
   const ref = loadReference();
   if (settings.completion) {
-    providerDisposables.push(vscode.languages.registerCompletionItemProvider(SELECTOR, new PineCompletionProvider(ref, libraries), '.', '/', '@', '(', ','));
+    providerDisposables.push(
+      vscode.languages.registerCompletionItemProvider(
+        SELECTOR,
+        new PineCompletionProvider(ref, libraries),
+        '.',
+        '/',
+        '@',
+        '(',
+        ',',
+      ),
+    );
   }
-  if (settings.hover) providerDisposables.push(vscode.languages.registerHoverProvider(SELECTOR, new PineHoverProvider(ref, libraries)));
-  if (settings.signatureHelp) providerDisposables.push(vscode.languages.registerSignatureHelpProvider(SELECTOR, new PineSignatureHelpProvider(ref, libraries), '(', ','));
+  if (settings.hover)
+    providerDisposables.push(vscode.languages.registerHoverProvider(SELECTOR, new PineHoverProvider(ref, libraries)));
+  if (settings.signatureHelp)
+    providerDisposables.push(
+      vscode.languages.registerSignatureHelpProvider(SELECTOR, new PineSignatureHelpProvider(ref, libraries), '(', ','),
+    );
   context.subscriptions.push(...providerDisposables);
 }
 
@@ -2592,17 +3100,34 @@ git commit -m "Add completion, hover, signature help and outline providers"
 ### Task 9: Type inference and the "Add Type Annotations" command
 
 **Files:**
+
 - Create: `src/extension/core/type-inference.ts`, `src/extension/commands/add-type-annotations.ts`, `tests/core/type-inference.test.ts`
 - Modify: `src/extension/extension.ts`, `package.json` (commands, menus)
 
 **Interfaces:**
+
 - Consumes: `ReferenceIndex` (Task 3), `DocumentModel`, `VariableSymbol`, `visibleVariables` (Task 5), `tokenize` (Task 4).
 - Produces:
+
   ```ts
-  interface InferenceScope { ref: ReferenceIndex; model: DocumentModel; line: number; compilerTypes?: ReadonlyMap<string, string> }
-  function inferType(expr: string, scope: InferenceScope): string | null;   // base type or null
-  interface AnnotationEdit { line: number; column: number; insert: string }  // insert "float " before the name
-  function planTypeAnnotations(model: DocumentModel, ref: ReferenceIndex, lines: [number, number] | null, compilerTypes?: ReadonlyMap<string, string>): { edits: AnnotationEdit[]; skipped: string[] };
+  interface InferenceScope {
+    ref: ReferenceIndex;
+    model: DocumentModel;
+    line: number;
+    compilerTypes?: ReadonlyMap<string, string>;
+  }
+  function inferType(expr: string, scope: InferenceScope): string | null; // base type or null
+  interface AnnotationEdit {
+    line: number;
+    column: number;
+    insert: string;
+  } // insert "float " before the name
+  function planTypeAnnotations(
+    model: DocumentModel,
+    ref: ReferenceIndex,
+    lines: [number, number] | null,
+    compilerTypes?: ReadonlyMap<string, string>,
+  ): { edits: AnnotationEdit[]; skipped: string[] };
   ```
 
 - [ ] **Step 1: Write the failing test `tests/core/type-inference.test.ts`**
@@ -2737,7 +3262,8 @@ export function inferType(expr: string, scope: InferenceScope): string | null {
 
 function inferTokens(tokens: Token[], scope: InferenceScope): string | null {
   // Unwrap a single outer group: (expr)
-  if (tokens[0]?.text === '(' && matchingClose(tokens, 0) === tokens.length - 1) return inferTokens(tokens.slice(1, -1), scope);
+  if (tokens[0]?.text === '(' && matchingClose(tokens, 0) === tokens.length - 1)
+    return inferTokens(tokens.slice(1, -1), scope);
 
   // Ternary at depth 0: cond ? a : b
   const q = indexAtDepth(tokens, (t) => t.text === '?');
@@ -2755,7 +3281,10 @@ function inferTokens(tokens: Token[], scope: InferenceScope): string | null {
   if (indexAtDepth(tokens, (t) => t.kind === 'op' && COMPARISON.has(t.text)) > 0) return 'bool';
 
   // Binary arithmetic at depth 0, lowest precedence first (+,- before *,/,%).
-  for (const ops of [['+', '-'], ['*', '/', '%']]) {
+  for (const ops of [
+    ['+', '-'],
+    ['*', '/', '%'],
+  ]) {
     const i = lastIndexAtDepth(tokens, (t) => t.kind === 'op' && ops.includes(t.text));
     if (i > 0) {
       const left = inferTokens(tokens.slice(0, i), scope);
@@ -2765,7 +3294,8 @@ function inferTokens(tokens: Token[], scope: InferenceScope): string | null {
     }
   }
   // Unary minus.
-  if (tokens[0]?.kind === 'op' && tokens[0].text === '-' && tokens.length > 1) return inferTokens(tokens.slice(1), scope);
+  if (tokens[0]?.kind === 'op' && tokens[0].text === '-' && tokens.length > 1)
+    return inferTokens(tokens.slice(1), scope);
 
   const first = tokens[0]!;
   if (first.kind === 'number') return first.text.startsWith('#') ? 'color' : /[.eE]/.test(first.text) ? 'float' : 'int';
@@ -2782,7 +3312,9 @@ function inferTokens(tokens: Token[], scope: InferenceScope): string | null {
     if (tokens.length !== 1) return null; // something after an identifier we do not model
     if (name === 'true' || name === 'false') return 'bool';
     if (name === 'na') return 'na';
-    const variable = visibleVariables(scope.model, scope.line).filter((v) => v.line < scope.line || scope.line === 99).find((v) => v.name === name);
+    const variable = visibleVariables(scope.model, scope.line)
+      .filter((v) => v.line < scope.line || scope.line === 99)
+      .find((v) => v.name === name);
     if (variable?.declaredType) return variable.declaredType;
     const entry = scope.ref.get(name, 'variable') ?? scope.ref.get(name, 'constant');
     if (entry?.type) return ReferenceIndex.baseType(entry.type);
@@ -2798,7 +3330,11 @@ function inferTokens(tokens: Token[], scope: InferenceScope): string | null {
     if (scope.model.types.some((t) => t.name === owner)) return owner;
     if (tokens[1]?.text === '<') {
       const close = tokens.findIndex((t) => t.text === '>');
-      if (close > 1) return `${owner}<${tokens.slice(2, close).map((t) => t.text).join('')}>`;
+      if (close > 1)
+        return `${owner}<${tokens
+          .slice(2, close)
+          .map((t) => t.text)
+          .join('')}>`;
     }
   }
   const userFn = scope.model.functions.find((f) => f.name === name);
@@ -2926,17 +3462,25 @@ export function registerAddTypeAnnotations(context: vscode.ExtensionContext, com
       const editor = vscode.window.activeTextEditor;
       if (!editor || editor.document.languageId !== 'pinescript') return;
       const { model } = analyze(editor.document);
-      const range: [number, number] | null = editor.selection.isEmpty ? null : [editor.selection.start.line, editor.selection.end.line];
+      const range: [number, number] | null = editor.selection.isEmpty
+        ? null
+        : [editor.selection.start.line, editor.selection.end.line];
       const { edits, skipped } = planTypeAnnotations(model, loadReference(), range, compilerTypes(editor.document.uri));
       if (!edits.length) {
-        void vscode.window.showInformationMessage(skipped.length ? `No types could be inferred for: ${skipped.join(', ')}` : 'Every declaration already has a type.');
+        void vscode.window.showInformationMessage(
+          skipped.length
+            ? `No types could be inferred for: ${skipped.join(', ')}`
+            : 'Every declaration already has a type.',
+        );
         return;
       }
       await editor.edit((b) => {
         for (const e of edits) b.insert(new vscode.Position(e.line, e.column), e.insert);
       });
       const tail = skipped.length ? ` Skipped ${skipped.length}: ${skipped.join(', ')}.` : '';
-      void vscode.window.showInformationMessage(`Added ${edits.length} type annotation${edits.length === 1 ? '' : 's'}.${tail}`);
+      void vscode.window.showInformationMessage(
+        `Added ${edits.length} type annotation${edits.length === 1 ? '' : 's'}.${tail}`,
+      );
     }),
   );
 }
@@ -2980,12 +3524,15 @@ git commit -m "Infer declaration types and add the Add Type Annotations command"
 ### Task 10: Docstring generation, command and code action
 
 **Files:**
+
 - Create: `src/extension/core/docstring.ts`, `src/extension/commands/generate-docstring.ts`, `src/extension/providers/code-action.ts`, `tests/core/docstring.test.ts`
 - Modify: `src/extension/extension.ts`, `package.json`
 
 **Interfaces:**
+
 - Consumes: `DeclSymbol`, `declarationAt`, `annotationsAbove`, `LineRange` (Task 5).
 - Produces:
+
   ```ts
   function annotationBlockRange(lines: string[], declLine: number): LineRange | null; // contiguous // block directly above, or null
   function docstringLines(symbol: DeclSymbol, existing: string[], indent: string): string[]; // full replacement block, merged
@@ -3002,7 +3549,12 @@ import { annotationBlockRange, docstringLines, needsDocstring } from '../../src/
 describe('docstring', () => {
   it('generates a function block', () => {
     const m = buildModel('f(float a, b = 1) =>\n    a + b\n');
-    expect(docstringLines(m.functions[0]!, [], '')).toEqual(['//@function f', '//@param a ', '//@param b ', '//@returns ']);
+    expect(docstringLines(m.functions[0]!, [], '')).toEqual([
+      '//@function f',
+      '//@param a ',
+      '//@param b ',
+      '//@returns ',
+    ]);
   });
 
   it('omits @returns for void bodies', () => {
@@ -3016,7 +3568,12 @@ describe('docstring', () => {
     const m = buildModel(src);
     const range = annotationBlockRange(lines, 2);
     expect(range).toEqual({ start: 0, end: 1 });
-    expect(docstringLines(m.functions[0]!, lines.slice(0, 2), '')).toEqual(['//@function Adds.', '//@param a ', '//@param b Second.', '//@returns ']);
+    expect(docstringLines(m.functions[0]!, lines.slice(0, 2), '')).toEqual([
+      '//@function Adds.',
+      '//@param a ',
+      '//@param b Second.',
+      '//@returns ',
+    ]);
   });
 
   it('generates type and enum blocks with indentation', () => {
@@ -3048,7 +3605,8 @@ Expected: FAIL, module not found.
 ```ts
 import type { DeclSymbol, FunctionSymbol, LineRange } from './document-model';
 
-const VOID_CALLS = /^(?:plot|plotshape|plotchar|plotarrow|plotcandle|plotbar|bgcolor|barcolor|fill|hline|alert|alertcondition|log\.\w+|runtime\.error|strategy\.(?:entry|exit|close|close_all|order|cancel|cancel_all|risk\.\w+)|label\.set_\w+|line\.set_\w+|box\.set_\w+|table\.(?:cell|set_\w+|clear|merge_cells)|array\.(?:push|set|unshift|clear|insert|fill|sort|reverse)|matrix\.(?:set|fill|add_row|add_col|remove_row|remove_col)|map\.(?:put|remove|clear))\s*\(/;
+const VOID_CALLS =
+  /^(?:plot|plotshape|plotchar|plotarrow|plotcandle|plotbar|bgcolor|barcolor|fill|hline|alert|alertcondition|log\.\w+|runtime\.error|strategy\.(?:entry|exit|close|close_all|order|cancel|cancel_all|risk\.\w+)|label\.set_\w+|line\.set_\w+|box\.set_\w+|table\.(?:cell|set_\w+|clear|merge_cells)|array\.(?:push|set|unshift|clear|insert|fill|sort|reverse)|matrix\.(?:set|fill|add_row|add_col|remove_row|remove_col)|map\.(?:put|remove|clear))\s*\(/;
 
 export function annotationBlockRange(lines: string[], declLine: number): LineRange | null {
   let start = declLine;
@@ -3155,7 +3713,9 @@ export function registerGenerateDocstring(context: vscode.ExtensionContext): voi
       }
       if (!targets.length) {
         // Cursor inside a body: use the enclosing declaration.
-        const enclosing = [...model.functions, ...model.types, ...model.enums].find((s) => s.range.start <= from && from <= s.range.end);
+        const enclosing = [...model.functions, ...model.types, ...model.enums].find(
+          (s) => s.range.start <= from && from <= s.range.end,
+        );
         if (enclosing) targets.push(enclosing);
       }
       if (!targets.length) {
@@ -3163,7 +3723,8 @@ export function registerGenerateDocstring(context: vscode.ExtensionContext): voi
         return;
       }
       const edit = new vscode.WorkspaceEdit();
-      for (const t of targets.sort((a, b) => b.line - a.line)) edit.set(editor.document.uri, [docstringEdit(editor.document, t)]);
+      for (const t of targets.sort((a, b) => b.line - a.line))
+        edit.set(editor.document.uri, [docstringEdit(editor.document, t)]);
       await vscode.workspace.applyEdit(edit);
     }),
   );
@@ -3181,7 +3742,9 @@ import { declarationAt } from '../core/document-model';
 import { analyze } from '../vscode/document-cache';
 
 export class PineCodeActionProvider implements vscode.CodeActionProvider {
-  static readonly metadata: vscode.CodeActionProviderMetadata = { providedCodeActionKinds: [vscode.CodeActionKind.Refactor] };
+  static readonly metadata: vscode.CodeActionProviderMetadata = {
+    providedCodeActionKinds: [vscode.CodeActionKind.Refactor],
+  };
 
   provideCodeActions(document: vscode.TextDocument, range: vscode.Range): vscode.CodeAction[] {
     const { model } = analyze(document);
@@ -3199,7 +3762,11 @@ export class PineCodeActionProvider implements vscode.CodeActionProvider {
 `package.json` `contributes.commands` add:
 
 ```json
-{ "command": "pinescript.generateDocstring", "title": "Pine Script: Generate Docstring", "enablement": "editorLangId == pinescript" }
+{
+  "command": "pinescript.generateDocstring",
+  "title": "Pine Script: Generate Docstring",
+  "enablement": "editorLangId == pinescript"
+}
 ```
 
 `contributes.menus["editor/context"]` add:
@@ -3212,7 +3779,9 @@ export class PineCodeActionProvider implements vscode.CodeActionProvider {
 
 ```ts
 registerGenerateDocstring(context);
-context.subscriptions.push(vscode.languages.registerCodeActionsProvider(SELECTOR, new PineCodeActionProvider(), PineCodeActionProvider.metadata));
+context.subscriptions.push(
+  vscode.languages.registerCodeActionsProvider(SELECTOR, new PineCodeActionProvider(), PineCodeActionProvider.metadata),
+);
 ```
 
 - [ ] **Step 8: Verify and commit**
@@ -3230,11 +3799,14 @@ git commit -m "Generate and merge annotation docstrings from a command and a cod
 ### Task 11: Templates, new-file commands, and Open Reference
 
 **Files:**
+
 - Create: `src/extension/core/templates.ts`, `src/extension/commands/new-file.ts`, `src/extension/commands/open-reference.ts`, `tests/core/templates.test.ts`
 - Modify: `src/extension/extension.ts`, `package.json`
 
 **Interfaces:**
+
 - Produces:
+
   ```ts
   type TemplateKind = 'indicator' | 'strategy' | 'library';
   function renderTemplate(kind: TemplateKind, opts: { title: string; date: string }): string;
@@ -3356,16 +3928,26 @@ Expected: PASS (3 tests).
 import * as vscode from 'vscode';
 import { renderTemplate, type TemplateKind } from '../core/templates';
 
-const TITLES: Record<TemplateKind, string> = { indicator: 'My Indicator', strategy: 'My Strategy', library: 'MyLibrary' };
+const TITLES: Record<TemplateKind, string> = {
+  indicator: 'My Indicator',
+  strategy: 'My Strategy',
+  library: 'MyLibrary',
+};
 
 export function registerNewFileCommands(context: vscode.ExtensionContext): void {
   for (const kind of ['indicator', 'strategy', 'library'] as const) {
     const id = `pinescript.new${kind[0]!.toUpperCase()}${kind.slice(1)}`;
     context.subscriptions.push(
       vscode.commands.registerCommand(id, async () => {
-        const title = await vscode.window.showInputBox({ prompt: `${kind[0]!.toUpperCase()}${kind.slice(1)} title`, value: TITLES[kind] });
+        const title = await vscode.window.showInputBox({
+          prompt: `${kind[0]!.toUpperCase()}${kind.slice(1)} title`,
+          value: TITLES[kind],
+        });
         if (title === undefined) return;
-        const content = renderTemplate(kind, { title: title || TITLES[kind], date: new Date().toISOString().slice(0, 10) });
+        const content = renderTemplate(kind, {
+          title: title || TITLES[kind],
+          date: new Date().toISOString().slice(0, 10),
+        });
         const doc = await vscode.workspace.openTextDocument({ language: 'pinescript', content });
         await vscode.window.showTextDocument(doc);
       }),
@@ -3390,7 +3972,15 @@ export function registerOpenReference(context: vscode.ExtensionContext): void {
         const line = editor.document.lineAt(editor.selection.active.line).text;
         const word = wordAt(line, editor.selection.active.character);
         const ref = loadReference();
-        const candidates = word ? [word.text, ...word.text.split('.').map((_, i, a) => a.slice(0, a.length - i - 1).join('.')).filter(Boolean)] : [];
+        const candidates = word
+          ? [
+              word.text,
+              ...word.text
+                .split('.')
+                .map((_, i, a) => a.slice(0, a.length - i - 1).join('.'))
+                .filter(Boolean),
+            ]
+          : [];
         for (const c of candidates) {
           const entry = ref.get(c);
           if (entry) {
@@ -3439,34 +4029,65 @@ git commit -m "Add file templates, new-file commands and Open Reference"
 ### Task 12: TradingView client, library parsing and the library index
 
 **Files:**
+
 - Create: `src/extension/core/pine-facade.ts`, `src/extension/providers/library-index.ts`, `tests/core/pine-facade.test.ts`, `tests/core/libraries.test.ts`
 - Modify: `src/extension/core/libraries.ts`, `src/extension/extension.ts`
 
 **Interfaces:**
+
 - Consumes: `buildModel` (Task 5), `LibraryInfo`, `LibraryLookup` (Task 8), `getSettings` (Task 8), `log` (Task 1).
 - Produces:
+
   ```ts
   // pine-facade.ts
-  interface RemoteLibrary { libId: string; user: string; lib: string; version: string; scriptIdPart: string; docs: string }
-  interface RawIssue { code?: string; message: string; ctx?: Record<string, string>; start?: { line: number; column: number }; end?: { line: number; column: number } }
+  interface RemoteLibrary {
+    libId: string;
+    user: string;
+    lib: string;
+    version: string;
+    scriptIdPart: string;
+    docs: string;
+  }
+  interface RawIssue {
+    code?: string;
+    message: string;
+    ctx?: Record<string, string>;
+    start?: { line: number; column: number };
+    end?: { line: number; column: number };
+  }
   interface CompileResult {
-    success: boolean; reason?: string;
-    errors: RawIssue[]; warnings: RawIssue[];
+    success: boolean;
+    reason?: string;
+    errors: RawIssue[];
+    warnings: RawIssue[];
     variables: { name: string; type: string }[];
     functions: { name: string; syntax: string; desc?: string; args: { name: string; type: string; info?: string }[] }[];
   }
-  interface FacadeOptions { fetch?: typeof fetch; now?: () => number; timeoutMs?: number; log?: (m: string) => void }
+  interface FacadeOptions {
+    fetch?: typeof fetch;
+    now?: () => number;
+    timeoutMs?: number;
+    log?: (m: string) => void;
+  }
   class PineFacade {
     constructor(options?: FacadeOptions);
     libList(prefix: string): Promise<RemoteLibrary[]>;
     getScript(scriptIdPart: string, version: string): Promise<string | null>;
     translateLight(source: string): Promise<CompileResult | null>;
-    readonly disabledUntil: number;   // 0 when healthy
+    readonly disabledUntil: number; // 0 when healthy
   }
   // libraries.ts
-  function parseLibrary(text: string, id: string, source: 'local' | 'remote', meta?: { owner?: string; version?: string; description?: string }): LibraryInfo | null;
+  function parseLibrary(
+    text: string,
+    id: string,
+    source: 'local' | 'remote',
+    meta?: { owner?: string; version?: string; description?: string },
+  ): LibraryInfo | null;
   // library-index.ts
-  class LibraryIndex implements LibraryLookup { constructor(facade: PineFacade, settings: () => Settings); start(context): void; }
+  class LibraryIndex implements LibraryLookup {
+    constructor(facade: PineFacade, settings: () => Settings);
+    start(context): void;
+  }
   ```
 
 - [ ] **Step 1: Write the failing tests**
@@ -3477,11 +4098,23 @@ git commit -m "Add file templates, new-file commands and Open Reference"
 import { describe, expect, it, vi } from 'vitest';
 import { PineFacade } from '../../src/extension/core/pine-facade';
 
-const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
+const json = (body: unknown, status = 200) =>
+  new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
 
 describe('PineFacade', () => {
   it('lists libraries and caches by prefix', async () => {
-    const fetch = vi.fn(async () => json([{ libId: 'TradingView/ta/14', user: 'TradingView', lib: 'ta', version: '14.0', scriptIdPart: 'PUB;1', docs: '' }]));
+    const fetch = vi.fn(async () =>
+      json([
+        {
+          libId: 'TradingView/ta/14',
+          user: 'TradingView',
+          lib: 'ta',
+          version: '14.0',
+          scriptIdPart: 'PUB;1',
+          docs: '',
+        },
+      ]),
+    );
     const f = new PineFacade({ fetch: fetch as unknown as typeof globalThis.fetch });
     const a = await f.libList('TradingView/t');
     const b = await f.libList('TradingView/t');
@@ -3499,7 +4132,24 @@ describe('PineFacade', () => {
   });
 
   it('posts source to translate_light and normalizes the result', async () => {
-    const fetch = vi.fn(async () => json({ success: true, result: { errors2: [{ code: 'CE1', message: 'Undeclared identifier "{identifier}"', ctx: { identifier: 'x' }, start: { line: 3, column: 6 }, end: { line: 3, column: 7 } }], variables2: [{ docs: [{ name: 'a', type: 'series float' }] }], functions2: [] } }));
+    const fetch = vi.fn(async () =>
+      json({
+        success: true,
+        result: {
+          errors2: [
+            {
+              code: 'CE1',
+              message: 'Undeclared identifier "{identifier}"',
+              ctx: { identifier: 'x' },
+              start: { line: 3, column: 6 },
+              end: { line: 3, column: 7 },
+            },
+          ],
+          variables2: [{ docs: [{ name: 'a', type: 'series float' }] }],
+          functions2: [],
+        },
+      }),
+    );
     const f = new PineFacade({ fetch: fetch as unknown as typeof globalThis.fetch });
     const r = await f.translateLight('//@version=6\nindicator("x")\nplot(x)');
     expect(r?.errors[0]?.code).toBe('CE1');
@@ -3537,7 +4187,10 @@ const fixture = (name: string) => readFileSync(new URL(`./fixtures/${name}`, imp
 
 describe('parseLibrary', () => {
   it('keeps only exports and reads the description', () => {
-    const lib = parseLibrary(fixture('library.pine'), 'yankikucuk/MaHelpers/2', 'local', { owner: 'yankikucuk', version: '2' })!;
+    const lib = parseLibrary(fixture('library.pine'), 'yankikucuk/MaHelpers/2', 'local', {
+      owner: 'yankikucuk',
+      version: '2',
+    })!;
     expect(lib.title).toBe('MaHelpers');
     expect(lib.description).toBe('Helpers for moving averages.');
     expect(lib.functions.map((f) => f.name)).toEqual(['weighted']);
@@ -3620,7 +4273,10 @@ export class PineFacade {
   async libList(prefix: string): Promise<RemoteLibrary[]> {
     const hit = this.libCache.get(prefix);
     if (hit && this.now() - hit.at < LIB_TTL) return hit.value;
-    const data = await this.request<unknown>('GET', `lib_list/?lib_id_prefix=${encodeURIComponent(prefix)}&ignore_case=true`);
+    const data = await this.request<unknown>(
+      'GET',
+      `lib_list/?lib_id_prefix=${encodeURIComponent(prefix)}&ignore_case=true`,
+    );
     const value = Array.isArray(data) ? (data as RemoteLibrary[]).filter((l) => typeof l.libId === 'string') : [];
     this.libCache.set(prefix, { at: this.now(), value });
     return value;
@@ -3629,7 +4285,10 @@ export class PineFacade {
   async getScript(scriptIdPart: string, version: string): Promise<string | null> {
     const key = `${scriptIdPart}@${version}`;
     if (this.scriptCache.has(key)) return this.scriptCache.get(key)!;
-    const data = await this.request<{ source?: string }>('GET', `get/${encodeURIComponent(scriptIdPart)}/${encodeURIComponent(version)}?no_4xx=true`);
+    const data = await this.request<{ source?: string }>(
+      'GET',
+      `get/${encodeURIComponent(scriptIdPart)}/${encodeURIComponent(version)}?no_4xx=true`,
+    );
     const source = typeof data?.source === 'string' ? data.source : null;
     this.scriptCache.set(key, source);
     return source;
@@ -3675,7 +4334,9 @@ export class PineFacade {
       return (await res.json()) as T;
     } catch (err) {
       this.failures++;
-      this.log(`TradingView request failed (${method} ${path.split('?')[0]}): ${err instanceof Error ? err.message : String(err)}`);
+      this.log(
+        `TradingView request failed (${method} ${path.split('?')[0]}): ${err instanceof Error ? err.message : String(err)}`,
+      );
       if (this.failures >= FAILURES_BEFORE_BACKOFF) {
         this.disabledUntil = this.now() + BACKOFF;
         this.failures = 0;
@@ -3692,7 +4353,9 @@ function normalize(data: { success?: boolean; reason?: string; result?: Record<s
   const r = data.result ?? {};
   const docsOf = (key: string): unknown[] => {
     const groups = r[key];
-    return Array.isArray(groups) ? groups.flatMap((g) => (Array.isArray((g as { docs?: unknown[] }).docs) ? (g as { docs: unknown[] }).docs : [])) : [];
+    return Array.isArray(groups)
+      ? groups.flatMap((g) => (Array.isArray((g as { docs?: unknown[] }).docs) ? (g as { docs: unknown[] }).docs : []))
+      : [];
   };
   return {
     success: data.success !== false,
@@ -3735,7 +4398,8 @@ export function parseLibrary(
     title: model.libraryTitle ?? id,
     owner: meta.owner ?? null,
     version: meta.version ?? null,
-    description: meta.description || (descriptionLine ? descriptionLine.replace(/^\/\/\s*@description\s*/, '').trim() : null),
+    description:
+      meta.description || (descriptionLine ? descriptionLine.replace(/^\/\/\s*@description\s*/, '').trim() : null),
     functions: model.functions.filter((f) => f.isExport),
     types: model.types.filter((t) => t.isExport),
     enums: model.enums.filter((e) => e.isExport),
@@ -3850,7 +4514,9 @@ export class LibraryIndex implements LibraryLookup {
     this.watcher?.dispose();
     this.watcher = vscode.workspace.createFileSystemWatcher(this.settings().librariesInclude);
     this.watcher.onDidDelete((uri) => this.localByUri.delete(uri.toString()));
-    this.watcher.onDidCreate(async (uri) => this.index(uri, Buffer.from(await vscode.workspace.fs.readFile(uri)).toString('utf8')));
+    this.watcher.onDidCreate(async (uri) =>
+      this.index(uri, Buffer.from(await vscode.workspace.fs.readFile(uri)).toString('utf8')),
+    );
     context.subscriptions.push(this.watcher);
   }
 }
@@ -3886,17 +4552,31 @@ git commit -m "Index workspace libraries and look up published TradingView libra
 ### Task 13: Compiler diagnostics (opt-in)
 
 **Files:**
+
 - Create: `src/extension/core/diagnostics.ts`, `src/extension/providers/diagnostics-controller.ts`, `tests/core/diagnostics.test.ts`
 - Modify: `src/extension/extension.ts`, `src/extension/commands/add-type-annotations.ts` wiring
 
 **Interfaces:**
+
 - Consumes: `PineFacade`, `CompileResult`, `RawIssue` (Task 12); `CompilerTypesLookup` (Task 9).
 - Produces:
+
   ```ts
-  interface CompileDiagnostic { line: number; startCol: number; endCol: number; message: string; severity: 'error' | 'warning'; code: string | null }
+  interface CompileDiagnostic {
+    line: number;
+    startCol: number;
+    endCol: number;
+    message: string;
+    severity: 'error' | 'warning';
+    code: string | null;
+  }
   function toDiagnostics(result: CompileResult, lineCount: number): CompileDiagnostic[];
   function compilerVariableTypes(result: CompileResult): Map<string, string>;
-  class DiagnosticsController { constructor(facade, settings); start(context): void; typesFor(uri): ReadonlyMap<string, string> | undefined }
+  class DiagnosticsController {
+    constructor(facade, settings);
+    start(context): void;
+    typesFor(uri): ReadonlyMap<string, string> | undefined;
+  }
   ```
 
 - [ ] **Step 1: Write the failing test `tests/core/diagnostics.test.ts`**
@@ -3910,7 +4590,15 @@ describe('toDiagnostics', () => {
     const d = toDiagnostics(
       {
         success: true,
-        errors: [{ code: 'CE10272', ctx: { identifier: 'closee' }, message: 'Undeclared identifier "{identifier}"', start: { line: 3, column: 6 }, end: { line: 3, column: 11 } }],
+        errors: [
+          {
+            code: 'CE10272',
+            ctx: { identifier: 'closee' },
+            message: 'Undeclared identifier "{identifier}"',
+            start: { line: 3, column: 6 },
+            end: { line: 3, column: 11 },
+          },
+        ],
         warnings: [{ message: 'Unused variable', start: { line: 5, column: 1 }, end: { line: 5, column: 4 } }],
         variables: [],
         functions: [],
@@ -3918,24 +4606,49 @@ describe('toDiagnostics', () => {
       10,
     );
     expect(d).toEqual([
-      { line: 2, startCol: 5, endCol: 10, message: 'Undeclared identifier "closee"', severity: 'error', code: 'CE10272' },
+      {
+        line: 2,
+        startCol: 5,
+        endCol: 10,
+        message: 'Undeclared identifier "closee"',
+        severity: 'error',
+        code: 'CE10272',
+      },
       { line: 4, startCol: 0, endCol: 3, message: 'Unused variable', severity: 'warning', code: null },
     ]);
   });
 
   it('reports a failure without positions on the first line', () => {
-    expect(toDiagnostics({ success: false, reason: 'Script too large', errors: [], warnings: [], variables: [], functions: [] }, 3)).toEqual([
-      { line: 0, startCol: 0, endCol: 0, message: 'Script too large', severity: 'error', code: null },
-    ]);
+    expect(
+      toDiagnostics(
+        { success: false, reason: 'Script too large', errors: [], warnings: [], variables: [], functions: [] },
+        3,
+      ),
+    ).toEqual([{ line: 0, startCol: 0, endCol: 0, message: 'Script too large', severity: 'error', code: null }]);
   });
 
   it('clamps lines beyond the document', () => {
-    const d = toDiagnostics({ success: true, errors: [{ message: 'x', start: { line: 99, column: 1 }, end: { line: 99, column: 2 } }], warnings: [], variables: [], functions: [] }, 3);
+    const d = toDiagnostics(
+      {
+        success: true,
+        errors: [{ message: 'x', start: { line: 99, column: 1 }, end: { line: 99, column: 2 } }],
+        warnings: [],
+        variables: [],
+        functions: [],
+      },
+      3,
+    );
     expect(d[0]?.line).toBe(2);
   });
 
   it('collects variable types', () => {
-    const t = compilerVariableTypes({ success: true, errors: [], warnings: [], variables: [{ name: 'a', type: 'series float' }], functions: [] });
+    const t = compilerVariableTypes({
+      success: true,
+      errors: [],
+      warnings: [],
+      variables: [{ name: 'a', type: 'series float' }],
+      functions: [],
+    });
     expect(t.get('a')).toBe('series float');
   });
 });
@@ -3974,9 +4687,19 @@ function one(issue: RawIssue, severity: 'error' | 'warning', lineCount: number):
 }
 
 export function toDiagnostics(result: CompileResult, lineCount: number): CompileDiagnostic[] {
-  const out = [...result.errors.map((e) => one(e, 'error', lineCount)), ...result.warnings.map((w) => one(w, 'warning', lineCount))];
+  const out = [
+    ...result.errors.map((e) => one(e, 'error', lineCount)),
+    ...result.warnings.map((w) => one(w, 'warning', lineCount)),
+  ];
   if (!result.success && !out.length) {
-    out.push({ line: 0, startCol: 0, endCol: 0, message: result.reason ?? 'The TradingView compiler rejected the script.', severity: 'error', code: null });
+    out.push({
+      line: 0,
+      startCol: 0,
+      endCol: 0,
+      message: result.reason ?? 'The TradingView compiler rejected the script.',
+      severity: 'error',
+      code: null,
+    });
   }
   return out;
 }
@@ -4033,7 +4756,10 @@ export class DiagnosticsController {
     if (document.languageId !== 'pinescript' || !this.settings().diagnosticsRemote) return;
     const key = document.uri.toString();
     clearTimeout(this.timers.get(key));
-    this.timers.set(key, setTimeout(() => void this.run(document), delay));
+    this.timers.set(
+      key,
+      setTimeout(() => void this.run(document), delay),
+    );
   }
 
   private async run(document: vscode.TextDocument): Promise<void> {
@@ -4044,7 +4770,11 @@ export class DiagnosticsController {
     this.collection.set(
       document.uri,
       toDiagnostics(result, document.lineCount).map((d) => {
-        const diag = new vscode.Diagnostic(new vscode.Range(d.line, d.startCol, d.line, d.endCol), d.message, d.severity === 'error' ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning);
+        const diag = new vscode.Diagnostic(
+          new vscode.Range(d.line, d.startCol, d.line, d.endCol),
+          d.message,
+          d.severity === 'error' ? vscode.DiagnosticSeverity.Error : vscode.DiagnosticSeverity.Warning,
+        );
         diag.source = 'TradingView compiler';
         if (d.code) diag.code = d.code;
         return diag;
@@ -4080,10 +4810,12 @@ git commit -m "Show TradingView compiler diagnostics when remote diagnostics are
 ### Task 14: Pine Dark and Pine Light themes
 
 **Files:**
+
 - Create: `themes/pine-dark-color-theme.json`, `themes/pine-light-color-theme.json`, `scripts/check-themes.mjs`
 - Modify: `package.json` (`contributes.themes`), `scripts/build-grammar.mjs` (call the theme check in `--check` mode)
 
 **Interfaces:**
+
 - Produces: two theme files whose `tokenColors` cover every scope emitted by the grammar (checked by `scripts/check-themes.mjs`).
 
 - [ ] **Step 1: Write the theme coverage check `scripts/check-themes.mjs`**
@@ -4095,7 +4827,8 @@ import { readFileSync } from 'node:fs';
 const grammar = JSON.parse(readFileSync('syntaxes/pinescript.tmLanguage.json', 'utf8'));
 const scopes = new Set();
 JSON.stringify(grammar, (key, value) => {
-  if ((key === 'name' || key === 'contentName') && typeof value === 'string') value.split(' ').forEach((s) => scopes.add(s));
+  if ((key === 'name' || key === 'contentName') && typeof value === 'string')
+    value.split(' ').forEach((s) => scopes.add(s));
   return value;
 });
 scopes.delete('Pine');
@@ -4198,31 +4931,133 @@ Add `"check:themes": "node scripts/check-themes.mjs"` to `package.json` scripts 
     "terminal.foreground": "#d1d4dc"
   },
   "tokenColors": [
-    { "name": "Comments", "scope": ["comment", "punctuation.definition.comment"], "settings": { "foreground": "#5d606b", "fontStyle": "italic" } },
-    { "name": "Annotations", "scope": ["storage.type.annotation", "storage.type.annotation.version"], "settings": { "foreground": "#787b86", "fontStyle": "bold italic" } },
+    {
+      "name": "Comments",
+      "scope": ["comment", "punctuation.definition.comment"],
+      "settings": { "foreground": "#5d606b", "fontStyle": "italic" }
+    },
+    {
+      "name": "Annotations",
+      "scope": ["storage.type.annotation", "storage.type.annotation.version"],
+      "settings": { "foreground": "#787b86", "fontStyle": "bold italic" }
+    },
     { "name": "Raw text in comments", "scope": "markup.inline.raw", "settings": { "foreground": "#9598a1" } },
-    { "name": "Strings", "scope": ["string", "punctuation.definition.string"], "settings": { "foreground": "#4caf50" } },
+    {
+      "name": "Strings",
+      "scope": ["string", "punctuation.definition.string"],
+      "settings": { "foreground": "#4caf50" }
+    },
     { "name": "String escapes", "scope": "constant.character.escape", "settings": { "foreground": "#81c784" } },
     { "name": "Format placeholders", "scope": "constant.other.placeholder", "settings": { "foreground": "#ffb74d" } },
-    { "name": "Numbers", "scope": ["constant.numeric", "constant.numeric.integer", "constant.numeric.float"], "settings": { "foreground": "#ff9800" } },
-    { "name": "Hex colors", "scope": "constant.other.color.hex", "settings": { "foreground": "#ff9800", "fontStyle": "underline" } },
-    { "name": "Language constants (true, false, na)", "scope": "constant.language", "settings": { "foreground": "#ff5252" } },
-    { "name": "Control keywords", "scope": ["keyword.control", "keyword.control.loop", "keyword.control.import", "keyword.control.import.as"], "settings": { "foreground": "#c792ea" } },
-    { "name": "Declarations (type, enum, method, export, var, varip)", "scope": ["storage.type.declaration", "storage.type.declaration.enum", "storage.modifier", "storage.modifier.export", "storage.modifier.method"], "settings": { "foreground": "#c792ea", "fontStyle": "italic" } },
-    { "name": "Type qualifiers", "scope": "storage.modifier.qualifier", "settings": { "foreground": "#b39ddb", "fontStyle": "italic" } },
-    { "name": "Word operators (and, or, not)", "scope": "keyword.operator.logical", "settings": { "foreground": "#c792ea" } },
-    { "name": "Operators", "scope": ["keyword.operator", "keyword.operator.arithmetic", "keyword.operator.assignment", "keyword.operator.comparison", "keyword.operator.ternary"], "settings": { "foreground": "#89ddff" } },
-    { "name": "Arrow", "scope": "keyword.operator.arrow", "settings": { "foreground": "#89ddff", "fontStyle": "bold" } },
-    { "name": "Types", "scope": ["support.type", "entity.name.type", "entity.name.type.enum", "meta.generic"], "settings": { "foreground": "#ffcb6b" } },
+    {
+      "name": "Numbers",
+      "scope": ["constant.numeric", "constant.numeric.integer", "constant.numeric.float"],
+      "settings": { "foreground": "#ff9800" }
+    },
+    {
+      "name": "Hex colors",
+      "scope": "constant.other.color.hex",
+      "settings": { "foreground": "#ff9800", "fontStyle": "underline" }
+    },
+    {
+      "name": "Language constants (true, false, na)",
+      "scope": "constant.language",
+      "settings": { "foreground": "#ff5252" }
+    },
+    {
+      "name": "Control keywords",
+      "scope": ["keyword.control", "keyword.control.loop", "keyword.control.import", "keyword.control.import.as"],
+      "settings": { "foreground": "#c792ea" }
+    },
+    {
+      "name": "Declarations (type, enum, method, export, var, varip)",
+      "scope": [
+        "storage.type.declaration",
+        "storage.type.declaration.enum",
+        "storage.modifier",
+        "storage.modifier.export",
+        "storage.modifier.method"
+      ],
+      "settings": { "foreground": "#c792ea", "fontStyle": "italic" }
+    },
+    {
+      "name": "Type qualifiers",
+      "scope": "storage.modifier.qualifier",
+      "settings": { "foreground": "#b39ddb", "fontStyle": "italic" }
+    },
+    {
+      "name": "Word operators (and, or, not)",
+      "scope": "keyword.operator.logical",
+      "settings": { "foreground": "#c792ea" }
+    },
+    {
+      "name": "Operators",
+      "scope": [
+        "keyword.operator",
+        "keyword.operator.arithmetic",
+        "keyword.operator.assignment",
+        "keyword.operator.comparison",
+        "keyword.operator.ternary"
+      ],
+      "settings": { "foreground": "#89ddff" }
+    },
+    {
+      "name": "Arrow",
+      "scope": "keyword.operator.arrow",
+      "settings": { "foreground": "#89ddff", "fontStyle": "bold" }
+    },
+    {
+      "name": "Types",
+      "scope": ["support.type", "entity.name.type", "entity.name.type.enum", "meta.generic"],
+      "settings": { "foreground": "#ffcb6b" }
+    },
     { "name": "Built-in namespaces", "scope": "support.class", "settings": { "foreground": "#82aaff" } },
-    { "name": "Built-in functions", "scope": ["support.function", "support.function.constructor"], "settings": { "foreground": "#2196f3" } },
+    {
+      "name": "Built-in functions",
+      "scope": ["support.function", "support.function.constructor"],
+      "settings": { "foreground": "#2196f3" }
+    },
     { "name": "Built-in variables", "scope": "support.variable", "settings": { "foreground": "#26a69a" } },
     { "name": "Built-in constants", "scope": "support.constant", "settings": { "foreground": "#f78c6c" } },
-    { "name": "User functions and calls", "scope": ["entity.name.function", "entity.name.function.call", "entity.name.function.member"], "settings": { "foreground": "#82b1ff" } },
-    { "name": "Import namespaces", "scope": ["entity.name.namespace.import", "entity.name.namespace.alias"], "settings": { "foreground": "#ffcb6b" } },
-    { "name": "Parameters", "scope": "variable.parameter", "settings": { "foreground": "#eeffff", "fontStyle": "italic" } },
-    { "name": "Variables", "scope": ["variable.other", "variable.other.assignment", "variable.other.member"], "settings": { "foreground": "#d1d4dc" } },
-    { "name": "Punctuation", "scope": ["punctuation", "punctuation.accessor", "punctuation.separator.comma", "punctuation.section.parens.begin", "punctuation.section.parens.end", "punctuation.section.brackets.begin", "punctuation.section.brackets.end", "punctuation.definition.generic.begin", "punctuation.definition.generic.end", "punctuation.definition.tuple.begin", "punctuation.definition.tuple.end", "meta.parens", "meta.tuple.destructuring"], "settings": { "foreground": "#9598a1" } }
+    {
+      "name": "User functions and calls",
+      "scope": ["entity.name.function", "entity.name.function.call", "entity.name.function.member"],
+      "settings": { "foreground": "#82b1ff" }
+    },
+    {
+      "name": "Import namespaces",
+      "scope": ["entity.name.namespace.import", "entity.name.namespace.alias"],
+      "settings": { "foreground": "#ffcb6b" }
+    },
+    {
+      "name": "Parameters",
+      "scope": "variable.parameter",
+      "settings": { "foreground": "#eeffff", "fontStyle": "italic" }
+    },
+    {
+      "name": "Variables",
+      "scope": ["variable.other", "variable.other.assignment", "variable.other.member"],
+      "settings": { "foreground": "#d1d4dc" }
+    },
+    {
+      "name": "Punctuation",
+      "scope": [
+        "punctuation",
+        "punctuation.accessor",
+        "punctuation.separator.comma",
+        "punctuation.section.parens.begin",
+        "punctuation.section.parens.end",
+        "punctuation.section.brackets.begin",
+        "punctuation.section.brackets.end",
+        "punctuation.definition.generic.begin",
+        "punctuation.definition.generic.end",
+        "punctuation.definition.tuple.begin",
+        "punctuation.definition.tuple.end",
+        "meta.parens",
+        "meta.tuple.destructuring"
+      ],
+      "settings": { "foreground": "#9598a1" }
+    }
   ]
 }
 ```
@@ -4336,6 +5171,7 @@ git commit -m "Add Pine Dark and Pine Light color themes with a scope coverage c
 ### Task 15: Documentation, metadata, CI and the 3.0.0 release
 
 **Files:**
+
 - Modify: `README.md`, `CHANGELOG.md`, `.github/CONTRIBUTING.md`, `.github/workflows/ci.yml`, `.github/workflows/release.yml`, `package.json`
 
 - [ ] **Step 1: Rewrite `README.md`**
@@ -4363,25 +5199,25 @@ The grammar and the documentation data are generated from the v6 reference, so v
 
 ## Commands
 
-| Command | What it does |
-|---------|--------------|
-| Pine Script: New Indicator | Opens an untitled document from the indicator template |
-| Pine Script: New Strategy | Opens an untitled document from the strategy template |
-| Pine Script: New Library | Opens an untitled document from the library template |
-| Pine Script: Generate Docstring | Inserts or completes `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@enum` for the declaration at the cursor |
-| Pine Script: Add Type Annotations | Prefixes untyped declarations with their inferred type in the selection or the whole file |
-| Pine Script: Open Reference | Opens the v6 reference at the built-in under the cursor |
+| Command                           | What it does                                                                                                                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Pine Script: New Indicator        | Opens an untitled document from the indicator template                                                                           |
+| Pine Script: New Strategy         | Opens an untitled document from the strategy template                                                                            |
+| Pine Script: New Library          | Opens an untitled document from the library template                                                                             |
+| Pine Script: Generate Docstring   | Inserts or completes `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@enum` for the declaration at the cursor |
+| Pine Script: Add Type Annotations | Prefixes untyped declarations with their inferred type in the selection or the whole file                                        |
+| Pine Script: Open Reference       | Opens the v6 reference at the built-in under the cursor                                                                          |
 
 ## Settings
 
-| Setting | Default | Meaning |
-|---------|---------|---------|
-| `pinescript.completion.enabled` | `true` | Completion provider |
-| `pinescript.hover.enabled` | `true` | Hover provider |
-| `pinescript.signatureHelp.enabled` | `true` | Parameter hints |
-| `pinescript.libraries.local.include` | `**/*.pine` | Glob for workspace library discovery |
-| `pinescript.libraries.remote` | `true` | Look up published libraries on TradingView for `import` completion and hover |
-| `pinescript.diagnostics.remote` | `false` | Send the document to the TradingView compiler for diagnostics |
+| Setting                              | Default     | Meaning                                                                      |
+| ------------------------------------ | ----------- | ---------------------------------------------------------------------------- |
+| `pinescript.completion.enabled`      | `true`      | Completion provider                                                          |
+| `pinescript.hover.enabled`           | `true`      | Hover provider                                                               |
+| `pinescript.signatureHelp.enabled`   | `true`      | Parameter hints                                                              |
+| `pinescript.libraries.local.include` | `**/*.pine` | Glob for workspace library discovery                                         |
+| `pinescript.libraries.remote`        | `true`      | Look up published libraries on TradingView for `import` completion and hover |
+| `pinescript.diagnostics.remote`      | `false`     | Send the document to the TradingView compiler for diagnostics                |
 
 ## Privacy
 
@@ -4397,34 +5233,35 @@ Nothing else leaves your machine. When a request fails, the feature is paused fo
 - [vscode-icons](https://marketplace.visualstudio.com/items?itemName=vscode-icons-team.vscode-icons) for a `.pine` file icon.
 
 ## How it works
+```
 
-```
 src/
-  grammar.mjs           grammar rules, expressed as data
-  data/
-    functions.json      built-in functions, grouped by namespace (grammar source)
-    variables.json      built-in variables, grouped by namespace (grammar source)
-    constants.json      built-in constants, grouped by namespace (grammar source)
-    annotations.json    compiler annotations
-    reference.json      full v6 documentation, generated by scripts/scrape-reference.mjs
-  extension/
-    core/               pure TypeScript: tokenizer, document model, completion context,
-                        type inference, docstrings, templates, TradingView client
-    providers/          VS Code adapters: completion, hover, signature help, symbols,
-                        code actions, diagnostics, library index
-    commands/           command implementations
+grammar.mjs grammar rules, expressed as data
+data/
+functions.json built-in functions, grouped by namespace (grammar source)
+variables.json built-in variables, grouped by namespace (grammar source)
+constants.json built-in constants, grouped by namespace (grammar source)
+annotations.json compiler annotations
+reference.json full v6 documentation, generated by scripts/scrape-reference.mjs
+extension/
+core/ pure TypeScript: tokenizer, document model, completion context,
+type inference, docstrings, templates, TradingView client
+providers/ VS Code adapters: completion, hover, signature help, symbols,
+code actions, diagnostics, library index
+commands/ command implementations
 scripts/
-  build-grammar.mjs     compiles src/ into syntaxes/pinescript.tmLanguage.json and
-                        checks it against reference.json
-  build-extension.mjs   bundles src/extension into dist/extension.cjs with esbuild
-  scrape-reference.mjs  regenerates src/data/reference.json (maintainers, needs network)
-  check-themes.mjs      verifies both themes cover every grammar scope
-themes/                 Pine Dark and Pine Light
+build-grammar.mjs compiles src/ into syntaxes/pinescript.tmLanguage.json and
+checks it against reference.json
+build-extension.mjs bundles src/extension into dist/extension.cjs with esbuild
+scrape-reference.mjs regenerates src/data/reference.json (maintainers, needs network)
+check-themes.mjs verifies both themes cover every grammar scope
+themes/ Pine Dark and Pine Light
 tests/
-  core/                 vitest suites for src/extension/core
-  unit/                 scope assertions (vscode-tmgrammar-test)
-  snapshots/            full-file snapshots (vscode-tmgrammar-snap)
-```
+core/ vitest suites for src/extension/core
+unit/ scope assertions (vscode-tmgrammar-test)
+snapshots/ full-file snapshots (vscode-tmgrammar-snap)
+
+````
 
 `syntaxes/pinescript.tmLanguage.json`, `src/data/reference.json` and `dist/` are generated. Do not edit them by hand.
 
@@ -4438,7 +5275,7 @@ npm run build        # grammar + extension bundle
 npm run watch        # rebuild the bundle on change
 npm test             # grammar check, type check, core tests, grammar tests
 npm run package      # build the .vsix
-```
+````
 
 Press <kbd>F5</kbd> in VS Code to launch an Extension Development Host with the extension loaded. Use **Developer: Inspect Editor Tokens and Scopes** to see which scope a token receives.
 
@@ -4449,7 +5286,8 @@ See [CONTRIBUTING.md](.github/CONTRIBUTING.md) for the pull request checklist an
 [MIT](LICENSE) © Yankı Küçük
 
 Pine Script® is a registered trademark of TradingView, Inc. This project is not affiliated with TradingView.
-```
+
+````
 
 - [ ] **Step 2: Update `CHANGELOG.md`**
 
@@ -4475,7 +5313,7 @@ Add above `[2.0.1]`:
 - Minimum VS Code version is 1.96.
 - The package now ships a bundled extension entry point (`dist/extension.cjs`) built with esbuild.
 - `npm run build` now builds both the grammar and the extension; grammar-only scripts are `build:grammar` and `build:grammar:check`.
-```
+````
 
 Add the compare link `[3.0.0]: https://github.com/yankikucuk/pine-script-syntax-highlighter/compare/v2.0.1...v3.0.0` and point `[Unreleased]` at `v3.0.0...HEAD`.
 
@@ -4483,7 +5321,7 @@ Add the compare link `[3.0.0]: https://github.com/yankikucuk/pine-script-syntax-
 
 Add sections:
 
-```markdown
+````markdown
 ## Layout
 
 - `src/grammar.mjs` and `src/data/*.json` produce the grammar. `src/data/reference.json` is scraped, not edited.
@@ -4495,6 +5333,7 @@ Add sections:
 ```sh
 npm run watch      # rebuild dist/extension.cjs on change
 ```
+````
 
 Press F5, then reload the Extension Development Host after each rebuild.
 
@@ -4517,7 +5356,8 @@ npm run build:grammar:check   # lists built-ins to add to or remove from src/dat
 - Add Type Annotations on the strategy snapshot fixture
 - Both themes on `tests/snapshots/strategy-v6.pine`
 - With `pinescript.diagnostics.remote` on: an undeclared identifier is underlined
-```
+
+````
 
 Update the pull request checklist item about tests to mention `tests/core` for extension logic.
 
@@ -4534,7 +5374,7 @@ npm test
 npm run build:extension
 npx vsce package
 unzip -l pine-script-syntax-highlighter-3.0.0.vsix
-```
+````
 
 Expected in the listing: `extension/dist/extension.cjs`, `extension/themes/*.json`, `extension/syntaxes/pinescript.tmLanguage.json`, `extension/snippets/*`, `extension/language-configuration.json`, `extension/images/*`, `extension/README.md`, `extension/CHANGELOG.md`, `extension/LICENSE`, and nothing under `extension/src`, `extension/tests`, `extension/scripts` or `extension/docs`. Install the vsix locally (`code --install-extension pine-script-syntax-highlighter-3.0.0.vsix`) and run the manual checklist from CONTRIBUTING.
 

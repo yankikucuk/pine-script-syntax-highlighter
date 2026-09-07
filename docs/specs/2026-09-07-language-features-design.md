@@ -95,7 +95,7 @@ Rules:
 ## 3. Build and packaging
 
 - TypeScript 5.x, `tsconfig.json` with `strict`, `module: ESNext`, `moduleResolution:
-  Bundler`, `target: ES2022`, `noEmit` (esbuild emits).
+Bundler`, `target: ES2022`, `noEmit` (esbuild emits).
 - esbuild bundles `src/extension/extension.ts` to `dist/extension.cjs`, format `cjs`,
   platform `node`, target `node20`, `external: ["vscode"]`, minified for release, with
   a source map in development. `reference.json` is bundled by JSON import.
@@ -140,26 +140,27 @@ reference; the result is committed.
   "generatedAt": "2026-09-07",
   "entries": [
     {
-      "id": "fun_ta.sma",              // anchor on the reference page
-      "kind": "function",              // function | variable | constant | keyword | type | annotation | operator
+      "id": "fun_ta.sma", // anchor on the reference page
+      "kind": "function", // function | variable | constant | keyword | type | annotation | operator
       "name": "ta.sma",
-      "namespace": "ta",               // "" for bare names
+      "namespace": "ta", // "" for bare names
       "description": "…markdown…",
-      "overloads": [                   // functions only; one entry per syntax line
+      "overloads": [
+        // functions only; one entry per syntax line
         {
           "syntax": "ta.sma(source, length) → series float",
           "params": [
-            { "name": "source", "type": "series int/float", "description": "…", "optional": false, "default": null }
+            { "name": "source", "type": "series int/float", "description": "…", "optional": false, "default": null },
           ],
-          "returns": { "type": "series float", "description": "…" }
-        }
+          "returns": { "type": "series float", "description": "…" },
+        },
       ],
-      "type": "series float",          // variables and constants only
+      "type": "series float", // variables and constants only
       "remarks": "…markdown…",
       "example": "//@version=6\n…",
-      "seeAlso": ["fun_ta.ema", "fun_ta.rma"]
-    }
-  ]
+      "seeAlso": ["fun_ta.ema", "fun_ta.rma"],
+    },
+  ],
 }
 ```
 
@@ -192,24 +193,31 @@ comments.
 
 ```ts
 interface DocumentModel {
-  version: number | null;             // from //@version=N, null if missing
+  version: number | null; // from //@version=N, null if missing
   scriptKind: 'indicator' | 'strategy' | 'library' | null;
-  libraryTitle: string | null;        // library("Title")
-  imports: ImportDecl[];              // { owner, name, version, alias, line }
-  functions: FunctionSymbol[];        // user functions and methods
-  types: TypeSymbol[];                // type Name + fields
-  enums: EnumSymbol[];                // enum Name + members
-  variables: VariableSymbol[];        // top-level and nested declarations
+  libraryTitle: string | null; // library("Title")
+  imports: ImportDecl[]; // { owner, name, version, alias, line }
+  functions: FunctionSymbol[]; // user functions and methods
+  types: TypeSymbol[]; // type Name + fields
+  enums: EnumSymbol[]; // enum Name + members
+  variables: VariableSymbol[]; // top-level and nested declarations
 }
 interface FunctionSymbol {
-  name: string; isMethod: boolean; isExport: boolean;
+  name: string;
+  isMethod: boolean;
+  isExport: boolean;
   params: { name: string; type: string | null; default: string | null }[];
-  docs: Annotations;                  // parsed //@function, //@param, //@returns
-  range: LineRange;                   // header line to last indented body line
+  docs: Annotations; // parsed //@function, //@param, //@returns
+  range: LineRange; // header line to last indented body line
 }
 interface VariableSymbol {
-  name: string; declaredType: string | null; qualifier: 'var' | 'varip' | null;
-  initializer: string | null; line: number; column: number; scope: LineRange;
+  name: string;
+  declaredType: string | null;
+  qualifier: 'var' | 'varip' | null;
+  initializer: string | null;
+  line: number;
+  column: number;
+  scope: LineRange;
 }
 ```
 
@@ -285,9 +293,11 @@ missing ones are added in canonical order, nothing is deleted.
 
 ```ts
 interface LibraryInfo {
-  id: string;                        // "owner/Name/version" for remote, file path for local
-  title: string; owner: string | null; version: string | null;
-  description: string | null;        // //@description or library docs
+  id: string; // "owner/Name/version" for remote, file path for local
+  title: string;
+  owner: string | null;
+  version: string | null;
+  description: string | null; // //@description or library docs
   exports: FunctionSymbol[] | TypeSymbol[] | EnumSymbol[];
   source: 'local' | 'remote';
 }
@@ -340,13 +350,13 @@ one exists.
 
 ### 6.1 Completion (`.`, `/`, `@`, `(`, `,` and identifiers)
 
-| Context     | Items                                                                                  |
-|-------------|----------------------------------------------------------------------------------------|
-| identifier  | built-in namespaces and bare built-ins, keywords, types, user symbols, import aliases   |
-| member      | members of the namespace, alias exports, type fields/`new`, enum members               |
-| named-arg   | remaining parameter names of the enclosing call as `name=`                             |
-| annotation  | annotation names                                                                       |
-| import-path | local libraries, then remote `libList(prefix)` results as `owner/Name/version`         |
+| Context     | Items                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------- |
+| identifier  | built-in namespaces and bare built-ins, keywords, types, user symbols, import aliases |
+| member      | members of the namespace, alias exports, type fields/`new`, enum members              |
+| named-arg   | remaining parameter names of the enclosing call as `name=`                            |
+| annotation  | annotation names                                                                      |
+| import-path | local libraries, then remote `libList(prefix)` results as `owner/Name/version`        |
 
 Function items insert `name($1)` as a snippet and trigger signature help. `detail` is the
 syntax line, `documentation` the markdown from `markdown.ts`. Deprecated or
@@ -388,14 +398,14 @@ command.
 
 ### 6.7 Commands
 
-| Command id                       | Title                                  | Behavior                                                                                          |
-|----------------------------------|----------------------------------------|---------------------------------------------------------------------------------------------------|
-| `pinescript.newIndicator`        | Pine Script: New Indicator             | Opens an untitled `pinescript` document with the template                                        |
-| `pinescript.newStrategy`         | Pine Script: New Strategy              | Same, strategy template                                                                           |
-| `pinescript.newLibrary`          | Pine Script: New Library               | Same, library template                                                                            |
-| `pinescript.generateDocstring`   | Pine Script: Generate Docstring        | For the declaration at the cursor (or every declaration in the selection), inserts/merges docs    |
-| `pinescript.addTypeAnnotations`  | Pine Script: Add Type Annotations      | For the selection (or whole document), prefixes inferable untyped declarations; shows a summary   |
-| `pinescript.openReference`       | Pine Script: Open Reference            | Opens the v6 reference at the anchor of the built-in under the cursor, or the reference root      |
+| Command id                      | Title                             | Behavior                                                                                        |
+| ------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `pinescript.newIndicator`       | Pine Script: New Indicator        | Opens an untitled `pinescript` document with the template                                       |
+| `pinescript.newStrategy`        | Pine Script: New Strategy         | Same, strategy template                                                                         |
+| `pinescript.newLibrary`         | Pine Script: New Library          | Same, library template                                                                          |
+| `pinescript.generateDocstring`  | Pine Script: Generate Docstring   | For the declaration at the cursor (or every declaration in the selection), inserts/merges docs  |
+| `pinescript.addTypeAnnotations` | Pine Script: Add Type Annotations | For the selection (or whole document), prefixes inferable untyped declarations; shows a summary |
+| `pinescript.openReference`      | Pine Script: Open Reference       | Opens the v6 reference at the anchor of the built-in under the cursor, or the reference root    |
 
 Editor context menu group "Pine Script" shows generateDocstring, addTypeAnnotations and
 openReference for `pinescript` documents. The three "New …" commands are in the command
@@ -403,14 +413,14 @@ palette only.
 
 ### 6.8 Configuration
 
-| Setting                                | Type    | Default       | Meaning                                                              |
-|----------------------------------------|---------|---------------|----------------------------------------------------------------------|
-| `pinescript.completion.enabled`        | boolean | `true`        | Register the completion provider                                     |
-| `pinescript.hover.enabled`             | boolean | `true`        | Register the hover provider                                          |
-| `pinescript.signatureHelp.enabled`     | boolean | `true`        | Register signature help                                              |
-| `pinescript.libraries.local.include`   | string  | `**/*.pine`   | Glob for workspace library discovery                                 |
-| `pinescript.libraries.remote`          | boolean | `true`        | Query TradingView for published libraries in `import` completion/hover |
-| `pinescript.diagnostics.remote`        | boolean | `false`       | Send the document to the TradingView compiler for diagnostics        |
+| Setting                              | Type    | Default     | Meaning                                                                |
+| ------------------------------------ | ------- | ----------- | ---------------------------------------------------------------------- |
+| `pinescript.completion.enabled`      | boolean | `true`      | Register the completion provider                                       |
+| `pinescript.hover.enabled`           | boolean | `true`      | Register the hover provider                                            |
+| `pinescript.signatureHelp.enabled`   | boolean | `true`      | Register signature help                                                |
+| `pinescript.libraries.local.include` | string  | `**/*.pine` | Glob for workspace library discovery                                   |
+| `pinescript.libraries.remote`        | boolean | `true`      | Query TradingView for published libraries in `import` completion/hover |
+| `pinescript.diagnostics.remote`      | boolean | `false`     | Send the document to the TradingView compiler for diagnostics          |
 
 Changing a setting re-registers providers without reload.
 
