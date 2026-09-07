@@ -59,6 +59,7 @@ export class CompletionItem {
   filterText?: string;
   sortText?: string;
   command?: unknown;
+  range?: Range;
   constructor(
     public label: string,
     public kind?: CompletionItemKind,
