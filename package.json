@@ -2,7 +2,7 @@
   "name": "pine-script-syntax-highlighter",
   "displayName": "Pine Script Syntax Highlighter",
   "description": "Pine Script v6 for Visual Studio Code: highlighting, completion, hover documentation, signature help, snippets, themes and compiler diagnostics.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "publisher": "ex-codes",
   "author": {
     "name": "Yankı Küçük",
