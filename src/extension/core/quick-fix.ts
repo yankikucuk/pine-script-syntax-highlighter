@@ -1,6 +1,7 @@
 import type { CompileDiagnostic } from './diagnostics';
 import type { DocumentModel } from './document-model';
 import { ReferenceIndex } from './reference';
+import { nearest } from './text';
 import { tokenize, wordAt, type Token } from './tokenizer';
 
 export interface QuickFixEdit {
@@ -31,11 +32,15 @@ const CODE = {
 /** Names that moved somewhere other than a namespace when Pine went from v4 to v5. */
 const RENAMED = new Map([['study', 'indicator']]);
 
+/** The v6 name of a built-in that was renamed outright, rather than moved into a namespace. */
+export function renamedTo(name: string): string | undefined {
+  return RENAMED.get(name);
+}
+
 /** Types that can be declared with a keyword, offered when a value is `na`. */
 const DECLARABLE = ['float', 'int', 'bool', 'string', 'color'];
 
 const MAX_SUGGESTIONS = 3;
-const MAX_DISTANCE = 2;
 
 /** Builds the fixes offered for one compiler diagnostic. */
 export function quickFixes(
@@ -72,19 +77,7 @@ function renameToKnownSymbol(
   const name = issue.ctx?.fullName ?? issue.ctx?.identifier ?? word?.text;
   if (!word || !name || word.text !== name) return [];
 
-  const suggestions: string[] = [];
-  const add = (candidate: string) => {
-    if (candidate !== name && !suggestions.includes(candidate)) suggestions.push(candidate);
-  };
-
-  const renamed = RENAMED.get(name);
-  if (renamed) add(renamed);
-  if (!name.includes('.')) {
-    // Most v4 built-ins simply moved into a namespace: `sma` became `ta.sma`.
-    for (const namespace of ref.childNamespaces('')) if (ref.get(`${namespace}.${name}`)) add(`${namespace}.${name}`);
-  }
-  for (const candidate of nearest(name, candidateNames(name, model, ref))) add(candidate);
-
+  const suggestions = suggestNames(name, model, ref);
   return suggestions.slice(0, MAX_SUGGESTIONS).map((suggestion, index) => ({
     title: `Change to \`${suggestion}\``,
     preferred: index === 0 && suggestions.length === 1,
@@ -92,6 +85,22 @@ function renameToKnownSymbol(
       { startLine: issue.line, startCol: word.start, endLine: issue.line, endCol: word.end, newText: suggestion },
     ],
   }));
+}
+
+/** The names worth offering in place of one the compiler does not know, best first. */
+export function suggestNames(name: string, model: DocumentModel, ref: ReferenceIndex): string[] {
+  const suggestions: string[] = [];
+  const add = (candidate: string) => {
+    if (candidate !== name && !suggestions.includes(candidate)) suggestions.push(candidate);
+  };
+  const renamed = RENAMED.get(name);
+  if (renamed) add(renamed);
+  if (!name.includes('.')) {
+    // Most v4 built-ins simply moved into a namespace: `sma` became `ta.sma`.
+    for (const namespace of ref.childNamespaces('')) if (ref.get(`${namespace}.${name}`)) add(`${namespace}.${name}`);
+  }
+  for (const candidate of nearest(name, candidateNames(name, model, ref))) add(candidate);
+  return suggestions;
 }
 
 function candidateNames(name: string, model: DocumentModel, ref: ReferenceIndex): string[] {
@@ -157,7 +166,8 @@ function fixArgumentName(issue: CompileDiagnostic, lines: string[], ref: Referen
  * Finds the text to delete to drop a named argument, including the comma that separates it.
  * Returns null when the argument does not fit on the line, where a blind cut would not be safe.
  */
-function argumentSpan(text: string, nameStart: number): { start: number; end: number } | null {
+// eslint-disable-next-line -- shared with the offline rules
+export function argumentSpan(text: string, nameStart: number): { start: number; end: number } | null {
   const tokens = tokenize(text)[0]!.tokens.filter((t) => t.kind !== 'ws' && t.kind !== 'comment');
   const index = tokens.findIndex((t) => t.start === nameStart);
   if (index < 0 || tokens[index + 1]?.text !== '=') return null;
@@ -258,35 +268,4 @@ function addVersionPragma(issue: CompileDiagnostic, lines: string[]): QuickFix[]
       edits: [{ startLine: 0, startCol: 0, endLine: 0, endCol: 0, newText: '//@version=6\n' }],
     },
   ];
-}
-
-/** Orders candidates by how few single character edits separate them from `name`. */
-function nearest(name: string, candidates: readonly string[]): string[] {
-  const limit = name.length <= 4 ? 1 : MAX_DISTANCE;
-  const scored: { candidate: string; distance: number }[] = [];
-  for (const candidate of candidates) {
-    if (candidate === name || Math.abs(candidate.length - name.length) > limit) continue;
-    const distance = editDistance(name, candidate, limit);
-    if (distance <= limit) scored.push({ candidate, distance });
-  }
-  scored.sort((a, b) => a.distance - b.distance || a.candidate.localeCompare(b.candidate));
-  return scored.map((s) => s.candidate);
-}
-
-/** Levenshtein distance, giving up as soon as it passes `limit`. */
-function editDistance(a: string, b: string, limit: number): number {
-  let previous = Array.from({ length: b.length + 1 }, (_, i) => i);
-  for (let i = 1; i <= a.length; i++) {
-    const current = [i];
-    let best = i;
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      const value = Math.min(previous[j]! + 1, current[j - 1]! + 1, previous[j - 1]! + cost);
-      current.push(value);
-      if (value < best) best = value;
-    }
-    if (best > limit) return limit + 1;
-    previous = current;
-  }
-  return previous[b.length]!;
 }

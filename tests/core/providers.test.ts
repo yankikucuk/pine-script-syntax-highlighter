@@ -6,7 +6,14 @@ import { loadReference } from '../../src/extension/core/reference';
 import { PineCodeActionProvider } from '../../src/extension/providers/code-action';
 import { PineCompletionProvider } from '../../src/extension/providers/completion';
 import { PineDocumentSymbolProvider } from '../../src/extension/providers/document-symbol';
+import { PineColorProvider, PineSemanticTokensProvider } from '../../src/extension/providers/decorations';
 import { PineFormattingProvider } from '../../src/extension/providers/formatting';
+import {
+  PineDefinitionProvider,
+  PineDocumentHighlightProvider,
+  PineReferenceProvider,
+  PineRenameProvider,
+} from '../../src/extension/providers/navigation';
 import { PineHoverProvider } from '../../src/extension/providers/hover';
 import { PineSignatureHelpProvider } from '../../src/extension/providers/signature-help';
 import { docstringEdit } from '../../src/extension/commands/generate-docstring';
@@ -212,6 +219,84 @@ describe('code action provider: compiler quick fixes', () => {
 
   it('offers nothing when the compiler has not run', () => {
     expect(new PineCodeActionProvider(ref).provideCodeActions(doc(text), new vscode.Range(2, 0, 2, 0))).toEqual([]);
+  });
+});
+
+const navigable = [
+  '//@version=6',
+  'indicator("Demo")',
+  'enum Regime',
+  '    bull = "Bull"',
+  'mean(source) =>',
+  '    ta.sma(source, 14)',
+  'value = mean(close)',
+  'mode = Regime.bull',
+  'plot(value, color = color.new(color.red, 40))',
+].join('\n');
+
+describe('navigation providers', () => {
+  const d = () => doc(navigable);
+
+  it('goes to the declaration of a user function', () => {
+    const location = new PineDefinitionProvider().provideDefinition(d(), new vscode.Position(6, 8));
+    expect(location?.range.start.line).toBe(4);
+  });
+
+  it('has no definition for a built-in', () => {
+    expect(new PineDefinitionProvider().provideDefinition(d(), new vscode.Position(6, 13))).toBeNull();
+  });
+
+  it('lists references with and without the declaration', () => {
+    const provider = new PineReferenceProvider();
+    const withDeclaration = provider.provideReferences(d(), new vscode.Position(4, 0), { includeDeclaration: true });
+    expect(withDeclaration.map((l) => l.range.start.line)).toEqual([4, 6]);
+    const uses = provider.provideReferences(d(), new vscode.Position(4, 0), { includeDeclaration: false });
+    expect(uses.map((l) => l.range.start.line)).toEqual([6]);
+  });
+
+  it('highlights the declaration as a write and the uses as reads', () => {
+    const highlights = new PineDocumentHighlightProvider().provideDocumentHighlights(d(), new vscode.Position(4, 0));
+    expect(highlights.map((h) => h.kind)).toEqual([
+      vscode.DocumentHighlightKind.Write,
+      vscode.DocumentHighlightKind.Read,
+    ]);
+  });
+
+  it('renames a user symbol everywhere it appears', () => {
+    const edit = new PineRenameProvider().provideRenameEdits(d(), new vscode.Position(4, 0), 'average');
+    const edits = (edit as unknown as { edits: { range: vscode.Range; newText: string }[] }).edits;
+    expect(edits.map((e) => `${e.range.start.line}:${e.newText}`)).toEqual(['4:average', '6:average']);
+  });
+
+  it('keeps the enum in front of a renamed member', () => {
+    const edit = new PineRenameProvider().provideRenameEdits(d(), new vscode.Position(7, 18), 'rising');
+    const edits = (edit as unknown as { edits: { range: vscode.Range; newText: string }[] }).edits;
+    expect(edits.map((e) => e.newText)).toEqual(['rising', 'Regime.rising']);
+  });
+
+  it('refuses to rename a built-in', () => {
+    expect(() => new PineRenameProvider().prepareRename(d(), new vscode.Position(6, 13))).toThrow(/cannot be renamed/);
+  });
+});
+
+describe('colour and semantic token providers', () => {
+  it('offers a swatch for a colour call and writes the picked colour back', () => {
+    const provider = new PineColorProvider(ref);
+    const colors = provider.provideDocumentColors(doc(navigable));
+    expect(colors).toHaveLength(1);
+    expect(colors[0]!.range.start.line).toBe(8);
+    expect(colors[0]!.color.alpha).toBeCloseTo(0.6, 5);
+    expect(provider.provideColorPresentations(new vscode.Color(1, 0, 0, 1)).map((p) => p.label)).toEqual([
+      '#FF0000',
+      'color.rgb(255, 0, 0)',
+    ]);
+  });
+
+  it('emits semantic tokens only for the names the document declares', () => {
+    const built = new PineSemanticTokensProvider().provideDocumentSemanticTokens(doc(navigable));
+    const pushes = (built as unknown as { pushes: { line: number; type: number; modifiers: number }[] }).pushes;
+    expect(pushes.map((p) => p.line)).toEqual([2, 3, 4, 4, 5, 6, 6, 7, 7, 8]);
+    expect(pushes[0]!.modifiers).toBe(1);
   });
 });
 

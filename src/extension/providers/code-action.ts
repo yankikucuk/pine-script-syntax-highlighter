@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import type { CompileDiagnostic } from '../core/diagnostics';
 import { needsDocstring } from '../core/docstring';
+import type { LintIssue } from '../core/lint';
 import { declarationAt } from '../core/document-model';
 import { quickFixes, type QuickFix } from '../core/quick-fix';
 import type { ReferenceIndex } from '../core/reference';
@@ -9,6 +10,9 @@ import { analyze } from '../vscode/document-cache';
 
 /** Looks up the compiler issues last reported for a document. */
 export type IssueLookup = (uri: vscode.Uri) => readonly CompileDiagnostic[] | undefined;
+
+/** Looks up the offline lint issues last reported for a document. */
+export type LintLookup = (uri: vscode.Uri) => readonly LintIssue[] | undefined;
 
 export class PineCodeActionProvider implements vscode.CodeActionProvider {
   static readonly metadata: vscode.CodeActionProviderMetadata = {
@@ -18,6 +22,7 @@ export class PineCodeActionProvider implements vscode.CodeActionProvider {
   constructor(
     private readonly ref: ReferenceIndex,
     private readonly issues: IssueLookup = () => undefined,
+    private readonly lintIssues: LintLookup = () => undefined,
   ) {}
 
   provideCodeActions(document: vscode.TextDocument, range: vscode.Range): vscode.CodeAction[] {
@@ -30,6 +35,11 @@ export class PineCodeActionProvider implements vscode.CodeActionProvider {
       for (const fix of quickFixes(issue, lines, model, this.ref)) {
         actions.push(toAction(fix, document.uri));
       }
+    }
+
+    for (const issue of this.lintIssues(document.uri) ?? []) {
+      if (issue.line < range.start.line || issue.line > range.end.line || !issue.fix) continue;
+      actions.push(toAction(issue.fix, document.uri));
     }
 
     const decl = declarationAt(model, range.start.line);

@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">Completion, hover documentation, signature help, formatting, quick fixes, 97 snippets and themes for TradingView Pine Script® v6 in Visual Studio Code.</h4>
+<h4 align="center">Completion, navigation, hover documentation, signature help, formatting, offline checks, colour swatches, 97 snippets and themes for TradingView Pine Script® v6 in Visual Studio Code.</h4>
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://vsmarketplacebadges.dev/version-short/ex-codes.pine-script-syntax-highlighter.svg?style=flat-square&label=marketplace&color=blue" alt="Marketplace version"></a>
@@ -21,7 +21,7 @@
 
 ## Why you will like it
 
-Open a `.pine` file and the editor already knows the language: every v6 built-in completes with its signature, hovering anything shows the reference entry, parameter hints follow you through a call, **Format Document** lays the script out the way Pine wants it, and **97 snippets** turn a prefix and <kbd>Tab</kbd> into a full indicator, a strategy exit block or a Bollinger Bands section. Nothing leaves your machine unless you opt in, and the whole thing weighs less than a megabyte.
+Open a `.pine` file and the editor already knows the language: every v6 built-in completes with its signature, <kbd>F12</kbd> jumps to your own declarations, <kbd>F2</kbd> renames a symbol everywhere, hovering anything shows the reference entry, **Format Document** lays the script out the way Pine wants it, problems are flagged as you type without your code leaving the machine, colours show a swatch you can click, and **97 snippets** turn a prefix and <kbd>Tab</kbd> into a full indicator, a strategy exit block or a Bollinger Bands section.
 
 ## Quick start
 
@@ -31,7 +31,8 @@ Open a `.pine` file and the editor already knows the language: every v6 built-in
 4. Hover over `input.int`, `ta.crossover` or your own function to read what it does.
 5. Try `bb`, `sltp`, `table` or `request.security.tuple` with <kbd>Tab</kbd> to drop in a working building block.
 6. Press <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> (<kbd>Shift</kbd>+<kbd>Option</kbd>+<kbd>F</kbd> on macOS) to format the file: blocks get their four spaces, operators and arguments get their spacing, and nothing else moves.
-7. Press <kbd>F1</kbd> and type `Pine Script:` to see the commands: new files from templates, docstrings, type annotations and the reference.
+7. Put the cursor on one of your own functions and press <kbd>F12</kbd> to jump to it, <kbd>Shift</kbd>+<kbd>F12</kbd> to list every call, or <kbd>F2</kbd> to rename it everywhere at once.
+8. Press <kbd>F1</kbd> and type `Pine Script:` to see the commands: new files from templates, docstrings, type annotations, converting an old script to v6, and the reference.
 
 ## Features
 
@@ -41,6 +42,12 @@ Open a `.pine` file and the editor already knows the language: every v6 built-in
 - Keywords, type names and qualifiers, and your own functions, methods, types, enums and variables as soon as you declare them.
 - Named arguments inside a call, `//@` annotations at the start of a comment, and `import` paths that complete user, library and version.
 - Function items insert a call and open parameter hints, so a long `strategy.exit()` is a matter of tabbing through its parameters.
+
+### Navigation through your own code
+
+- **Go to Definition** (<kbd>F12</kbd>) on a function, method, type, enum, enum member, variable, parameter or import alias jumps to where you declared it.
+- **Find All References** (<kbd>Shift</kbd>+<kbd>F12</kbd>) lists every use, and the occurrences under the cursor are highlighted as you move around.
+- **Rename Symbol** (<kbd>F2</kbd>) renames a declaration and every use of it in one edit. It understands scope, so a global `length` is not touched when a function takes its own `length` parameter, and it leaves named arguments, import paths and type fields alone. Renaming a built-in is refused rather than half done.
 
 ### Documentation where the cursor is
 
@@ -90,6 +97,31 @@ Padding used to align a column of assignments is collapsed to one space, which i
 
 Every snippet in this extension and every test fixture has been run through the formatter and back through the TradingView compiler: none of them changed meaning, and formatting twice gives the same file.
 
+### Checks that never leave your machine
+
+Every Pine document is checked as you type, using the reference data that ships with the extension. This is on by default because nothing is sent anywhere; the TradingView compiler is still a separate, opt-in setting.
+
+| Rule                                                     | What it catches                                                                                                                      |
+| -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `missing-version` / `old-version`                        | No `//@version`, or one older than v6. Both offer a fix.                                                                             |
+| `legacy-name`                                            | A bare v4 name that moved into a namespace: `sma`, `security`, `tostring`, `abs`. Offers the v6 name.                                |
+| `local-scope-call`                                       | `plot`, `hline`, `fill`, `bgcolor`, `alertcondition` and friends inside an `if`, `for` or function body, which the compiler rejects. |
+| `unknown-argument`                                       | A named argument the function does not take, including options dropped between versions such as `transp`. Suggests the near miss.    |
+| `duplicate-argument`                                     | The same named argument passed twice.                                                                                                |
+| `unused-variable` / `unused-parameter` / `unused-import` | Declarations nothing reads, shown faded rather than as warnings.                                                                     |
+
+Turn the whole thing off with `pinescript.lint.enabled`, or silence single rules with `pinescript.lint.disabledRules`.
+
+**Pine Script: Convert to v6** applies the version, legacy-name and argument fixes across the whole file in one go, which is most of the work of bringing an old script forward. It says exactly what it changed, including any argument it had to remove, and it is a single undo.
+
+### Colours you can see and click
+
+Every colour a script names gets a swatch in the gutter of the line: hex literals such as `#FF9800`, the built-in constants, `color.new(color.blue, 25)` and `color.rgb(255, 152, 0, 40)`. Click one to open the colour picker; the value is written back as a hex literal or a `color.rgb()` call, transparency included.
+
+### Highlighting that knows your symbols
+
+On top of the grammar, the extension tells the editor which identifiers are yours. Parameters inside a function body, enum members, type fields and import aliases are coloured for what they are rather than guessed at from their spelling. Both bundled themes carry matching colours; other themes pick it up through the standard token types.
+
 ### Structure, libraries and diagnostics
 
 - **Outline.** Functions, methods, types with fields, enums with members and top-level variables in the Outline view and breadcrumbs.
@@ -133,6 +165,7 @@ The grammar and the documentation data are generated from the v6 reference, so v
 | Pine Script: Generate Docstring   | Inserts or completes `//@function`, `//@param`, `//@returns`, `//@type`, `//@field`, `//@enum` for the declaration at the cursor |
 | Pine Script: Add Type Annotations | Prefixes untyped declarations with their inferred type in the selection or the whole file                                        |
 | Pine Script: Open Reference       | Opens the v6 reference at the built-in under the cursor                                                                          |
+| Pine Script: Convert to v6        | Adds or raises the version pragma and rewrites the v4 names that moved into namespaces                                           |
 
 ## Settings
 
@@ -145,6 +178,8 @@ The grammar and the documentation data are generated from the v6 reference, so v
 | `pinescript.libraries.remote`        | `true`      | Look up published libraries on TradingView for `import` completion and hover |
 | `pinescript.diagnostics.remote`      | `false`     | Send the document to the TradingView compiler for diagnostics                |
 | `pinescript.format.enabled`          | `true`      | Format Document and Format Selection                                         |
+| `pinescript.lint.enabled`            | `true`      | Offline checks; nothing is sent anywhere                                     |
+| `pinescript.lint.disabledRules`      | `[]`        | Rule names the offline checker should skip                                   |
 
 ## Privacy
 
@@ -172,10 +207,12 @@ src/
     reference.json      full v6 documentation, generated by scripts/scrape-reference.mjs
   extension/
     core/               pure TypeScript: tokenizer, document model, completion context,
-                        type inference, docstrings, formatter, quick fixes, templates,
+                        symbol resolution, type inference, docstrings, formatter,
+                        offline rules, quick fixes, colours, semantic tokens, templates,
                         TradingView client
     providers/          VS Code adapters: completion, hover, signature help, symbols,
-                        formatting, code actions, diagnostics, library index
+                        navigation, formatting, colours, semantic tokens, code actions,
+                        diagnostics, offline checks, library index
     commands/           command implementations
 scripts/
   build-grammar.mjs     compiles src/ into syntaxes/pinescript.tmLanguage.json and

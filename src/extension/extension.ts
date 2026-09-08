@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { registerAddTypeAnnotations } from './commands/add-type-annotations';
+import { registerConvertToV6 } from './commands/convert-to-v6';
 import { registerGenerateDocstring } from './commands/generate-docstring';
 import { registerNewFileCommands } from './commands/new-file';
 import { registerOpenReference } from './commands/open-reference';
@@ -11,7 +12,15 @@ import { PineFacade } from './core/pine-facade';
 import { loadReference } from './core/reference';
 import { PineCompletionProvider } from './providers/completion';
 import { PineDocumentSymbolProvider } from './providers/document-symbol';
+import { PineColorProvider, PineSemanticTokensProvider, SEMANTIC_LEGEND } from './providers/decorations';
 import { PineFormattingProvider } from './providers/formatting';
+import { LintController } from './providers/lint-controller';
+import {
+  PineDefinitionProvider,
+  PineDocumentHighlightProvider,
+  PineReferenceProvider,
+  PineRenameProvider,
+} from './providers/navigation';
 import { PineHoverProvider } from './providers/hover';
 import { PineSignatureHelpProvider } from './providers/signature-help';
 import { forget } from './vscode/document-cache';
@@ -28,16 +37,24 @@ export function activate(context: vscode.ExtensionContext): void {
   libraries.start(context);
   const diagnostics = new DiagnosticsController(facade, getSettings);
   diagnostics.start(context);
+  const reference = loadReference();
+  const linter = new LintController(reference, getSettings);
+  linter.start(context);
 
   registerProviders(context, libraries);
   registerAddTypeAnnotations(context, (uri) => diagnostics.typesFor(uri));
   registerGenerateDocstring(context);
   registerNewFileCommands(context);
   registerOpenReference(context);
+  registerConvertToV6(context, reference);
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
       SELECTOR,
-      new PineCodeActionProvider(loadReference(), (uri) => diagnostics.issuesFor(uri)),
+      new PineCodeActionProvider(
+        reference,
+        (uri) => diagnostics.issuesFor(uri),
+        (uri) => linter.issuesFor(uri),
+      ),
       PineCodeActionProvider.metadata,
     ),
     vscode.workspace.onDidChangeConfiguration((e) => {
@@ -45,6 +62,16 @@ export function activate(context: vscode.ExtensionContext): void {
     }),
     vscode.workspace.onDidCloseTextDocument((d) => forget(d.uri)),
     vscode.languages.registerDocumentSymbolProvider(SELECTOR, new PineDocumentSymbolProvider()),
+    vscode.languages.registerDefinitionProvider(SELECTOR, new PineDefinitionProvider()),
+    vscode.languages.registerReferenceProvider(SELECTOR, new PineReferenceProvider()),
+    vscode.languages.registerDocumentHighlightProvider(SELECTOR, new PineDocumentHighlightProvider()),
+    vscode.languages.registerRenameProvider(SELECTOR, new PineRenameProvider()),
+    vscode.languages.registerColorProvider(SELECTOR, new PineColorProvider(reference)),
+    vscode.languages.registerDocumentSemanticTokensProvider(
+      SELECTOR,
+      new PineSemanticTokensProvider(),
+      SEMANTIC_LEGEND,
+    ),
   );
   log('Pine Script extension activated');
 }
