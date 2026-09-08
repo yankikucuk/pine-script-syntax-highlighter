@@ -2,7 +2,7 @@
   "name": "pine-script-syntax-highlighter",
   "displayName": "Pine Script Syntax Highlighter",
   "description": "Pine Script v6 for Visual Studio Code: highlighting, completion, hover documentation, signature help, snippets, themes and compiler diagnostics.",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "publisher": "ex-codes",
   "author": {
     "name": "Yankı Küçük",
@@ -115,6 +115,30 @@
           "type": "boolean",
           "default": true,
           "description": "Format Pine documents on request, indenting blocks with four spaces and spacing operators and arguments."
+        },
+        "pinescript.lint.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Check the open document for problems without sending it anywhere: names left over from older versions, calls that only work at the top level, unknown or repeated arguments, and declarations that are never read."
+        },
+        "pinescript.lint.disabledRules": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "missing-version",
+              "old-version",
+              "legacy-name",
+              "local-scope-call",
+              "duplicate-argument",
+              "unknown-argument",
+              "unused-variable",
+              "unused-parameter",
+              "unused-import"
+            ]
+          },
+          "default": [],
+          "description": "Rules the offline checker should not report."
         }
       }
     },
@@ -144,6 +168,11 @@
       {
         "command": "pinescript.openReference",
         "title": "Pine Script: Open Reference"
+      },
+      {
+        "command": "pinescript.convertToV6",
+        "title": "Pine Script: Convert to v6",
+        "enablement": "editorLangId == pinescript"
       }
     ],
     "menus": {
@@ -162,6 +191,11 @@
           "command": "pinescript.openReference",
           "when": "editorLangId == pinescript",
           "group": "1_pinescript@3"
+        },
+        {
+          "command": "pinescript.convertToV6",
+          "when": "editorLangId == pinescript",
+          "group": "1_pinescript@4"
         }
       ]
     },

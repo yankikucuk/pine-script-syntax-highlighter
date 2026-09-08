@@ -159,6 +159,56 @@ export class CodeAction {
     public kind?: CodeActionKind,
   ) {}
 }
+export class Location {
+  constructor(
+    public uri: Uri,
+    public range: Range,
+  ) {}
+}
+export enum DocumentHighlightKind {
+  Text,
+  Read,
+  Write,
+}
+export class DocumentHighlight {
+  constructor(
+    public range: Range,
+    public kind?: DocumentHighlightKind,
+  ) {}
+}
+export class Color {
+  constructor(
+    public red: number,
+    public green: number,
+    public blue: number,
+    public alpha: number,
+  ) {}
+}
+export class ColorInformation {
+  constructor(
+    public range: Range,
+    public color: Color,
+  ) {}
+}
+export class ColorPresentation {
+  constructor(public label: string) {}
+}
+export class SemanticTokensLegend {
+  constructor(
+    public tokenTypes: string[],
+    public tokenModifiers: string[],
+  ) {}
+}
+export class SemanticTokensBuilder {
+  readonly pushes: { line: number; char: number; length: number; type: number; modifiers: number }[] = [];
+  constructor(public legend?: SemanticTokensLegend) {}
+  push(line: number, char: number, length: number, type: number, modifiers: number) {
+    this.pushes.push({ line, char, length, type, modifiers });
+  }
+  build() {
+    return { pushes: this.pushes };
+  }
+}
 export class Uri {
   private constructor(public readonly path: string) {}
   static parse(s: string) {
@@ -183,5 +233,14 @@ export function makeDocument(text: string, uri = `file:///doc${nextVersion}.pine
     isClosed: false,
     getText: () => text,
     lineAt: (line: number) => ({ text: lines[line] ?? '' }),
+    getWordRangeAtPosition: (position: Position) => {
+      const text = lines[position.line] ?? '';
+      let start = position.character;
+      let end = position.character;
+      const isWord = (c: string) => /[A-Za-z0-9_]/.test(c);
+      while (start > 0 && isWord(text[start - 1]!)) start--;
+      while (end < text.length && isWord(text[end]!)) end++;
+      return start === end ? undefined : new Range(position.line, start, position.line, end);
+    },
   };
 }

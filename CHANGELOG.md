@@ -5,6 +5,20 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-09-08
+
+### Added
+
+- Go to Definition, Find All References, Document Highlight and Rename Symbol for functions, methods, types, enums, enum members, variables, parameters and import aliases. Renaming understands scope and leaves named arguments, import paths and type fields alone; renaming a built-in is refused.
+- Offline checks that run as you type, with no network: `missing-version`, `old-version`, `legacy-name`, `local-scope-call`, `unknown-argument`, `duplicate-argument`, `unused-variable`, `unused-parameter` and `unused-import`. Most carry a quick fix. `pinescript.lint.enabled` and `pinescript.lint.disabledRules` control them.
+- **Pine Script: Convert to v6**, which applies the version, legacy-name and argument fixes across a whole file and reports exactly what it changed.
+- Colour swatches with a picker for hex literals, the built-in colour constants, `color.new()` and `color.rgb()`, writing the result back as a hex literal or an rgb call.
+- Semantic highlighting for the identifiers a document declares, so parameters, enum members, type fields and import aliases are coloured for what they are. Both bundled themes gained matching `semanticTokenColors`.
+
+### Changed
+
+- The bundled themes enable semantic highlighting, which they previously switched off.
+
 ## [3.2.0] - 2026-09-08
 
 ### Added

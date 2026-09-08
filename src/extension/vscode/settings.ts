@@ -8,6 +8,8 @@ export interface Settings {
   librariesRemote: boolean;
   diagnosticsRemote: boolean;
   format: boolean;
+  lint: boolean;
+  lintDisabledRules: string[];
 }
 
 export function getSettings(): Settings {
@@ -20,5 +22,7 @@ export function getSettings(): Settings {
     librariesRemote: c.get<boolean>('libraries.remote', true),
     diagnosticsRemote: c.get<boolean>('diagnostics.remote', false),
     format: c.get<boolean>('format.enabled', true),
+    lint: c.get<boolean>('lint.enabled', true),
+    lintDisabledRules: c.get<string[]>('lint.disabledRules', []),
   };
 }

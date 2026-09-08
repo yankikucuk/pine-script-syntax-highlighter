@@ -2,7 +2,7 @@
   "$schema": "vscode://schemas/color-theme",
   "name": "Pine Light",
   "type": "light",
-  "semanticHighlighting": false,
+  "semanticHighlighting": true,
   "colors": {
     "editor.background": "#ffffff",
     "editor.foreground": "#131722",
@@ -73,6 +73,20 @@
     "peekView.border": "#2962ff",
     "terminal.background": "#ffffff",
     "terminal.foreground": "#131722"
+  },
+  "semanticTokenColors": {
+    "namespace": "#b26a00",
+    "type": "#b26a00",
+    "enum": "#b26a00",
+    "enumMember": "#c2410c",
+    "function": "#1e88e5",
+    "method": "#1e88e5",
+    "property": "#131722",
+    "variable": "#131722",
+    "parameter": {
+      "foreground": "#37474f",
+      "fontStyle": "italic"
+    }
   },
   "tokenColors": [
     {
