@@ -6,6 +6,7 @@ import { loadReference } from '../../src/extension/core/reference';
 import { PineCodeActionProvider } from '../../src/extension/providers/code-action';
 import { PineCompletionProvider } from '../../src/extension/providers/completion';
 import { PineDocumentSymbolProvider } from '../../src/extension/providers/document-symbol';
+import { PineFormattingProvider } from '../../src/extension/providers/formatting';
 import { PineHoverProvider } from '../../src/extension/providers/hover';
 import { PineSignatureHelpProvider } from '../../src/extension/providers/signature-help';
 import { docstringEdit } from '../../src/extension/commands/generate-docstring';
@@ -141,13 +142,76 @@ describe('document symbols and code actions', () => {
 
   it('offers and applies a docstring for an undocumented function', () => {
     const d = doc(fixture('library.pine'));
-    const actions = new PineCodeActionProvider().provideCodeActions(d, new vscode.Range(28, 0, 28, 0));
+    const actions = new PineCodeActionProvider(ref).provideCodeActions(d, new vscode.Range(28, 0, 28, 0));
     expect(actions.map((a) => a.title)).toEqual(['Generate docstring for internal']);
     const { model } = analyze(d);
     const edit = docstringEdit(d, declarationAt(model, 28)!);
     expect(edit.newText).toBe('//@function internal \n//@param x \n//@returns \n');
     expect(edit.range.start.line).toBe(28);
-    expect(new PineCodeActionProvider().provideCodeActions(d, new vscode.Range(9, 0, 9, 0))).toEqual([]);
+    expect(new PineCodeActionProvider(ref).provideCodeActions(d, new vscode.Range(9, 0, 9, 0))).toEqual([]);
+  });
+});
+
+describe('formatting provider', () => {
+  const provider = new PineFormattingProvider();
+  const options = { insertSpaces: true, tabSize: 4 } as vscode.FormattingOptions;
+
+  it('replaces the whole document with the formatted text', () => {
+    const d = doc('//@version=6\nif a\n  x=1\n');
+    const [edit] = provider.provideDocumentFormattingEdits(d, options);
+    expect(edit!.newText).toBe('//@version=6\nif a\n    x = 1\n');
+    expect(edit!.range.start.line).toBe(0);
+  });
+
+  it('makes no edit when the document is already formatted', () => {
+    expect(provider.provideDocumentFormattingEdits(doc('x = 1\n'), options)).toEqual([]);
+  });
+
+  it('indents with tabs when the editor does', () => {
+    const d = doc('if a\n  x = 1\n');
+    const [edit] = provider.provideDocumentFormattingEdits(d, { insertSpaces: false, tabSize: 4 });
+    expect(edit!.newText).toBe('if a\n\tx = 1\n');
+  });
+
+  it('formats only the selected lines', () => {
+    const d = doc('x=1\ny=2\nz=3');
+    const [edit] = provider.provideDocumentRangeFormattingEdits(d, new vscode.Range(1, 0, 1, 3), options);
+    expect(edit!.newText).toBe('y = 2');
+    expect(edit!.range.start.line).toBe(1);
+    expect(edit!.range.end.line).toBe(1);
+  });
+});
+
+describe('code action provider: compiler quick fixes', () => {
+  const text = '//@version=6\nindicator("t")\nplot(sma(close, 14))';
+  const issue = {
+    line: 2,
+    startCol: 5,
+    endCol: 8,
+    message: "Could not find function 'sma'",
+    severity: 'error' as const,
+    code: 'CE10271',
+    ctx: { fullName: 'sma', kind: 'function' },
+  };
+
+  it('turns a compiler diagnostic into an applicable quick fix', () => {
+    const d = doc(text);
+    const actions = new PineCodeActionProvider(ref, () => [issue]).provideCodeActions(d, new vscode.Range(2, 0, 2, 0));
+    expect(actions.map((a) => a.title)).toContain('Change to `ta.sma`');
+    const fix = actions.find((a) => a.title === 'Change to `ta.sma`')!;
+    expect(fix.kind?.value).toBe('quickfix');
+    const edits = (fix.edit as unknown as { edits: { newText: string }[] }).edits;
+    expect(edits.map((e) => e.newText)).toEqual(['ta.sma']);
+  });
+
+  it('ignores diagnostics outside the requested range', () => {
+    const d = doc(text);
+    const actions = new PineCodeActionProvider(ref, () => [issue]).provideCodeActions(d, new vscode.Range(0, 0, 0, 0));
+    expect(actions).toEqual([]);
+  });
+
+  it('offers nothing when the compiler has not run', () => {
+    expect(new PineCodeActionProvider(ref).provideCodeActions(doc(text), new vscode.Range(2, 0, 2, 0))).toEqual([]);
   });
 });
 

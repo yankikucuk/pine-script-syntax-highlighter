@@ -29,8 +29,17 @@ describe('toDiagnostics', () => {
         message: 'Undeclared identifier "closee"',
         severity: 'error',
         code: 'CE10272',
+        ctx: { identifier: 'closee' },
       },
-      { line: 4, startCol: 0, endCol: 3, message: 'Unused variable', severity: 'warning', code: null },
+      {
+        line: 4,
+        startCol: 0,
+        endCol: 3,
+        message: 'Unused variable',
+        severity: 'warning',
+        code: null,
+        ctx: undefined,
+      },
     ]);
   });
 
@@ -40,7 +49,9 @@ describe('toDiagnostics', () => {
         { success: false, reason: 'Script too large', errors: [], warnings: [], variables: [], functions: [] },
         3,
       ),
-    ).toEqual([{ line: 0, startCol: 0, endCol: 0, message: 'Script too large', severity: 'error', code: null }]);
+    ).toEqual([
+      { line: 0, startCol: 0, endCol: 0, message: 'Script too large', severity: 'error', code: null, ctx: undefined },
+    ]);
   });
 
   it('clamps lines beyond the document', () => {

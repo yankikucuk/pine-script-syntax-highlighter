@@ -2,7 +2,7 @@
   "name": "pine-script-syntax-highlighter",
   "displayName": "Pine Script Syntax Highlighter",
   "description": "Pine Script v6 for Visual Studio Code: highlighting, completion, hover documentation, signature help, snippets, themes and compiler diagnostics.",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "publisher": "ex-codes",
   "author": {
     "name": "Yankı Küçük",
@@ -74,7 +74,8 @@
       "[pinescript]": {
         "editor.tabSize": 4,
         "editor.insertSpaces": true,
-        "editor.detectIndentation": false
+        "editor.detectIndentation": false,
+        "editor.defaultFormatter": "ex-codes.pine-script-syntax-highlighter"
       }
     },
     "configuration": {
@@ -109,6 +110,11 @@
           "type": "boolean",
           "default": false,
           "description": "Send the document text to the TradingView compiler to show errors and warnings. Off by default because the full script leaves your machine."
+        },
+        "pinescript.format.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Format Pine documents on request, indenting blocks with four spaces and spacing operators and arguments."
         }
       }
     },

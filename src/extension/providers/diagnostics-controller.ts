@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { compilerVariableTypes, toDiagnostics } from '../core/diagnostics';
+import { compilerVariableTypes, toDiagnostics, type CompileDiagnostic } from '../core/diagnostics';
 import type { PineFacade } from '../core/pine-facade';
 import type { Settings } from '../vscode/settings';
 
@@ -9,6 +9,7 @@ export class DiagnosticsController {
   private readonly collection = vscode.languages.createDiagnosticCollection('pinescript');
   private readonly timers = new Map<string, ReturnType<typeof setTimeout>>();
   private readonly types = new Map<string, ReadonlyMap<string, string>>();
+  private readonly issues = new Map<string, CompileDiagnostic[]>();
 
   constructor(
     private readonly facade: PineFacade,
@@ -24,11 +25,15 @@ export class DiagnosticsController {
       vscode.workspace.onDidCloseTextDocument((d) => {
         this.collection.delete(d.uri);
         this.types.delete(d.uri.toString());
+        this.issues.delete(d.uri.toString());
       }),
       vscode.workspace.onDidChangeConfiguration((e) => {
         if (!e.affectsConfiguration('pinescript.diagnostics.remote')) return;
         if (this.settings().diagnosticsRemote) vscode.workspace.textDocuments.forEach((d) => this.schedule(d, 0));
-        else this.collection.clear();
+        else {
+          this.collection.clear();
+          this.issues.clear();
+        }
       }),
     );
     vscode.workspace.textDocuments.forEach((d) => this.schedule(d, 0));
@@ -36,6 +41,10 @@ export class DiagnosticsController {
 
   typesFor(uri: vscode.Uri): ReadonlyMap<string, string> | undefined {
     return this.types.get(uri.toString());
+  }
+
+  issuesFor(uri: vscode.Uri): readonly CompileDiagnostic[] | undefined {
+    return this.issues.get(uri.toString());
   }
 
   private schedule(document: vscode.TextDocument, delay: number): void {
@@ -53,9 +62,11 @@ export class DiagnosticsController {
     const result = await this.facade.translateLight(document.getText());
     if (!result || document.isClosed || document.version !== version) return;
     this.types.set(document.uri.toString(), compilerVariableTypes(result));
+    const issues = toDiagnostics(result, document.lineCount);
+    this.issues.set(document.uri.toString(), issues);
     this.collection.set(
       document.uri,
-      toDiagnostics(result, document.lineCount).map((d) => {
+      issues.map((d) => {
         const diag = new vscode.Diagnostic(
           new vscode.Range(d.line, d.startCol, d.line, d.endCol),
           d.message,

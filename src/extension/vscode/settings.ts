@@ -7,6 +7,7 @@ export interface Settings {
   librariesInclude: string;
   librariesRemote: boolean;
   diagnosticsRemote: boolean;
+  format: boolean;
 }
 
 export function getSettings(): Settings {
@@ -18,5 +19,6 @@ export function getSettings(): Settings {
     librariesInclude: c.get<string>('libraries.local.include', '**/*.pine'),
     librariesRemote: c.get<boolean>('libraries.remote', true),
     diagnosticsRemote: c.get<boolean>('diagnostics.remote', false),
+    format: c.get<boolean>('format.enabled', true),
   };
 }
