@@ -7,6 +7,7 @@ import { analyze } from '../vscode/document-cache';
 /** The rules whose fixes together move a script from an older Pine version to the current one. */
 const MIGRATION_RULES = new Set(['missing-version', 'old-version', 'legacy-name', 'unknown-argument']);
 
+/** Registers the command that applies every migration fix in a document at once. */
 export function registerConvertToV6(context: vscode.ExtensionContext, ref: ReferenceIndex): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pinescript.convertToV6', async () => {

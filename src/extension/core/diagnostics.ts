@@ -1,5 +1,6 @@
 import type { CompileResult, RawIssue } from './pine-facade';
 
+/** One compiler issue placed on the document, with its message resolved. */
 export interface CompileDiagnostic {
   line: number;
   startCol: number;
@@ -24,6 +25,7 @@ function one(issue: RawIssue, severity: 'error' | 'warning', lineCount: number):
   return { line, startCol, endCol, message: render(issue), severity, code: issue.code ?? null, ctx: issue.ctx };
 }
 
+/** Converts a compile result to diagnostics, clamping positions to the document. */
 export function toDiagnostics(result: CompileResult, lineCount: number): CompileDiagnostic[] {
   const out = [
     ...result.errors.map((e) => one(e, 'error', lineCount)),
@@ -43,6 +45,7 @@ export function toDiagnostics(result: CompileResult, lineCount: number): Compile
   return out;
 }
 
+/** The types the compiler inferred for each variable, which beats guessing them. */
 export function compilerVariableTypes(result: CompileResult): Map<string, string> {
   return new Map(result.variables.map((v) => [v.name, v.type]));
 }

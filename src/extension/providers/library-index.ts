@@ -4,6 +4,7 @@ import { parseLibrary, type LibraryInfo, type LibraryLookup } from '../core/libr
 import type { PineFacade } from '../core/pine-facade';
 import type { Settings } from '../vscode/settings';
 
+/** Finds libraries: the ones in the workspace, and the published ones when that is enabled. */
 export class LibraryIndex implements LibraryLookup {
   private readonly localByUri = new Map<string, LibraryInfo>();
   private readonly remote = new Map<string, Promise<LibraryInfo | null>>();

@@ -1,5 +1,6 @@
 import { tokenize, type Token } from './tokenizer';
 
+/** How the editor wants blocks indented. Pine accepts four spaces or one tab per level. */
 export interface FormatOptions {
   /** Indent with one tab per level instead of four spaces. */
   useTabs?: boolean;

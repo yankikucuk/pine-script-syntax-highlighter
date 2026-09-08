@@ -1,5 +1,7 @@
+/** The coarse categories the grammar-independent tokenizer distinguishes. */
 export type TokenKind = 'comment' | 'string' | 'number' | 'ident' | 'op' | 'open' | 'close' | 'comma' | 'ws';
 
+/** One token, with the columns it spans on its line. `line` is a zero-based document line. */
 export interface Token {
   kind: TokenKind;
   start: number;
@@ -8,6 +10,10 @@ export interface Token {
   line: number;
 }
 
+/**
+ * One tokenized line. `depthAtStart` is the bracket nesting the line opens with, which is what marks a
+ * wrapped line; `continuesString` says a triple-quoted string is still open at the end of it.
+ */
 export interface TokenizedLine {
   tokens: Token[];
   depthAtStart: number;
@@ -41,6 +47,10 @@ const OPS = [
   '!',
 ];
 
+/**
+ * Splits a document into tokens, line by line. It is deliberately not a parser: it tracks strings,
+ * comments and bracket depth well enough for every other module to avoid rescanning raw text.
+ */
 export function tokenize(text: string): TokenizedLine[] {
   const lines = text.split(/\r?\n/);
   const result: TokenizedLine[] = [];
@@ -151,6 +161,7 @@ export function tokenize(text: string): TokenizedLine[] {
   return result;
 }
 
+/** The token at a column, preferring an identifier the cursor sits just after (`ta.sma|(`). */
 export function tokenAt(tokens: Token[], col: number): Token | undefined {
   const at = tokens.find((t) => t.start <= col && col < t.end);
   if (at?.kind === 'ident') return at;
@@ -158,6 +169,7 @@ export function tokenAt(tokens: Token[], col: number): Token | undefined {
   return tokens.find((t) => t.end === col && t.kind === 'ident') ?? at;
 }
 
+/** True when a column falls inside a string or a comment, where completion and hover stay quiet. */
 export function isInStringOrComment(line: TokenizedLine, col: number): boolean {
   const t =
     line.tokens.find((t) => t.start <= col && col < t.end) ?? line.tokens.find((t) => t.start < col && col <= t.end);
@@ -165,6 +177,7 @@ export function isInStringOrComment(line: TokenizedLine, col: number): boolean {
   return t.kind === 'string' || t.kind === 'comment';
 }
 
+/** The dotted word around a column, such as `ta.sma`, or null when there is no word there. */
 export function wordAt(lineText: string, col: number): { text: string; start: number; end: number } | null {
   const isWord = (c: string) => /[A-Za-z0-9_.]/.test(c);
   let start = col;

@@ -2,18 +2,20 @@ import { argumentSpan, renamedTo, suggestNames, type QuickFix } from './quick-fi
 import type { ReferenceIndex } from './reference';
 import {
   calleeOf,
-  flattenTokens,
   isImportPath,
   isMemberAccess,
   isNamedArgument,
   occurrencesOf,
+  sourceIndex,
   type SymbolSource,
 } from './symbols';
 import { nearest } from './text';
 import type { Token, TokenizedLine } from './tokenizer';
 
+/** How loudly a rule speaks. `hint` renders faded rather than as a warning. */
 export type LintSeverity = 'error' | 'warning' | 'information' | 'hint';
 
+/** One finding, with the fix that resolves it when there is an unambiguous one. */
 export interface LintIssue {
   rule: string;
   line: number;
@@ -26,10 +28,12 @@ export interface LintIssue {
   fix: QuickFix | null;
 }
 
+/** A document analysed once, shared by every rule. */
 export interface LintSource extends SymbolSource {
   lines: string[];
 }
 
+/** The Pine version this extension documents and checks against. */
 export const TARGET_VERSION = 6;
 
 /** Calls the compiler rejects anywhere but the top level. */
@@ -53,6 +57,7 @@ const TOP_LEVEL_ONLY = new Set([
 /** Names that are conventionally declared without being read. */
 const IGNORED_PREFIX = '_';
 
+/** Runs every rule over a document. Nothing here touches the network. */
 export function lint(source: LintSource, ref: ReferenceIndex): LintIssue[] {
   const issues: LintIssue[] = [...versionIssues(source), ...tokenIssues(source, ref), ...unusedIssues(source)];
   return issues.sort((a, b) => a.line - b.line || a.startCol - b.startCol);
@@ -109,7 +114,8 @@ function versionIssues(source: LintSource): LintIssue[] {
 
 /** One pass over the tokens, covering the rules that read a call or a name in place. */
 function tokenIssues(source: LintSource, ref: ReferenceIndex): LintIssue[] {
-  const flat = flattenTokens(source.tokens);
+  const index = sourceIndex(source);
+  const { flat } = index;
   const bound = boundNames(source);
   const issues: LintIssue[] = [];
   const seenArguments = new Map<number, Set<string>>();
@@ -133,7 +139,7 @@ function tokenIssues(source: LintSource, ref: ReferenceIndex): LintIssue[] {
       }
       continue;
     }
-    if (isImportPath(flat, i) || isMemberAccess(flat, i)) continue;
+    if (isImportPath(index, i) || isMemberAccess(flat, i)) continue;
 
     if (TOP_LEVEL_ONLY.has(token.text) && flat[i + 1]?.kind === 'open') {
       const local = localScopeCall(source, token);

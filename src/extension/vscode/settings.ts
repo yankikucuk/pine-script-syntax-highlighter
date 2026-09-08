@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 
+/** The extension settings, read together so a provider never queries them one at a time. */
 export interface Settings {
   completion: boolean;
   hover: boolean;
@@ -12,6 +13,7 @@ export interface Settings {
   lintDisabledRules: string[];
 }
 
+/** The current settings. */
 export function getSettings(): Settings {
   const c = vscode.workspace.getConfiguration('pinescript');
   return {

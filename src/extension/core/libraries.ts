@@ -1,5 +1,6 @@
 import { buildModel, type EnumSymbol, type FunctionSymbol, type ImportDecl, type TypeSymbol } from './document-model';
 
+/** A Pine library and the symbols it exports, from the workspace or from TradingView. */
 export interface LibraryInfo {
   id: string;
   title: string;
@@ -12,18 +13,21 @@ export interface LibraryInfo {
   source: 'local' | 'remote';
 }
 
+/** How the providers reach libraries, so tests can supply their own. */
 export interface LibraryLookup {
   forImport(imp: ImportDecl): Promise<LibraryInfo | null>;
   local(): LibraryInfo[];
   search(prefix: string): Promise<LibraryInfo[]>;
 }
 
+/** A lookup that finds nothing, for tests and for when library support is switched off. */
 export const noLibraries: LibraryLookup = {
   forImport: async () => null,
   local: () => [],
   search: async () => [],
 };
 
+/** Reads a library script into its exported symbols, or null when the script is not a library. */
 export function parseLibrary(
   text: string,
   id: string,

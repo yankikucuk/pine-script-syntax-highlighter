@@ -14,6 +14,7 @@ export type IssueLookup = (uri: vscode.Uri) => readonly CompileDiagnostic[] | un
 /** Looks up the offline lint issues last reported for a document. */
 export type LintLookup = (uri: vscode.Uri) => readonly LintIssue[] | undefined;
 
+/** Offers the fixes for compiler and offline findings, plus the docstring refactor. */
 export class PineCodeActionProvider implements vscode.CodeActionProvider {
   static readonly metadata: vscode.CodeActionProviderMetadata = {
     providedCodeActionKinds: [vscode.CodeActionKind.QuickFix, vscode.CodeActionKind.Refactor],

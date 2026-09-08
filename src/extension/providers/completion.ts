@@ -77,6 +77,7 @@ const TRIGGER_HINTS: vscode.Command = {
   title: 'Trigger parameter hints',
 };
 
+/** Suggests built-ins, keywords, user symbols, named arguments, annotations and import paths. */
 export class PineCompletionProvider implements vscode.CompletionItemProvider {
   constructor(
     private readonly ref: ReferenceIndex,
@@ -221,6 +222,7 @@ export class PineCompletionProvider implements vscode.CompletionItemProvider {
   }
 }
 
+/** A completion item for a function the user or a library declares. */
 export function userFunctionItem(f: FunctionSymbol, origin?: string): vscode.CompletionItem {
   const item = new vscode.CompletionItem(
     f.name,
@@ -233,18 +235,21 @@ export function userFunctionItem(f: FunctionSymbol, origin?: string): vscode.Com
   return item;
 }
 
+/** A completion item for a user or library type. */
 export function userTypeItem(t: TypeSymbol, origin?: string): vscode.CompletionItem {
   const item = new vscode.CompletionItem(t.name, vscode.CompletionItemKind.Class);
   item.documentation = new vscode.MarkdownString(typeMarkdown(t, origin));
   return item;
 }
 
+/** A completion item for a user or library enum. */
 export function userEnumItem(e: EnumSymbol, origin?: string): vscode.CompletionItem {
   const item = new vscode.CompletionItem(e.name, vscode.CompletionItemKind.Enum);
   item.documentation = new vscode.MarkdownString(enumMarkdown(e, origin));
   return item;
 }
 
+/** Completion items for everything a library exports. */
 export function libraryExportItems(lib: LibraryInfo): vscode.CompletionItem[] {
   const origin = `from ${lib.id}`;
   return [

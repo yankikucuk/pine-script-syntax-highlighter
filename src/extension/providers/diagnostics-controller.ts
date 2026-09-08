@@ -5,6 +5,10 @@ import type { Settings } from '../vscode/settings';
 
 const DEBOUNCE_MS = 600;
 
+/**
+ * Sends open documents to the TradingView compiler and shows what it reports. Off unless
+ * `pinescript.diagnostics.remote` is on, because the whole script leaves the machine.
+ */
 export class DiagnosticsController {
   private readonly collection = vscode.languages.createDiagnosticCollection('pinescript');
   private readonly timers = new Map<string, ReturnType<typeof setTimeout>>();

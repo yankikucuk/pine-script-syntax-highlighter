@@ -30,6 +30,7 @@ import { getSettings } from './vscode/settings';
 const SELECTOR: vscode.DocumentSelector = { language: 'pinescript' };
 let providerDisposables: vscode.Disposable[] = [];
 
+/** Starts the controllers and registers everything the extension contributes. */
 export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(output());
   const facade = new PineFacade({ log });
@@ -76,6 +77,7 @@ export function activate(context: vscode.ExtensionContext): void {
   log('Pine Script extension activated');
 }
 
+/** Registers the providers that a setting can switch off, replacing any previous registration. */
 export function registerProviders(context: vscode.ExtensionContext, libraries: LibraryLookup): void {
   for (const d of providerDisposables) d.dispose();
   providerDisposables = [];
@@ -110,4 +112,5 @@ export function registerProviders(context: vscode.ExtensionContext, libraries: L
   context.subscriptions.push(...providerDisposables);
 }
 
+/** Nothing to tear down: every disposable is owned by the extension context. */
 export function deactivate(): void {}

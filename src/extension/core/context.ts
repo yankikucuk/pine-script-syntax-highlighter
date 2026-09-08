@@ -1,6 +1,7 @@
 import { enclosingCall, type CallInfo } from './call-resolver';
 import { isInStringOrComment, type TokenizedLine } from './tokenizer';
 
+/** What the cursor is in the middle of typing, which decides what completion offers. */
 export type CompletionContext =
   | { kind: 'none' }
   | { kind: 'annotation'; prefix: string }
@@ -14,6 +15,7 @@ const RE_IMPORT = /^\s*import\s+([\w\-/.]*)$/;
 const RE_MEMBER = /([A-Za-z_][\w.]*)\.(\w*)$/;
 const RE_WORD = /(\w*)$/;
 
+/** Works out what is being typed at a position. */
 export function completionContext(
   tokenLines: TokenizedLine[],
   lineText: string,

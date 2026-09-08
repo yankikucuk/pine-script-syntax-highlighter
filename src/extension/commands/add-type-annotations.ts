@@ -3,8 +3,10 @@ import { loadReference } from '../core/reference';
 import { planTypeAnnotations } from '../core/type-inference';
 import { analyze } from '../vscode/document-cache';
 
+/** The types the compiler last reported for a document, when diagnostics are on. */
 export type CompilerTypesLookup = (uri: vscode.Uri) => ReadonlyMap<string, string> | undefined;
 
+/** Registers the command that prefixes untyped declarations with their inferred type. */
 export function registerAddTypeAnnotations(context: vscode.ExtensionContext, compilerTypes: CompilerTypesLookup): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pinescript.addTypeAnnotations', async () => {

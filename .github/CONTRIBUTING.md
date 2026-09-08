@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for helping keep Pine Script highlighting accurate. This document covers the workflow; the README explains how the grammar is put together.
+Thanks for helping keep Pine Script support accurate. This document covers the workflow; the README explains what the extension does and how the pieces fit together.
 
 ## Setup
 
@@ -15,22 +15,29 @@ Node 20 or newer is required.
 
 ## Where things live
 
-| Change you want to make                 | Edit this                                                                                                 |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| Add or remove a built-in function       | `src/data/functions.json`                                                                                 |
-| Add or remove a built-in variable       | `src/data/variables.json`                                                                                 |
-| Add or remove a built-in constant       | `src/data/constants.json`                                                                                 |
-| Add a compiler annotation (`//@...`)    | `src/data/annotations.json`                                                                               |
-| Add a keyword, type or change a scope   | `src/grammar.mjs`                                                                                         |
-| Change folding, brackets or indentation | `language-configuration.json`                                                                             |
-| Add a snippet                           | `snippets/pinescript.code-snippets`                                                                       |
-| Completion, hover, commands, inference  | `src/extension/core/*` (logic) and `src/extension/providers/*`, `src/extension/commands/*` (VS Code glue) |
-| Change a theme color                    | `themes/*.json`                                                                                           |
-| Never                                   | `syntaxes/pinescript.tmLanguage.json`, `src/data/reference.json`, `dist/` (generated)                     |
+| Change you want to make                 | Edit this                                                                                                     |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Add or remove a built-in function       | `src/data/functions.json`                                                                                     |
+| Add or remove a built-in variable       | `src/data/variables.json`                                                                                     |
+| Add or remove a built-in constant       | `src/data/constants.json`                                                                                     |
+| Add a compiler annotation (`//@...`)    | `src/data/annotations.json`                                                                                   |
+| Add a keyword, type or change a scope   | `src/grammar.mjs`                                                                                             |
+| Change folding, brackets or indentation | `language-configuration.json`                                                                                 |
+| Add a snippet                           | `snippets/pinescript.code-snippets`                                                                           |
+| Completion, hover, commands, inference  | `src/extension/core/*` (logic) and `src/extension/providers/*`, `src/extension/commands/*` (VS Code glue)     |
+| Change how a document is formatted      | `src/extension/core/formatter.ts`                                                                             |
+| Add or change an offline rule           | `src/extension/core/lint.ts`, and list the rule in the `pinescript.lint.disabledRules` enum in `package.json` |
+| Change a quick fix                      | `src/extension/core/quick-fix.ts`                                                                             |
+| Definition, references, rename          | `src/extension/core/symbols.ts`                                                                               |
+| Colour swatches, semantic tokens        | `src/extension/core/colors.ts`, `src/extension/core/semantic.ts`                                              |
+| Change a theme color                    | `themes/*.json` (`tokenColors` for the grammar, `semanticTokenColors` for declared names)                     |
+| Never                                   | `syntaxes/pinescript.tmLanguage.json`, `src/data/reference.json`, `dist/` (generated)                         |
 
 The data files are grouped by namespace. A function `ta.sma` goes under the `"ta"` key as `"sma"`. Identifiers without a namespace go under the `""` key. Nested namespaces such as `strategy.closedtrades` are their own key.
 
 `src/extension/core` never imports `vscode`; that is what makes it testable with vitest. Providers and commands only translate between VS Code types and core types.
+
+Everything a provider needs from a document goes through `analyze()` in `src/extension/vscode/document-cache.ts`, which parses each document once per version. Anything that walks every identifier of a file should go through `sourceIndex()` in `src/extension/core/symbols.ts` rather than rescanning the token stream: that is what keeps the offline checks linear instead of quadratic on long scripts.
 
 ## Working on the extension
 
@@ -68,18 +75,22 @@ Built-in identifiers come from the [Pine Script v6 reference](https://www.tradin
 ## Manual checklist before a release
 
 - Completion after `ta.`, inside `plot(`, after `//@`, after `import `
-- Hover on `close`, `ta.sma`, a user function, an import line
+- Hover on `close`, `ta.sma`, a user function, a function parameter, an import line
 - Signature help through all parameters of `plot(`
-- Outline shows functions, types, enums, variables
+- Outline shows functions, types with fields, enums with members, top-level variables
+- Go to Definition, Find All References and Rename on a user function, a variable and an enum member
+- Format Document on a file with two space indentation and on one with wrapped calls
+- Colour swatch and picker on `#FF9800`, `color.red` and `color.new(color.blue, 25)`
+- Offline checks flag an old pragma and a bare `sma`; Convert to v6 fixes them
 - Generate Docstring on a function, a type and an enum
-- Add Type Annotations on `tests/snapshots/strategy-v6.pine`
-- Both themes on `tests/snapshots/strategy-v6.pine`
-- With `pinescript.diagnostics.remote` on: an undeclared identifier is underlined
+- Add Type Annotations on `tests/snapshots/strategy-v6.pine` and on `var a = 1`
+- Both themes on `tests/snapshots/strategy-v6.pine`, with semantic highlighting on
+- With `pinescript.diagnostics.remote` on: an undeclared identifier is underlined and the lightbulb offers a fix
 
 ## Releasing
 
 Maintainers only.
 
 1. Update `CHANGELOG.md` and bump `version` in `package.json`.
-2. Commit, then tag: `git tag v3.x.y && git push --tags`.
+2. Commit, then tag: `git tag -a v3.x.y -m 3.x.y && git push origin v3.x.y`.
 3. The release workflow builds the `.vsix`, attaches it to a GitHub release and publishes to the Marketplace when the `VSCE_PAT` secret is configured.

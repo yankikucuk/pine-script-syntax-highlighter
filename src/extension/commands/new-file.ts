@@ -8,6 +8,7 @@ const TITLES: Record<TemplateKind, string> = {
 };
 const LABELS: Record<TemplateKind, string> = { indicator: 'Indicator', strategy: 'Strategy', library: 'Library' };
 
+/** Registers the three commands that open a new script from a template. */
 export function registerNewFileCommands(context: vscode.ExtensionContext): void {
   for (const kind of ['indicator', 'strategy', 'library'] as const) {
     context.subscriptions.push(

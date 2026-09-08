@@ -1,6 +1,7 @@
 import * as vscode from 'vscode';
 import { analyze } from '../vscode/document-cache';
 
+/** Fills the Outline view with the declarations at the top level of a script. */
 export class PineDocumentSymbolProvider implements vscode.DocumentSymbolProvider {
   provideDocumentSymbols(document: vscode.TextDocument): vscode.DocumentSymbol[] {
     const { model, lines } = analyze(document);
@@ -27,13 +28,13 @@ export class PineDocumentSymbolProvider implements vscode.DocumentSymbolProvider
         lineRange(t.line, t.line),
       );
       s.children = t.fields.map(
-        (f, i) =>
+        (f) =>
           new vscode.DocumentSymbol(
             f.name,
             f.type,
             vscode.SymbolKind.Field,
-            lineRange(t.line + 1 + i, t.line + 1 + i),
-            lineRange(t.line + 1 + i, t.line + 1 + i),
+            lineRange(f.line, f.line),
+            lineRange(f.line, f.line),
           ),
       );
       symbols.push(s);
@@ -47,19 +48,20 @@ export class PineDocumentSymbolProvider implements vscode.DocumentSymbolProvider
         lineRange(e.line, e.line),
       );
       s.children = e.members.map(
-        (m, i) =>
+        (m) =>
           new vscode.DocumentSymbol(
             m.name,
             m.title ?? '',
             vscode.SymbolKind.EnumMember,
-            lineRange(e.line + 1 + i, e.line + 1 + i),
-            lineRange(e.line + 1 + i, e.line + 1 + i),
+            lineRange(m.line, m.line),
+            lineRange(m.line, m.line),
           ),
       );
       symbols.push(s);
     }
     for (const v of model.variables) {
-      if (model.functions.some((f) => v.line > f.line && v.line <= f.range.end)) continue; // locals stay out of the outline
+      // Only the declarations at the top level: locals, loop counters and block variables are noise here.
+      if (/^\s/.test(lines[v.line] ?? '')) continue;
       symbols.push(
         new vscode.DocumentSymbol(
           v.name,

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { buildModel, type DocumentModel } from '../core/document-model';
 import { tokenize, type TokenizedLine } from '../core/tokenizer';
 
+/** Everything read from a document once per version: its model, its tokens and its lines. */
 export interface Analysis {
   model: DocumentModel;
   tokens: TokenizedLine[];
@@ -11,6 +12,7 @@ export interface Analysis {
 const MAX = 20;
 const cache = new Map<string, { version: number; analysis: Analysis }>();
 
+/** The analysis of a document, reusing the last one while the document is unchanged. */
 export function analyze(document: vscode.TextDocument): Analysis {
   const key = document.uri.toString();
   const hit = cache.get(key);
@@ -23,6 +25,7 @@ export function analyze(document: vscode.TextDocument): Analysis {
   return analysis;
 }
 
+/** Drops a closed document from the cache. */
 export function forget(uri: vscode.Uri): void {
   cache.delete(uri.toString());
 }

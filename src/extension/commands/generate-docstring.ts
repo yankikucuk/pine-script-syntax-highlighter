@@ -3,6 +3,7 @@ import { annotationBlockRange, docstringLines } from '../core/docstring';
 import { declarationAt, type DeclSymbol } from '../core/document-model';
 import { analyze } from '../vscode/document-cache';
 
+/** The edit that writes, or completes, the `//@` block for one declaration. */
 export function docstringEdit(document: vscode.TextDocument, symbol: DeclSymbol): vscode.TextEdit {
   const { lines } = analyze(document);
   const indent = lines[symbol.line]!.match(/^\s*/)![0];
@@ -14,6 +15,7 @@ export function docstringEdit(document: vscode.TextDocument, symbol: DeclSymbol)
     : vscode.TextEdit.insert(new vscode.Position(symbol.line, 0), text);
 }
 
+/** Registers the command and its lightbulb action for documenting a declaration. */
 export function registerGenerateDocstring(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pinescript.generateDocstring', async (line?: number) => {
