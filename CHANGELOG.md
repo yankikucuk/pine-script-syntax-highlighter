@@ -5,6 +5,19 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-09-08
+
+### Added
+
+- A formatter behind **Format Document** and **Format Selection**. It indents local blocks with the four spaces the compiler requires, repairs two space and mixed tab indentation, keeps wrapped lines aligned while moving them off a block indent, spaces operators and arguments, and leaves strings, comments and import paths untouched. Lines are never joined or split.
+- `pinescript.format.enabled`, and `editor.defaultFormatter` for `[pinescript]`, so formatting works without picking a formatter.
+- Quick fixes on compiler diagnostics: move a v4 built-in into its namespace, rename `study` to `indicator`, correct a misspelt name against the reference or the document, correct or remove a named argument, add the type keyword an `na` initialiser needs, widen a declared type, rename a variable that shadows a built-in throughout the file, and add a missing `//@version=6`.
+- Tests for the formatter and the quick fixes, and a check that every snippet and fixture survives a formatting round trip unchanged.
+
+### Changed
+
+- Compiler diagnostics keep the placeholder values the compiler sends, which is what the quick fixes read.
+
 ## [3.1.0] - 2026-09-08
 
 ### Added

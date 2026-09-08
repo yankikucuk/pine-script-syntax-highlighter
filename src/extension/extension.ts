@@ -11,6 +11,7 @@ import { PineFacade } from './core/pine-facade';
 import { loadReference } from './core/reference';
 import { PineCompletionProvider } from './providers/completion';
 import { PineDocumentSymbolProvider } from './providers/document-symbol';
+import { PineFormattingProvider } from './providers/formatting';
 import { PineHoverProvider } from './providers/hover';
 import { PineSignatureHelpProvider } from './providers/signature-help';
 import { forget } from './vscode/document-cache';
@@ -36,7 +37,7 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.languages.registerCodeActionsProvider(
       SELECTOR,
-      new PineCodeActionProvider(),
+      new PineCodeActionProvider(loadReference(), (uri) => diagnostics.issuesFor(uri)),
       PineCodeActionProvider.metadata,
     ),
     vscode.workspace.onDidChangeConfiguration((e) => {
@@ -72,6 +73,13 @@ export function registerProviders(context: vscode.ExtensionContext, libraries: L
     providerDisposables.push(
       vscode.languages.registerSignatureHelpProvider(SELECTOR, new PineSignatureHelpProvider(ref, libraries), '(', ','),
     );
+  if (settings.format) {
+    const formatter = new PineFormattingProvider();
+    providerDisposables.push(
+      vscode.languages.registerDocumentFormattingEditProvider(SELECTOR, formatter),
+      vscode.languages.registerDocumentRangeFormattingEditProvider(SELECTOR, formatter),
+    );
+  }
   context.subscriptions.push(...providerDisposables);
 }
 

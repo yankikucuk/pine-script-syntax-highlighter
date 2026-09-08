@@ -7,6 +7,8 @@ export interface CompileDiagnostic {
   message: string;
   severity: 'error' | 'warning';
   code: string | null;
+  /** The compiler's own placeholder values, which the quick fixes read. */
+  ctx: Record<string, string> | undefined;
 }
 
 function render(issue: RawIssue): string {
@@ -19,7 +21,7 @@ function one(issue: RawIssue, severity: 'error' | 'warning', lineCount: number):
   const startCol = Math.max(0, (issue.start?.column ?? 1) - 1);
   const endLine = Math.min(maxLine, Math.max(0, (issue.end?.line ?? issue.start?.line ?? 1) - 1));
   const endCol = endLine === line ? Math.max(startCol, (issue.end?.column ?? issue.start?.column ?? 1) - 1) : startCol;
-  return { line, startCol, endCol, message: render(issue), severity, code: issue.code ?? null };
+  return { line, startCol, endCol, message: render(issue), severity, code: issue.code ?? null, ctx: issue.ctx };
 }
 
 export function toDiagnostics(result: CompileResult, lineCount: number): CompileDiagnostic[] {
@@ -35,6 +37,7 @@ export function toDiagnostics(result: CompileResult, lineCount: number): Compile
       message: result.reason ?? 'The TradingView compiler rejected the script.',
       severity: 'error',
       code: null,
+      ctx: undefined,
     });
   }
   return out;

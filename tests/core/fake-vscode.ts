@@ -141,10 +141,19 @@ export class TextEdit {
 }
 export class CodeActionKind {
   static Refactor = new CodeActionKind('refactor');
+  static QuickFix = new CodeActionKind('quickfix');
   constructor(public value: string) {}
+}
+export class WorkspaceEdit {
+  readonly edits: { uri: Uri; range: Range; newText: string }[] = [];
+  replace(uri: Uri, range: Range, newText: string) {
+    this.edits.push({ uri, range, newText });
+  }
 }
 export class CodeAction {
   command?: unknown;
+  edit?: WorkspaceEdit;
+  isPreferred?: boolean;
   constructor(
     public title: string,
     public kind?: CodeActionKind,

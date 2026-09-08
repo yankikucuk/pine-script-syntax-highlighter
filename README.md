@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">Completion, hover documentation, signature help, 97 snippets, themes and compiler diagnostics for TradingView Pine Script® v6 in Visual Studio Code.</h4>
+<h4 align="center">Completion, hover documentation, signature help, formatting, quick fixes, 97 snippets and themes for TradingView Pine Script® v6 in Visual Studio Code.</h4>
 
 <p align="center">
   <a href="https://marketplace.visualstudio.com/items?itemName=ex-codes.pine-script-syntax-highlighter"><img src="https://vsmarketplacebadges.dev/version-short/ex-codes.pine-script-syntax-highlighter.svg?style=flat-square&label=marketplace&color=blue" alt="Marketplace version"></a>
@@ -21,7 +21,7 @@
 
 ## Why you will like it
 
-Open a `.pine` file and the editor already knows the language: every v6 built-in completes with its signature, hovering anything shows the reference entry, parameter hints follow you through a call, and **97 snippets** turn a prefix and <kbd>Tab</kbd> into a full indicator, a strategy exit block or a Bollinger Bands section. Nothing leaves your machine unless you opt in, and the whole thing weighs less than a megabyte.
+Open a `.pine` file and the editor already knows the language: every v6 built-in completes with its signature, hovering anything shows the reference entry, parameter hints follow you through a call, **Format Document** lays the script out the way Pine wants it, and **97 snippets** turn a prefix and <kbd>Tab</kbd> into a full indicator, a strategy exit block or a Bollinger Bands section. Nothing leaves your machine unless you opt in, and the whole thing weighs less than a megabyte.
 
 ## Quick start
 
@@ -30,7 +30,8 @@ Open a `.pine` file and the editor already knows the language: every v6 built-in
 3. Type `ta.` to see the whole namespace with documentation, pick `ta.sma`, and watch the parameter hints as you write the arguments.
 4. Hover over `input.int`, `ta.crossover` or your own function to read what it does.
 5. Try `bb`, `sltp`, `table` or `request.security.tuple` with <kbd>Tab</kbd> to drop in a working building block.
-6. Press <kbd>F1</kbd> and type `Pine Script:` to see the commands: new files from templates, docstrings, type annotations and the reference.
+6. Press <kbd>Shift</kbd>+<kbd>Alt</kbd>+<kbd>F</kbd> (<kbd>Shift</kbd>+<kbd>Option</kbd>+<kbd>F</kbd> on macOS) to format the file: blocks get their four spaces, operators and arguments get their spacing, and nothing else moves.
+7. Press <kbd>F1</kbd> and type `Pine Script:` to see the commands: new files from templates, docstrings, type annotations and the reference.
 
 ## Features
 
@@ -73,12 +74,42 @@ A few worth trying first:
 - `table` creates a table once and fills it on the last bar; `debug` prints any value in a label on the last bar.
 - `section`, `notes` and `date` keep long scripts readable; `docfn` and `doctype` write the `//@` blocks the outline and hover use.
 
+### Formatting that respects how Pine reads a file
+
+**Format Document** and **Format Selection** work out of the box; turn on `editor.formatOnSave` if you want it automatic.
+
+Pine is indentation sensitive, so the formatter is deliberately conservative: it never joins or splits a line, and it never moves code between lines. What it does do:
+
+- Indents every local block with exactly four spaces per level, the only width the compiler accepts. A two space block, or a file that mixes tabs and spaces, comes out correct. If your editor is set to tabs, it indents with tabs instead.
+- Keeps a wrapped line aligned where you put it, and shifts it off a block indent when Pine would otherwise read it as a new block. Wrapping a long `strategy()` call across ten lines stays exactly as you aligned it.
+- Puts single spaces around operators and after commas, removes them inside brackets, and keeps `close[1]`, `ta.sma`, `array.new<float>()` and `import user/lib/1` tight.
+- Leaves strings, comments and triple-quoted blocks byte for byte alone, including the gap in front of a trailing comment.
+- Trims trailing whitespace, caps runs of blank lines at two, and ends the file with a single newline.
+
+Padding used to align a column of assignments is collapsed to one space, which is the one change that is a matter of taste.
+
+Every snippet in this extension and every test fixture has been run through the formatter and back through the TradingView compiler: none of them changed meaning, and formatting twice gives the same file.
+
 ### Structure, libraries and diagnostics
 
 - **Outline.** Functions, methods, types with fields, enums with members and top-level variables in the Outline view and breadcrumbs.
 - **Libraries.** Workspace files that call `library()` are indexed: their exports complete after the import alias and show up on hover. With `pinescript.libraries.remote` on, `import` completion also lists published TradingView libraries and hover shows their exports.
 - **Compiler diagnostics (opt-in).** Set `pinescript.diagnostics.remote` to `true` to send the document to the TradingView compiler and see its errors and warnings inline, on open, on save and shortly after you stop typing.
+- **Quick fixes.** With diagnostics on, the lightbulb offers a fix for the mistakes the compiler reports most: a v4 name that moved into a namespace (`sma` → `ta.sma`, `security` → `request.security`), `study` → `indicator`, a misspelt built-in or one of your own names, a misspelt or removed argument (`titel` → `title`, drop `transp`), a variable initialised with `na` that needs a type keyword, a declared type that is too narrow, a name that hides a built-in (renamed everywhere at once), and a missing `//@version=6`.
 - **Commands.** New Indicator / Strategy / Library from a template, Generate Docstring (also a lightbulb on declarations), Add Type Annotations for untyped declarations, Open Reference for the built-in under the cursor.
+
+Bringing an old script forward is mostly clicking the lightbulb. This one goes from eight compiler complaints to a clean compile:
+
+```pine
+study("Legacy", overlay=true)            //@version=6
+ma = sma(src, len)                       indicator("Legacy", overlay = true)
+daily = security(tickerid, "D", close)   ma = ta.sma(src, len)
+int slow = ta.ema(close, 50)      ==>    daily = request.security(tickerid, "D", close)
+open = 1                                 float slow = ta.ema(close, 50)
+holder = na                              openValue = 1
+plot(ma, color=color.blue, transp=40)    float holder = na
+                                         plot(ma, color = color.blue)
+```
 
 ### Highlighting and themes
 
@@ -113,6 +144,7 @@ The grammar and the documentation data are generated from the v6 reference, so v
 | `pinescript.libraries.local.include` | `**/*.pine` | Glob for workspace library discovery                                         |
 | `pinescript.libraries.remote`        | `true`      | Look up published libraries on TradingView for `import` completion and hover |
 | `pinescript.diagnostics.remote`      | `false`     | Send the document to the TradingView compiler for diagnostics                |
+| `pinescript.format.enabled`          | `true`      | Format Document and Format Selection                                         |
 
 ## Privacy
 
@@ -140,9 +172,10 @@ src/
     reference.json      full v6 documentation, generated by scripts/scrape-reference.mjs
   extension/
     core/               pure TypeScript: tokenizer, document model, completion context,
-                        type inference, docstrings, templates, TradingView client
+                        type inference, docstrings, formatter, quick fixes, templates,
+                        TradingView client
     providers/          VS Code adapters: completion, hover, signature help, symbols,
-                        code actions, diagnostics, library index
+                        formatting, code actions, diagnostics, library index
     commands/           command implementations
 scripts/
   build-grammar.mjs     compiles src/ into syntaxes/pinescript.tmLanguage.json and
