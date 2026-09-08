@@ -124,5 +124,627 @@
     "prefix": "alertcondition",
     "description": "alertcondition() call",
     "body": "alertcondition(${1:condition}, \"${2:Title}\", \"${3:Message}\")"
+  },
+  "License header": {
+    "prefix": "header",
+    "description": "Mozilla Public License header with author line and version pragma",
+    "body": [
+      "// This source code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/",
+      "// © ${1:username}",
+      "",
+      "//@version=6",
+      "$0"
+    ]
+  },
+  "Version pragma": {
+    "prefix": "version",
+    "description": "//@version=6 pragma",
+    "body": "//@version=6"
+  },
+  "Indicator declaration with all parameters": {
+    "prefix": "indicator.full",
+    "description": "indicator() with every commonly used parameter on its own line",
+    "body": [
+      "indicator(",
+      "     title = \"${1:My Indicator}\",",
+      "     shorttitle = \"${2:MI}\",",
+      "     overlay = ${3|true,false|},",
+      "     format = format.${4|inherit,price,volume,percent|},",
+      "     precision = ${5:2},",
+      "     scale = scale.${6|right,left,none|},",
+      "     max_bars_back = ${7:500},",
+      "     timeframe = \"${8}\",",
+      "     timeframe_gaps = ${9|true,false|},",
+      "     explicit_plot_zorder = ${10|false,true|},",
+      "     max_lines_count = ${11:50},",
+      "     max_labels_count = ${12:50},",
+      "     max_boxes_count = ${13:50},",
+      "     max_polylines_count = ${14:50},",
+      "     dynamic_requests = ${15|true,false|})",
+      "$0"
+    ]
+  },
+  "Strategy declaration with all parameters": {
+    "prefix": "strategy.full",
+    "description": "strategy() with every commonly used parameter on its own line",
+    "body": [
+      "strategy(",
+      "     title = \"${1:My Strategy}\",",
+      "     shorttitle = \"${2:MS}\",",
+      "     overlay = ${3|true,false|},",
+      "     pyramiding = ${4:0},",
+      "     calc_on_order_fills = ${5|false,true|},",
+      "     calc_on_every_tick = ${6|false,true|},",
+      "     default_qty_type = strategy.${7|percent_of_equity,fixed,cash|},",
+      "     default_qty_value = ${8:10},",
+      "     initial_capital = ${9:10000},",
+      "     currency = currency.${10|NONE,USD,EUR,GBP,JPY,TRY|},",
+      "     slippage = ${11:0},",
+      "     commission_type = strategy.commission.${12|percent,cash_per_contract,cash_per_order|},",
+      "     commission_value = ${13:0.1},",
+      "     process_orders_on_close = ${14|false,true|},",
+      "     close_entries_rule = \"${15|FIFO,ANY|}\",",
+      "     margin_long = ${16:100},",
+      "     margin_short = ${17:100},",
+      "     use_bar_magnifier = ${18|false,true|},",
+      "     fill_orders_on_standard_ohlc = ${19|false,true|},",
+      "     max_lines_count = ${20:50},",
+      "     max_labels_count = ${21:50},",
+      "     max_boxes_count = ${22:50})",
+      "$0"
+    ]
+  },
+  "Import library": {
+    "prefix": "import",
+    "description": "Import a published library under an alias",
+    "body": "import ${1:username}/${2:LibraryName}/${3:1} as ${4:alias}"
+  },
+  "Exported function": {
+    "prefix": "export",
+    "description": "Exported library function with its documentation block",
+    "body": [
+      "//@function ${1:What the function does.}",
+      "//@param ${2:source} ${3:Description of the parameter.}",
+      "//@returns ${4:Description of the return value.}",
+      "export ${5:myFunction}(${6:series float} ${2:source}) =>",
+      "    $0"
+    ]
+  },
+  "Function returning a tuple": {
+    "prefix": "fntuple",
+    "description": "Function that returns several values and the tuple that receives them",
+    "body": [
+      "${1:name}(${2:params}) =>",
+      "    ${3:upper} = ${4:0.0}",
+      "    ${5:lower} = ${6:0.0}",
+      "    [${3}, ${5}]",
+      "",
+      "[${7:a}, ${8:b}] = ${1}(${9:args})",
+      "$0"
+    ]
+  },
+  "Type with method": {
+    "prefix": "typemethod",
+    "description": "User-defined type together with a method on it",
+    "body": [
+      "type ${1:Name}",
+      "    ${2:float} ${3:value}${4: = ${5:na}}",
+      "",
+      "method ${6:describe}(${1:Name} this) =>",
+      "    $0"
+    ]
+  },
+  "Enum with input": {
+    "prefix": "enuminput",
+    "description": "Enum declaration and an input.enum() that selects one of its members",
+    "body": [
+      "enum ${1:Mode}",
+      "    ${2:fast} = \"${3:Fast}\"",
+      "    ${4:slow} = \"${5:Slow}\"",
+      "",
+      "${6:modeInput} = input.enum(${1}.${2}, \"${7:Mode}\")",
+      "$0"
+    ]
+  },
+  "Var declaration": {
+    "prefix": "var",
+    "description": "Variable initialised once and kept between bars",
+    "body": "var ${1:float} ${2:name} = ${3:na}"
+  },
+  "Varip declaration": {
+    "prefix": "varip",
+    "description": "Variable that keeps intrabar updates",
+    "body": "varip ${1:int} ${2:name} = ${3:0}"
+  },
+  "Switch on conditions": {
+    "prefix": "switchcond",
+    "description": "switch without an expression, first true condition wins",
+    "body": ["switch", "    ${1:condition1} => ${2}", "    ${3:condition2} => ${4}", "    => $0"]
+  },
+  "For loop with step": {
+    "prefix": "forby",
+    "description": "for loop with an explicit step",
+    "body": ["for ${1:i} = ${2:0} to ${3:10} by ${4:2}", "    $0"]
+  },
+  "For loop with break": {
+    "prefix": "forbreak",
+    "description": "for loop with a break condition",
+    "body": ["for ${1:i} = ${2:0} to ${3:10}", "    if ${4:condition}", "        break", "    $0"]
+  },
+  "Runtime error": {
+    "prefix": "runtime.error",
+    "description": "Stop the script with a message when a condition is met",
+    "body": ["if ${1:condition}", "    runtime.error(\"${2:Message}\")"]
+  },
+  "Log message": {
+    "prefix": "log",
+    "description": "Write a formatted message to the Pine Logs pane",
+    "body": "log.${1|info,warning,error|}(\"${2:message} {0}\", ${3:value})"
+  },
+  "Section comment": {
+    "prefix": "section",
+    "description": "Boxed section heading",
+    "body": [
+      "// ============================================================================",
+      "// ${1:Section}",
+      "// ============================================================================",
+      "$0"
+    ]
+  },
+  "Divider comment": {
+    "prefix": "divider",
+    "description": "Single divider line",
+    "body": "// ----------------------------------------------------------------------------"
+  },
+  "Notes comment": {
+    "prefix": "notes",
+    "description": "Boxed numbered notes",
+    "body": [
+      "// ----------------------------------------------------------------------------",
+      "// ${1:Notes}",
+      "//   1. ${2}",
+      "//   2. ${3}",
+      "//   3. ${4}",
+      "// ----------------------------------------------------------------------------",
+      "$0"
+    ]
+  },
+  "Date stamp comment": {
+    "prefix": "date",
+    "description": "Comment with the current date and time",
+    "body": "// ${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE} $0"
+  },
+  "TODO comment": {
+    "prefix": "todo",
+    "description": "TODO marker",
+    "body": "// TODO: $0"
+  },
+  "Function docblock": {
+    "prefix": "docfn",
+    "description": "@function, @param and @returns annotations",
+    "body": [
+      "//@function ${1:What the function does.}",
+      "//@param ${2:source} ${3:Description of the parameter.}",
+      "//@returns ${4:Description of the return value.}"
+    ]
+  },
+  "Type docblock": {
+    "prefix": "doctype",
+    "description": "@type and @field annotations",
+    "body": [
+      "//@type ${1:Description of the type.}",
+      "//@field ${2:name} ${3:Description of the field.}"
+    ]
+  },
+  "Enum docblock": {
+    "prefix": "docenum",
+    "description": "@enum annotation",
+    "body": "//@enum ${1:Description of the enum.}"
+  },
+  "Variable docblock": {
+    "prefix": "docvar",
+    "description": "@variable annotation",
+    "body": "//@variable ${1:Description of the variable.}"
+  },
+  "Strategy alert message": {
+    "prefix": "alertmsg",
+    "description": "@strategy_alert_message annotation with order placeholders",
+    "body": "//@strategy_alert_message ${1:{{strategy.order.action\\}\\} {{ticker\\}\\} @ {{strategy.order.price\\}\\}}"
+  },
+  "Input bool": {
+    "prefix": "input.bool",
+    "description": "Boolean input",
+    "body": "${1:name} = input.bool(${2|true,false|}, \"${3:Title}\"${4:, group = \"${5:Settings}\"})"
+  },
+  "Input string": {
+    "prefix": "input.string",
+    "description": "String input with options",
+    "body": "${1:name} = input.string(\"${2:SMA}\", \"${3:Title}\", options = [${4:\"SMA\", \"EMA\", \"WMA\"}]${5:, group = \"${6:Settings}\"})"
+  },
+  "Input color": {
+    "prefix": "input.color",
+    "description": "Color input",
+    "body": "${1:name} = input.color(${2:color.blue}, \"${3:Title}\"${4:, group = \"${5:Style}\"})"
+  },
+  "Input timeframe": {
+    "prefix": "input.timeframe",
+    "description": "Timeframe input",
+    "body": "${1:tf} = input.timeframe(\"${2:D}\", \"${3:Timeframe}\")"
+  },
+  "Input symbol": {
+    "prefix": "input.symbol",
+    "description": "Symbol input",
+    "body": "${1:symbol} = input.symbol(\"${2:NASDAQ:AAPL}\", \"${3:Symbol}\")"
+  },
+  "Input session": {
+    "prefix": "input.session",
+    "description": "Session input",
+    "body": "${1:session} = input.session(\"${2:0930-1600}\", \"${3:Session}\")"
+  },
+  "Input time": {
+    "prefix": "input.time",
+    "description": "Time input",
+    "body": "${1:startTime} = input.time(timestamp(\"${2:2024-01-01T00:00:00}\"), \"${3:Start}\")"
+  },
+  "Input price": {
+    "prefix": "input.price",
+    "description": "Price input that can be picked on the chart",
+    "body": "${1:level} = input.price(${2:0.0}, \"${3:Price level}\", confirm = ${4|true,false|})"
+  },
+  "Input text area": {
+    "prefix": "input.text_area",
+    "description": "Multiline text input",
+    "body": "${1:notes} = input.text_area(\"${2}\", \"${3:Notes}\")"
+  },
+  "Inline inputs": {
+    "prefix": "inputs.inline",
+    "description": "Two inputs on one settings row",
+    "body": [
+      "${1:fastLength} = input.int(${2:9}, \"${3:Fast}\", minval = 1, inline = \"${4:lengths}\", group = \"${5:Settings}\")",
+      "${6:slowLength} = input.int(${7:21}, \"${8:Slow}\", minval = 1, inline = \"${4}\", group = \"${5}\")"
+    ]
+  },
+  "Input group constant": {
+    "prefix": "inputs.group",
+    "description": "Group name constant shared by several inputs",
+    "body": [
+      "const string ${1:GRP_SETTINGS} = \"${2:Settings}\"",
+      "${3:length} = input.int(${4:14}, \"${5:Length}\", minval = 1, group = ${1})",
+      "$0"
+    ]
+  },
+  "Plot shape": {
+    "prefix": "plotshape",
+    "description": "plotshape() call",
+    "body": "plotshape(${1:condition}, \"${2:Title}\", shape.${3|triangleup,triangledown,circle,cross,xcross,diamond,square,flag,arrowup,arrowdown,labelup,labeldown|}, location.${4|belowbar,abovebar,top,bottom,absolute|}, ${5:color.green}, size = size.${6|tiny,small,normal,large,huge|}${7:, text = \"${8}\"})"
+  },
+  "Plot char": {
+    "prefix": "plotchar",
+    "description": "plotchar() call",
+    "body": "plotchar(${1:condition}, \"${2:Title}\", \"${3:▲}\", location.${4|belowbar,abovebar,top,bottom,absolute|}, ${5:color.green}, size = size.${6|tiny,small,normal,large,huge|})"
+  },
+  "Plot arrow": {
+    "prefix": "plotarrow",
+    "description": "plotarrow() call",
+    "body": "plotarrow(${1:series}, \"${2:Title}\", colorup = ${3:color.green}, colordown = ${4:color.red})"
+  },
+  "Plot candle": {
+    "prefix": "plotcandle",
+    "description": "plotcandle() call",
+    "body": "plotcandle(${1:open}, ${2:high}, ${3:low}, ${4:close}, \"${5:Title}\", color = ${6:close >= open ? color.green : color.red}, wickcolor = ${7:color.gray}, bordercolor = ${8:color.gray})"
+  },
+  "Plot bar": {
+    "prefix": "plotbar",
+    "description": "plotbar() call",
+    "body": "plotbar(${1:open}, ${2:high}, ${3:low}, ${4:close}, \"${5:Title}\", color = ${6:close >= open ? color.green : color.red})"
+  },
+  "Background color": {
+    "prefix": "bgcolor",
+    "description": "bgcolor() call",
+    "body": "bgcolor(${1:condition} ? color.new(${2:color.green}, ${3:90}) : na${4:, title = \"${5:Background}\"})"
+  },
+  "Bar color": {
+    "prefix": "barcolor",
+    "description": "barcolor() call",
+    "body": "barcolor(${1:condition} ? ${2:color.orange} : na${3:, title = \"${4:Bar color}\"})"
+  },
+  "Horizontal line": {
+    "prefix": "hline",
+    "description": "hline() call",
+    "body": "hline(${1:0}, \"${2:Zero}\", color = ${3:color.gray}, linestyle = hline.style_${4|dashed,dotted,solid|})"
+  },
+  "Fill between plots": {
+    "prefix": "fill",
+    "description": "Two plots with a filled band between them",
+    "body": [
+      "${1:upperPlot} = plot(${2:upper}, \"${3:Upper}\", color = ${4:color.teal})",
+      "${5:lowerPlot} = plot(${6:lower}, \"${7:Lower}\", color = ${4})",
+      "fill(${1}, ${5}, color = color.new(${4}, ${8:90}), title = \"${9:Band}\")"
+    ]
+  },
+  "Gradient plot": {
+    "prefix": "gradient",
+    "description": "Plot colored with color.from_gradient()",
+    "body": [
+      "float ${1:value} = ${2:ta.rsi(close, 14)}",
+      "color ${3:gradientColor} = color.from_gradient(${1}, ${4:0}, ${5:100}, ${6:color.red}, ${7:color.green})",
+      "plot(${1}, \"${8:Value}\", color = ${3}, linewidth = 2)"
+    ]
+  },
+  "Label": {
+    "prefix": "label.new",
+    "description": "label.new() call",
+    "body": "label.new(bar_index, ${1:high}, \"${2:Text}\", style = label.style_${3|label_down,label_up,label_left,label_right,label_center,none|}, color = ${4:color.blue}, textcolor = ${5:color.white}, size = size.${6|small,tiny,normal,large,huge|})"
+  },
+  "Line": {
+    "prefix": "line.new",
+    "description": "line.new() call",
+    "body": "line.new(bar_index[${1:10}], ${2:close[10]}, bar_index, ${3:close}, color = ${4:color.blue}, width = ${5:1}, style = line.style_${6|solid,dashed,dotted,arrow_right,arrow_left,arrow_both|})"
+  },
+  "Box": {
+    "prefix": "box.new",
+    "description": "box.new() call",
+    "body": "box.new(bar_index[${1:10}], ${2:high}, bar_index, ${3:low}, border_color = ${4:color.blue}, bgcolor = color.new(${4}, ${5:85}))"
+  },
+  "Table": {
+    "prefix": "table",
+    "description": "Table created once and filled on the last bar",
+    "body": [
+      "var table ${1:infoTable} = table.new(position.${2|top_right,top_left,top_center,middle_left,middle_center,middle_right,bottom_left,bottom_center,bottom_right|}, ${3:2}, ${4:1}, bgcolor = color.new(color.gray, 80), border_width = 1)",
+      "if barstate.islast",
+      "    table.cell(${1}, 0, 0, \"${5:Close}\", text_color = chart.fg_color)",
+      "    table.cell(${1}, 1, 0, str.tostring(${6:close}, format.mintick), text_color = chart.fg_color)",
+      "    $0"
+    ]
+  },
+  "Polyline": {
+    "prefix": "polyline",
+    "description": "Points collected into a polyline redrawn on the last bar",
+    "body": [
+      "var array<chart.point> ${1:points} = array.new<chart.point>()",
+      "var polyline ${2:curve} = na",
+      "array.push(${1}, chart.point.from_index(bar_index, ${3:close}))",
+      "if barstate.islast",
+      "    polyline.delete(${2})",
+      "    ${2} := polyline.new(${1}, line_color = ${4:color.blue})"
+    ]
+  },
+  "Debug label": {
+    "prefix": "debug",
+    "description": "Label on the last bar showing a value",
+    "body": [
+      "if barstate.islast",
+      "    label.new(bar_index, high, str.format(\"${1:value}: {0}\", ${2:value}), style = label.style_label_down, color = color.new(color.gray, 20), textcolor = color.white)"
+    ]
+  },
+  "Alert": {
+    "prefix": "alert",
+    "description": "alert() call guarded by a condition",
+    "body": [
+      "if ${1:condition}",
+      "    alert(\"${2:Message}\", alert.freq_${3|once_per_bar_close,once_per_bar,all|})"
+    ]
+  },
+  "Alert with JSON payload": {
+    "prefix": "alert.json",
+    "description": "alert() with a JSON message built by str.format()",
+    "body": [
+      "if ${1:condition}",
+      "    alert(str.format('{\"ticker\": \"{0}\", \"price\": {1}\\}', syminfo.ticker, close), alert.freq_once_per_bar_close)"
+    ]
+  },
+  "Request security tuple": {
+    "prefix": "request.security.tuple",
+    "description": "Higher timeframe OHLC in one request",
+    "body": [
+      "${1:htf} = input.timeframe(\"${2:D}\", \"${3:Higher timeframe}\")",
+      "[${4:htfOpen}, ${5:htfHigh}, ${6:htfLow}, ${7:htfClose}] = request.security(syminfo.tickerid, ${1}, [open, high, low, close], lookahead = barmerge.lookahead_off)"
+    ]
+  },
+  "Request security without repainting": {
+    "prefix": "request.security.confirmed",
+    "description": "Confirmed higher timeframe value that does not repaint",
+    "body": "float ${1:htfClose} = request.security(syminfo.tickerid, \"${2:D}\", ${3:close}[1], lookahead = barmerge.lookahead_on)"
+  },
+  "Request lower timeframe": {
+    "prefix": "request.security_lower_tf",
+    "description": "Intrabar values as an array",
+    "body": "array<${1:float}> ${2:ltfValues} = request.security_lower_tf(syminfo.tickerid, \"${3:1}\", ${4:close})"
+  },
+  "Security wrapper function": {
+    "prefix": "secfn",
+    "description": "Reusable request.security() wrapper",
+    "body": [
+      "${1:htfValue}(string symbol, string timeframe, float source) =>",
+      "    request.security(symbol, timeframe, source, gaps = barmerge.gaps_${2|off,on|}, lookahead = barmerge.lookahead_${3|off,on|})",
+      "",
+      "float ${4:dailyClose} = ${1}(syminfo.tickerid, \"${5:D}\", ${6:close})"
+    ]
+  },
+  "Session check": {
+    "prefix": "session",
+    "description": "True while the bar is inside a session",
+    "body": [
+      "${1:sessionInput} = input.session(\"${2:0930-1600}\", \"${3:Session}\")",
+      "bool ${4:inSession} = not na(time(timeframe.period, ${1}, \"${5:America/New_York}\"))",
+      "bgcolor(${4} ? color.new(color.blue, 90) : na, title = \"${3}\")"
+    ]
+  },
+  "Timeframe change": {
+    "prefix": "newbar",
+    "description": "True on the first bar of a new period",
+    "body": "bool ${1:newDay} = timeframe.change(\"${2:D}\")"
+  },
+  "Backtest window": {
+    "prefix": "backtest",
+    "description": "Date range inputs and the flag that limits orders to them",
+    "body": [
+      "${1:startTime} = input.time(timestamp(\"${2:2024-01-01T00:00:00}\"), \"${3:Start}\", group = \"${4:Backtest window}\")",
+      "${5:endTime} = input.time(timestamp(\"${6:2030-01-01T00:00:00}\"), \"${7:End}\", group = \"${4}\")",
+      "bool ${8:inWindow} = time >= ${1} and time <= ${5}"
+    ]
+  },
+  "Last bar block": {
+    "prefix": "islast",
+    "description": "Code that runs only on the last bar",
+    "body": ["if barstate.islast", "    $0"]
+  },
+  "Strategy entry": {
+    "prefix": "strategy.entry",
+    "description": "strategy.entry() call",
+    "body": "strategy.entry(\"${1:Long}\", strategy.${2|long,short|}${3:, qty = ${4:1}}${5:, comment = \"${6:Entry}\"})"
+  },
+  "Strategy exit": {
+    "prefix": "strategy.exit",
+    "description": "strategy.exit() with stop and limit prices",
+    "body": "strategy.exit(\"${1:Exit}\", from_entry = \"${2:Long}\", stop = ${3:stopPrice}, limit = ${4:limitPrice}${5:, comment = \"${6:Exit}\"})"
+  },
+  "Strategy close": {
+    "prefix": "strategy.close",
+    "description": "strategy.close() call",
+    "body": "strategy.close(\"${1:Long}\"${2:, comment = \"${3:Close}\"})"
+  },
+  "Position state": {
+    "prefix": "position",
+    "description": "Flags for long, short and flat positions",
+    "body": [
+      "bool ${1:isLong} = strategy.position_size > 0",
+      "bool ${2:isShort} = strategy.position_size < 0",
+      "bool ${3:isFlat} = strategy.position_size == 0"
+    ]
+  },
+  "Percent stop loss and take profit": {
+    "prefix": "sltp",
+    "description": "Stop loss and take profit as a percentage of the entry price",
+    "body": [
+      "${1:slPercent} = input.float(${2:2.0}, \"${3:Stop loss %}\", minval = 0.0, step = 0.1, group = \"${4:Risk}\")",
+      "${5:tpPercent} = input.float(${6:4.0}, \"${7:Take profit %}\", minval = 0.0, step = 0.1, group = \"${4}\")",
+      "",
+      "if strategy.position_size > 0",
+      "    strategy.exit(\"${8:Long exit}\", \"${9:Long}\", stop = strategy.position_avg_price * (1 - ${1} / 100), limit = strategy.position_avg_price * (1 + ${5} / 100))",
+      "if strategy.position_size < 0",
+      "    strategy.exit(\"${10:Short exit}\", \"${11:Short}\", stop = strategy.position_avg_price * (1 + ${1} / 100), limit = strategy.position_avg_price * (1 - ${5} / 100))"
+    ]
+  },
+  "Trailing stop": {
+    "prefix": "trail",
+    "description": "ATR based trailing stop with strategy.exit()",
+    "body": [
+      "${1:atrLength} = input.int(${2:14}, \"${3:ATR length}\", minval = 1, group = \"${4:Risk}\")",
+      "${5:atrMult} = input.float(${6:2.0}, \"${7:ATR multiplier}\", minval = 0.1, step = 0.1, group = \"${4}\")",
+      "float ${8:trailTicks} = ta.atr(${1}) * ${5} / syminfo.mintick",
+      "",
+      "if strategy.position_size != 0",
+      "    strategy.exit(\"${9:Trail}\", trail_points = ${8}, trail_offset = ${8})"
+    ]
+  },
+  "Crossover signals": {
+    "prefix": "cross",
+    "description": "Crossover and crossunder flags with shapes",
+    "body": [
+      "bool ${1:bullish} = ta.crossover(${2:fast}, ${3:slow})",
+      "bool ${4:bearish} = ta.crossunder(${2}, ${3})",
+      "plotshape(${1}, \"${5:Bullish}\", shape.triangleup, location.belowbar, color.green, size = size.small)",
+      "plotshape(${4}, \"${6:Bearish}\", shape.triangledown, location.abovebar, color.red, size = size.small)"
+    ]
+  },
+  "Selectable moving average": {
+    "prefix": "mafn",
+    "description": "Moving average function selected by a string input",
+    "body": [
+      "${1:maType} = input.string(\"${2:SMA}\", \"${3:MA type}\", options = [\"SMA\", \"EMA\", \"WMA\", \"RMA\", \"HMA\", \"VWMA\"])",
+      "",
+      "${4:ma}(float source, simple int length, simple string kind) =>",
+      "    switch kind",
+      "        \"SMA\" => ta.sma(source, length)",
+      "        \"EMA\" => ta.ema(source, length)",
+      "        \"WMA\" => ta.wma(source, length)",
+      "        \"RMA\" => ta.rma(source, length)",
+      "        \"HMA\" => ta.hma(source, length)",
+      "        => ta.vwma(source, length)",
+      "",
+      "float ${5:maValue} = ${4}(${6:close}, ${7:20}, ${1})"
+    ]
+  },
+  "Bollinger Bands": {
+    "prefix": "bb",
+    "description": "Bollinger Bands with inputs, plots and band fill",
+    "body": [
+      "${1:bbSource} = input.source(close, \"Source\", group = \"${2:Bollinger Bands}\")",
+      "${3:bbLength} = input.int(${4:20}, \"Length\", minval = 1, group = \"${2}\")",
+      "${5:bbMult} = input.float(${6:2.0}, \"StdDev\", minval = 0.001, maxval = 50, step = 0.1, group = \"${2}\")",
+      "",
+      "float ${7:bbBasis} = ${8:ta.sma(${1}, ${3})}",
+      "float ${9:bbDev} = ${5} * ta.stdev(${1}, ${3})",
+      "float ${10:bbUpper} = ${7} + ${9}",
+      "float ${11:bbLower} = ${7} - ${9}",
+      "",
+      "plot(${7}, \"Basis\", color = color.blue)",
+      "${12:upperPlot} = plot(${10}, \"Upper\", color = color.teal)",
+      "${13:lowerPlot} = plot(${11}, \"Lower\", color = color.teal)",
+      "fill(${12}, ${13}, color = color.new(color.teal, 90), title = \"Background\")"
+    ]
+  },
+  "RSI with bands": {
+    "prefix": "rsi",
+    "description": "RSI plot with overbought and oversold levels",
+    "body": [
+      "${1:rsiLength} = input.int(${2:14}, \"${3:RSI length}\", minval = 1)",
+      "float ${4:rsi} = ta.rsi(${5:close}, ${1})",
+      "",
+      "plot(${4}, \"RSI\", color = color.purple)",
+      "${6:upperBand} = hline(${7:70}, \"Overbought\", color = color.gray, linestyle = hline.style_dashed)",
+      "${8:lowerBand} = hline(${9:30}, \"Oversold\", color = color.gray, linestyle = hline.style_dashed)",
+      "fill(${6}, ${8}, color = color.new(color.purple, 90), title = \"Band\")"
+    ]
+  },
+  "ATR stops": {
+    "prefix": "atrstop",
+    "description": "Long and short stop levels from ATR",
+    "body": [
+      "${1:atrLength} = input.int(${2:14}, \"${3:ATR length}\", minval = 1)",
+      "${4:atrMult} = input.float(${5:2.0}, \"${6:ATR multiplier}\", minval = 0.1, step = 0.1)",
+      "float ${7:atr} = ta.atr(${1})",
+      "float ${8:longStop} = close - ${7} * ${4}",
+      "float ${9:shortStop} = close + ${7} * ${4}"
+    ]
+  },
+  "Breakout levels": {
+    "prefix": "breakout",
+    "description": "Highest high and lowest low breakout flags",
+    "body": [
+      "${1:breakoutLength} = input.int(${2:20}, \"${3:Breakout length}\", minval = 1)",
+      "float ${4:upperLevel} = ta.highest(high, ${1})[1]",
+      "float ${5:lowerLevel} = ta.lowest(low, ${1})[1]",
+      "bool ${6:breakUp} = close > ${4}",
+      "bool ${7:breakDown} = close < ${5}"
+    ]
+  },
+  "Array buffer": {
+    "prefix": "array",
+    "description": "Persistent array capped at a maximum size",
+    "body": [
+      "var array<${1:float}> ${2:values} = array.new<${1}>()",
+      "array.push(${2}, ${3:close})",
+      "if array.size(${2}) > ${4:100}",
+      "    array.shift(${2})"
+    ]
+  },
+  "Map": {
+    "prefix": "map",
+    "description": "Persistent map with put and get",
+    "body": [
+      "var map<${1:string}, ${2:float}> ${3:levels} = map.new<${1}, ${2}>()",
+      "map.put(${3}, ${4:\"key\"}, ${5:close})",
+      "${2} ${6:value} = map.get(${3}, ${4})"
+    ]
+  },
+  "Matrix": {
+    "prefix": "matrix",
+    "description": "Persistent matrix with a set call",
+    "body": [
+      "var matrix<${1:float}> ${2:m} = matrix.new<${1}>(${3:rows}, ${4:cols}, ${5:na})",
+      "matrix.set(${2}, ${6:0}, ${7:0}, ${8:close})"
+    ]
   }
 }

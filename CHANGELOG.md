@@ -5,6 +5,18 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-09-08
+
+### Added
+
+- 78 new snippets, for a total of 97. They cover script headers and full `indicator()` / `strategy()` declarations, library `import` / `export`, tuples, types with methods, enums with `input.enum()`, `var` / `varip`, condition `switch`, stepped and breaking loops, `runtime.error()` and `log.*()`; section, divider, notes, date and TODO comments plus `//@` documentation blocks; every `input.*()` function, inline and grouped inputs; `plotshape`, `plotchar`, `plotarrow`, `plotcandle`, `plotbar`, `bgcolor`, `barcolor`, `hline`, band fills, gradient plots, labels, lines, boxes, tables, polylines and a debug label; `alert()` with plain and JSON messages; higher timeframe tuples, non-repainting `request.security()`, `request.security_lower_tf()`, a security wrapper, sessions, timeframe changes, backtest windows and last-bar blocks; strategy orders, position flags, percent stop loss / take profit and an ATR trailing stop; crossover signals, a selectable moving average, Bollinger Bands, RSI with bands, ATR stops and breakout levels; arrays, maps and matrices.
+- A test that checks every snippet for unique prefixes, well-formed placeholders and v6 pragmas.
+
+### Changed
+
+- The function tuple snippet no longer suggests names that shadow built-in variables.
+- README documents the snippet catalogue and walks through the editor features in more detail.
+
 ## [3.0.0] - 2026-09-07
 
 The extension becomes a full language extension. Highlighting is unchanged; everything below is new.
