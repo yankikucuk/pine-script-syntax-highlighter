@@ -1,10 +1,12 @@
 import { tokenize, type TokenizedLine } from './tokenizer';
 
+/** An inclusive span of document lines. */
 export interface LineRange {
   start: number;
   end: number;
 }
 
+/** The `//@` documentation written above a declaration, split by tag. */
 export interface Annotations {
   function: string | null;
   description: string | null;
@@ -16,12 +18,14 @@ export interface Annotations {
   raw: string[];
 }
 
+/** One parameter of a user function, as written in its header. */
 export interface ParamDecl {
   name: string;
   type: string | null;
   default: string | null;
 }
 
+/** A function or method the document declares. `range` covers the header and the body. */
 export interface FunctionSymbol {
   kind: 'function';
   name: string;
@@ -35,12 +39,15 @@ export interface FunctionSymbol {
   lastLine: string | null;
 }
 
+/** One field of a user type, with the line it is written on. */
 export interface FieldDecl {
   name: string;
   type: string;
   default: string | null;
+  line: number;
 }
 
+/** A user-defined type and its fields. */
 export interface TypeSymbol {
   kind: 'type';
   name: string;
@@ -51,11 +58,14 @@ export interface TypeSymbol {
   range: LineRange;
 }
 
+/** One member of a user enum, with the line it is written on. */
 export interface EnumMember {
   name: string;
   title: string | null;
+  line: number;
 }
 
+/** A user-defined enum and its members. */
 export interface EnumSymbol {
   kind: 'enum';
   name: string;
@@ -66,6 +76,10 @@ export interface EnumSymbol {
   range: LineRange;
 }
 
+/**
+ * A variable the document declares. `scope` is where the name refers to this declaration: the rest
+ * of the file, the enclosing function body, or the loop block for a `for` counter.
+ */
 export interface VariableSymbol {
   kind: 'variable';
   name: string;
@@ -77,6 +91,7 @@ export interface VariableSymbol {
   scope: LineRange;
 }
 
+/** An `import owner/library/version as alias` line. */
 export interface ImportDecl {
   owner: string;
   name: string;
@@ -85,6 +100,7 @@ export interface ImportDecl {
   line: number;
 }
 
+/** Everything read from one document without asking the compiler. */
 export interface DocumentModel {
   version: number | null;
   scriptKind: 'indicator' | 'strategy' | 'library' | null;
@@ -97,6 +113,7 @@ export interface DocumentModel {
   lineCount: number;
 }
 
+/** The declarations that can carry a `//@` documentation block. */
 export type DeclSymbol = FunctionSymbol | TypeSymbol | EnumSymbol;
 
 const TYPE = String.raw`[A-Za-z_][\w.]*(?:<[^<>]*(?:<[^<>]*>[^<>]*)*>)?(?:\[\])?`;
@@ -110,6 +127,8 @@ const RE_ENUM = new RegExp(String.raw`^(export\s+)?enum\s+(${NAME})\s*$`);
 const RE_FIELD = new RegExp(String.raw`^(${TYPE})\s+(${NAME})(?:\s*=\s*(.+))?$`);
 const RE_ENUM_MEMBER = new RegExp(String.raw`^(${NAME})(?:\s*=\s*(.+))?$`);
 const RE_VARIABLE = new RegExp(String.raw`^(?:(var|varip)\s+)?(?:(${TYPE})\s+)?(${NAME})\s*=(?![=>])\s*(.*)$`);
+const RE_FOR_COUNTER = new RegExp(String.raw`^for\s+(${NAME})\s*=(?![=>])`);
+const RE_FOR_IN = new RegExp(String.raw`^for\s+(?:\[\s*(${NAME})\s*,\s*(${NAME})\s*\]|(${NAME}))\s+in\b`);
 const RE_TUPLE = /^\[\s*([\w\s,]+)\]\s*=(?![=>])/;
 const RE_PARAM = new RegExp(String.raw`^(?:(${TYPE})\s+)?(${NAME})(?:\s*=\s*(.+))?$`);
 
@@ -132,10 +151,15 @@ const KEYWORDS = new Set([
   'varip',
 ]);
 
+/** An annotation block with nothing filled in. */
 export function emptyAnnotations(): Annotations {
   return { function: null, description: null, params: {}, returns: null, type: null, fields: {}, enum: null, raw: [] };
 }
 
+/**
+ * Reads a document into a model of what it declares. Wrapped lines and lines inside strings are
+ * skipped, so only real statements are considered.
+ */
 export function buildModel(text: string): DocumentModel {
   const lines = text.split(/\r?\n/);
   const tokenLines = tokenize(text);
@@ -182,7 +206,7 @@ export function buildModel(text: string): DocumentModel {
       const fields: FieldDecl[] = [];
       for (let j = i + 1; j <= range.end; j++) {
         const f = stripComment(lines[j]!, tokenLines[j]!).trim().match(RE_FIELD);
-        if (f) fields.push({ name: f[2]!, type: f[1]!, default: f[3]?.trim() ?? null });
+        if (f) fields.push({ name: f[2]!, type: f[1]!, default: f[3]?.trim() ?? null, line: j });
       }
       model.types.push({
         kind: 'type',
@@ -203,7 +227,7 @@ export function buildModel(text: string): DocumentModel {
       const members: EnumMember[] = [];
       for (let j = i + 1; j <= range.end; j++) {
         const m = stripComment(lines[j]!, tokenLines[j]!).trim().match(RE_ENUM_MEMBER);
-        if (m) members.push({ name: m[1]!, title: m[2]?.trim() ?? null });
+        if (m) members.push({ name: m[1]!, title: m[2]?.trim() ?? null, line: j });
       }
       model.enums.push({
         kind: 'enum',
@@ -243,6 +267,34 @@ export function buildModel(text: string): DocumentModel {
       }
     }
 
+    // A `for` header declares its counter, or its index and element, for the length of the loop.
+    const counter = code.match(RE_FOR_COUNTER);
+    const forIn = counter ? null : code.match(RE_FOR_IN);
+    if (counter || forIn) {
+      const range = blockRange(lines, i, indent);
+      const declared: { name: string; type: string | null }[] = counter
+        ? [{ name: counter[1]!, type: 'int' }]
+        : forIn![3]
+          ? [{ name: forIn![3], type: null }]
+          : [
+              { name: forIn![1]!, type: 'int' },
+              { name: forIn![2]!, type: null },
+            ];
+      for (const { name, type } of declared) {
+        model.variables.push({
+          kind: 'variable',
+          name,
+          declaredType: type,
+          qualifier: null,
+          initializer: null,
+          line: i,
+          column: columnOf(tl, name, raw),
+          scope: range,
+        });
+      }
+      continue;
+    }
+
     const tuple = code.match(RE_TUPLE);
     if (tuple) {
       for (const name of tuple[1]!
@@ -256,7 +308,7 @@ export function buildModel(text: string): DocumentModel {
           qualifier: null,
           initializer: null,
           line: i,
-          column: raw.indexOf(name),
+          column: columnOf(tl, name, raw),
           scope: { start: i, end: lines.length - 1 },
         });
       }
@@ -272,20 +324,21 @@ export function buildModel(text: string): DocumentModel {
         qualifier: (v[1] as 'var' | 'varip' | undefined) ?? null,
         initializer: v[4]?.trim() || null,
         line: i,
-        column: raw.indexOf(v[3]!),
+        column: columnOf(tl, v[3]!, raw),
         scope: { start: i, end: lines.length - 1 },
       });
     }
   }
 
-  // Narrow variable scopes to the enclosing function body.
+  // Narrow variable scopes to the enclosing function body, keeping a narrower loop scope as it is.
   for (const variable of model.variables) {
     const owner = model.functions.find((f) => variable.line > f.line && variable.line <= f.range.end);
-    if (owner) variable.scope = { start: variable.line, end: owner.range.end };
+    if (owner) variable.scope = { start: variable.line, end: Math.min(variable.scope.end, owner.range.end) };
   }
   return model;
 }
 
+/** The function, type or enum declared on a line, or null when the line declares none. */
 export function declarationAt(model: DocumentModel, line: number): DeclSymbol | null {
   return (
     model.functions.find((f) => f.line === line) ??
@@ -295,8 +348,18 @@ export function declarationAt(model: DocumentModel, line: number): DeclSymbol | 
   );
 }
 
+/** The variables whose scope covers a line. */
 export function visibleVariables(model: DocumentModel, line: number): VariableSymbol[] {
   return model.variables.filter((v) => v.scope.start <= line && line <= v.scope.end);
+}
+
+/**
+ * The column a declared name sits at. Searching the raw text would find the letter inside a keyword,
+ * so `var a = 1` would report column 1 rather than 4.
+ */
+function columnOf(tl: TokenizedLine, name: string, raw: string): number {
+  const token = tl.tokens.find((t) => t.kind === 'ident' && t.text === name);
+  return token ? token.start : raw.indexOf(name);
 }
 
 function stripComment(raw: string, tl: TokenizedLine): string {
@@ -332,6 +395,7 @@ function joinHeader(
   return null;
 }
 
+/** Splits the parameter list of a function header, dropping the qualifiers Pine allows. */
 export function parseParams(paramText: string): ParamDecl[] {
   const parts: string[] = [];
   let depth = 0;
@@ -363,6 +427,7 @@ export function parseParams(paramText: string): ParamDecl[] {
 
 type DocKey = { kind: 'params' | 'fields'; name: string } | 'function' | 'description' | 'returns' | 'type' | 'enum';
 
+/** Reads the `//@` block written directly above a line. */
 export function annotationsAbove(lines: string[], line: number): Annotations {
   const docs = emptyAnnotations();
   const block: string[] = [];

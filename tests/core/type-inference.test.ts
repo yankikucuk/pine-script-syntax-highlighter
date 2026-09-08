@@ -73,3 +73,21 @@ describe('planTypeAnnotations', () => {
     expect(plan.edits.map((e) => e.line)).toEqual([1]);
   });
 });
+
+describe('planTypeAnnotations: declarations that used to come out broken', () => {
+  it('inserts the type after var and varip, not inside them', () => {
+    const text = 'var a = 1\nvarip r = 2\n';
+    const plan = planTypeAnnotations(buildModel(text), ref, null);
+    const lines = text.split('\n');
+    const applied = plan.edits.map(
+      (e) => lines[e.line]!.slice(0, e.column) + e.insert + lines[e.line]!.slice(e.column),
+    );
+    expect(applied).toEqual(['var int a = 1', 'varip int r = 2']);
+  });
+
+  it('gives a value read from a loop counter the the counter type', () => {
+    const text = 'for i = 0 to 10\n    x = i\n';
+    const plan = planTypeAnnotations(buildModel(text), ref, null);
+    expect(plan.edits).toEqual([{ line: 1, column: 4, insert: 'int ' }]);
+  });
+});

@@ -3,12 +3,14 @@ import type { RefEntry, ReferenceIndex } from './reference';
 
 const fence = (code: string) => '```pine\n' + code + '\n```';
 
+/** The one-line detail shown beside a completion item. */
 export function entryDetail(entry: RefEntry): string {
   if (entry.kind === 'function') return entry.overloads[0]?.syntax ?? `${entry.name}()`;
   if (entry.type) return entry.type;
   return entry.kind;
 }
 
+/** The hover card for a built-in: signature, description, parameters, remarks and a reference link. */
 export function entryMarkdown(entry: RefEntry, ref: ReferenceIndex, overloadIndex = 0): string {
   const parts: string[] = [];
   if (entry.kind === 'function') {
@@ -47,10 +49,12 @@ function paramLabel(p: ParamDecl): string {
   return `${p.type ? `${p.type} ` : ''}${p.name}${p.default !== null ? ` = ${p.default}` : ''}`;
 }
 
+/** `name(type param = default, ...)` for a user function. */
 export function functionSignatureLabel(fn: FunctionSymbol): string {
   return `${fn.name}(${fn.params.map(paramLabel).join(', ')})`;
 }
 
+/** The hover card for a user function, using whatever `//@` documentation it carries. */
 export function functionMarkdown(fn: FunctionSymbol, origin?: string): string {
   const parts = [fence(`${fn.isExport ? 'export ' : ''}${fn.isMethod ? 'method ' : ''}${functionSignatureLabel(fn)}`)];
   if (origin) parts.push(`_${origin}_`);
@@ -63,6 +67,7 @@ export function functionMarkdown(fn: FunctionSymbol, origin?: string): string {
   return parts.join('\n\n');
 }
 
+/** The hover card for a user type and its fields. */
 export function typeMarkdown(t: TypeSymbol, origin?: string): string {
   const parts = [fence(`${t.isExport ? 'export ' : ''}type ${t.name}`)];
   if (origin) parts.push(`_${origin}_`);
@@ -79,6 +84,7 @@ export function typeMarkdown(t: TypeSymbol, origin?: string): string {
   return parts.join('\n\n');
 }
 
+/** The hover card for a user enum and its members. */
 export function enumMarkdown(e: EnumSymbol, origin?: string): string {
   const parts = [fence(`${e.isExport ? 'export ' : ''}enum ${e.name}`)];
   if (origin) parts.push(`_${origin}_`);

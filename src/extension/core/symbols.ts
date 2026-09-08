@@ -1,9 +1,19 @@
-import type { DocumentModel, LineRange } from './document-model';
+import type {
+  DocumentModel,
+  EnumSymbol,
+  FunctionSymbol,
+  ImportDecl,
+  LineRange,
+  TypeSymbol,
+  VariableSymbol,
+} from './document-model';
 import { tokenAt, type Token, type TokenizedLine } from './tokenizer';
 
+/** What a name refers to. `builtin` covers everything the document did not declare. */
 export type TargetKind =
   'function' | 'method' | 'type' | 'enum' | 'enumMember' | 'variable' | 'parameter' | 'import' | 'builtin';
 
+/** One place a name is written. */
 export interface Occurrence {
   line: number;
   startCol: number;
@@ -11,6 +21,7 @@ export interface Occurrence {
   isDeclaration: boolean;
 }
 
+/** The symbol a position refers to, and where its name means that symbol. */
 export interface SymbolTarget {
   /** The name being referenced: the first segment of a dotted token, or the whole built-in name. */
   name: string;
@@ -22,9 +33,89 @@ export interface SymbolTarget {
   owner: string | null;
 }
 
+/** The parts of a document analysis the symbol lookups need. */
 export interface SymbolSource {
   model: DocumentModel;
   tokens: TokenizedLine[];
+}
+
+/**
+ * Lookups over one document, built once and reused. Without it every caller that walks the
+ * identifiers of a file would rescan the whole token stream for each symbol it asks about.
+ */
+export interface SourceIndex {
+  /** Every meaningful token in document order. */
+  flat: Token[];
+  /** Positions in `flat` of the identifiers sharing a first name segment. */
+  byBaseName: Map<string, number[]>;
+  importLines: Set<number>;
+  variablesByName: Map<string, VariableSymbol[]>;
+  functionsByName: Map<string, FunctionSymbol>;
+  typesByName: Map<string, TypeSymbol>;
+  enumsByName: Map<string, EnumSymbol>;
+  importsByAlias: Map<string, ImportDecl>;
+  /** For each function, the names its body binds, so a shadowed outer name can be skipped. */
+  functionBindings: { range: LineRange; names: ReadonlySet<string> }[];
+}
+
+const indexes = new WeakMap<TokenizedLine[], { model: DocumentModel; index: SourceIndex }>();
+
+/** The index for a document, rebuilt only when the document changes. */
+export function sourceIndex(source: SymbolSource): SourceIndex {
+  const cached = indexes.get(source.tokens);
+  if (cached && cached.model === source.model) return cached.index;
+  const index = buildIndex(source);
+  indexes.set(source.tokens, { model: source.model, index });
+  return index;
+}
+
+function buildIndex(source: SymbolSource): SourceIndex {
+  const flat = flattenTokens(source.tokens);
+  const byBaseName = new Map<string, number[]>();
+  for (let i = 0; i < flat.length; i++) {
+    const token = flat[i]!;
+    if (token.kind !== 'ident') continue;
+    const dot = token.text.indexOf('.');
+    const base = dot < 0 ? token.text : token.text.slice(0, dot);
+    const bucket = byBaseName.get(base);
+    if (bucket) bucket.push(i);
+    else byBaseName.set(base, [i]);
+  }
+  const { model } = source;
+  const variablesByName = new Map<string, VariableSymbol[]>();
+  for (const variable of model.variables) {
+    const bucket = variablesByName.get(variable.name);
+    if (bucket) bucket.push(variable);
+    else variablesByName.set(variable.name, [variable]);
+  }
+  return {
+    flat,
+    byBaseName,
+    importLines: new Set(model.imports.map((i) => i.line)),
+    variablesByName,
+    functionBindings: bindingsPerFunction(model),
+    // A name declared twice keeps its first declaration, which is the one in scope first.
+    functionsByName: firstByName(model.functions),
+    typesByName: firstByName(model.types),
+    enumsByName: firstByName(model.enums),
+    importsByAlias: new Map(model.imports.filter((i) => i.alias).map((i) => [i.alias!, i])),
+  };
+}
+
+/** Collects the parameters and local variables of every function in one pass over the model. */
+function bindingsPerFunction(model: DocumentModel): { range: LineRange; names: ReadonlySet<string> }[] {
+  const bindings = model.functions.map((f) => ({ range: f.range, names: new Set(f.params.map((p) => p.name)) }));
+  for (const variable of model.variables) {
+    const owner = bindings.find((b) => variable.line > b.range.start && variable.line <= b.range.end);
+    if (owner) owner.names.add(variable.name);
+  }
+  return bindings;
+}
+
+function firstByName<T extends { name: string }>(items: readonly T[]): Map<string, T> {
+  const map = new Map<string, T>();
+  for (const item of items) if (!map.has(item.name)) map.set(item.name, item);
+  return map;
 }
 
 /** True for a symbol the user declared in this document, which is the only kind that can be renamed. */
@@ -48,10 +139,10 @@ export function resolveSymbolAt(source: SymbolSource, line: number, column: numb
 
 /** Resolves `Enum.member`, and treats every other dotted name as a built-in. */
 function resolveMember(source: SymbolSource, token: Token, segments: string[]): SymbolTarget | null {
-  const owner = source.model.enums.find((e) => e.name === segments[0]);
+  const owner = sourceIndex(source).enumsByName.get(segments[0]!);
   const member = owner?.members.find((m) => m.name === segments[1]);
   if (owner && member) {
-    const declaration = findMemberDeclaration(source, owner.range, member.name);
+    const declaration = findNameOnLine(source, member.line, member.name);
     return {
       name: `${owner.name}.${member.name}`,
       kind: 'enumMember',
@@ -71,6 +162,7 @@ function resolveBase(
   lineTokens: Token[],
 ): SymbolTarget {
   const { model } = source;
+  const index = sourceIndex(source);
   const calling = nextSignificant(lineTokens, token)?.kind === 'open';
 
   const enclosing = model.functions.find((f) => line >= f.line && line <= f.range.end);
@@ -85,7 +177,7 @@ function resolveBase(
     };
   }
 
-  const fn = model.functions.find((f) => f.name === name);
+  const fn = index.functionsByName.get(name);
   if (fn && calling) {
     return {
       name,
@@ -96,10 +188,13 @@ function resolveBase(
     };
   }
 
-  const visible = model.variables
-    .filter((v) => v.name === name && v.scope.start <= line && line <= v.scope.end)
-    .sort((a, b) => b.line - a.line);
-  const declared = visible[0] ?? model.variables.find((v) => v.name === name);
+  // The declaration in scope is the closest one above the cursor; failing that, any of that name.
+  const sameName = index.variablesByName.get(name);
+  let declared: VariableSymbol | undefined = sameName?.[0];
+  for (const candidate of sameName ?? []) {
+    if (candidate.scope.start > line || line > candidate.scope.end) continue;
+    if (!declared || declared.scope.start > line || candidate.line > declared.line) declared = candidate;
+  }
   if (declared) {
     return {
       name,
@@ -124,7 +219,7 @@ function resolveBase(
       owner: null,
     };
   }
-  const type = model.types.find((t) => t.name === name);
+  const type = index.typesByName.get(name);
   if (type) {
     return {
       name,
@@ -134,7 +229,7 @@ function resolveBase(
       owner: null,
     };
   }
-  const enumeration = model.enums.find((e) => e.name === name);
+  const enumeration = index.enumsByName.get(name);
   if (enumeration) {
     return {
       name,
@@ -144,7 +239,7 @@ function resolveBase(
       owner: null,
     };
   }
-  const imported = model.imports.find((i) => i.alias === name);
+  const imported = index.importsByAlias.get(name);
   if (imported) {
     return {
       name,
@@ -159,16 +254,17 @@ function resolveBase(
 
 /** Every place the target is written, in document order. */
 export function occurrencesOf(source: SymbolSource, target: SymbolTarget): Occurrence[] {
-  const flat = flattenTokens(source.tokens);
-  const shadowed = shadowingRanges(source.model, target);
+  const index = sourceIndex(source);
+  const { flat } = index;
+  const shadowed = shadowingRanges(index, target);
   const found: Occurrence[] = [];
-  for (let i = 0; i < flat.length; i++) {
+  const base = target.name.split('.')[0]!;
+  for (const i of index.byBaseName.get(base) ?? []) {
     const token = flat[i]!;
-    if (token.kind !== 'ident') continue;
     if (token.line < target.scope.start || token.line > target.scope.end) continue;
     if (shadowed.some((r) => token.line >= r.start && token.line <= r.end)) continue;
     if (!matches(token.text, target.name)) continue;
-    if (isImportPath(flat, i) || isMemberAccess(flat, i)) continue;
+    if (isImportPath(index, i) || isMemberAccess(flat, i)) continue;
     if (isMemberDeclaration(source, token, flat, i) && target.kind !== 'enumMember') continue;
     if (isNamedArgument(flat, i) && !namesOwnParameter(flat, i, target)) continue;
     found.push({
@@ -191,17 +287,15 @@ export function occurrencesOf(source: SymbolSource, target: SymbolTarget): Occur
  * Function bodies that declare the same name again, where the name means something else. A global
  * `length` is not the `length` a function takes as a parameter.
  */
-function shadowingRanges(model: DocumentModel, target: SymbolTarget): LineRange[] {
+function shadowingRanges(index: SourceIndex, target: SymbolTarget): LineRange[] {
   if (target.kind !== 'variable' && target.kind !== 'builtin') return [];
   const declaration = target.declaration?.line ?? -1;
-  return model.functions
-    .filter((f) => !(declaration > f.line && declaration <= f.range.end))
-    .filter(
-      (f) =>
-        f.params.some((p) => p.name === target.name) ||
-        model.variables.some((v) => v.name === target.name && v.line > f.line && v.line <= f.range.end),
-    )
-    .map((f) => f.range);
+  const ranges: LineRange[] = [];
+  for (const binding of index.functionBindings) {
+    if (declaration > binding.range.start && declaration <= binding.range.end) continue;
+    if (binding.names.has(target.name)) ranges.push(binding.range);
+  }
+  return ranges;
 }
 
 /** A token refers to `name` when it is the name itself or starts with it as a namespace. */
@@ -214,7 +308,7 @@ function isSamePosition(token: Token, declaration: Occurrence | null): boolean {
 }
 
 /** Every token that carries meaning, in document order, each knowing its line. */
-export function flattenTokens(lines: TokenizedLine[]): Token[] {
+function flattenTokens(lines: TokenizedLine[]): Token[] {
   const flat: Token[] = [];
   for (const line of lines)
     for (const token of line.tokens) if (token.kind !== 'ws' && token.kind !== 'comment') flat.push(token);
@@ -226,13 +320,13 @@ function nextSignificant(tokens: Token[], after: Token): Token | undefined {
 }
 
 /** The owner, library and version of an `import` are a path, not references to anything. */
-export function isImportPath(flat: Token[], index: number): boolean {
-  let i = index;
-  while (i >= 0 && flat[i]!.line === flat[index]!.line) i--;
-  const first = flat[i + 1];
-  if (!first || first.text !== 'import') return false;
+export function isImportPath(index: SourceIndex, position: number): boolean {
+  const token = index.flat[position]!;
+  if (!index.importLines.has(token.line)) return false;
   // Only the alias after `as` is a symbol.
-  for (let j = i + 1; j < index; j++) if (flat[j]!.text === 'as') return false;
+  for (let i = position - 1; i >= 0 && index.flat[i]!.line === token.line; i--) {
+    if (index.flat[i]!.text === 'as') return false;
+  }
   return true;
 }
 
@@ -301,14 +395,6 @@ function findParameterDeclaration(source: SymbolSource, headerLine: number, name
     );
     if (token) return { line, startCol: token.start, endCol: token.end, isDeclaration: true };
     if (tokens.some((t) => t.kind === 'op' && t.text === '=>')) break;
-  }
-  return null;
-}
-
-function findMemberDeclaration(source: SymbolSource, range: LineRange, name: string): Occurrence | null {
-  for (let line = range.start + 1; line <= range.end; line++) {
-    const token = source.tokens[line]?.tokens.find((t) => t.kind === 'ident');
-    if (token?.text === name) return { line, startCol: token.start, endCol: token.end, isDeclaration: true };
   }
   return null;
 }

@@ -32,14 +32,14 @@ describe('buildModel on a library', () => {
   it('parses types and enums', () => {
     const t = m.types.find((t) => t.name === 'Level')!;
     expect(t.fields).toEqual([
-      { name: 'price', type: 'float', default: null },
-      { name: 'name', type: 'string', default: '"level"' },
+      { name: 'price', type: 'float', default: null, line: 17 },
+      { name: 'name', type: 'string', default: '"level"', line: 18 },
     ]);
     expect(t.docs.fields.price).toBe('The level.');
     const e = m.enums.find((e) => e.name === 'Side')!;
     expect(e.members).toEqual([
-      { name: 'long', title: '"Long"' },
-      { name: 'short', title: null },
+      { name: 'long', title: '"Long"', line: 22 },
+      { name: 'short', title: null, line: 23 },
     ]);
     expect(e.docs.enum).toBe('Trade direction.');
   });
@@ -93,5 +93,55 @@ describe('buildModel on a consumer script', () => {
 
   it('does not treat named arguments on continuation lines as variables', () => {
     expect(m.variables.some((v) => v.name === 'color')).toBe(false);
+  });
+});
+
+describe('buildModel: declaration positions and loop variables', () => {
+  it('reports the column of the name, not a letter inside a keyword', () => {
+    const m = buildModel('var a = 1\nvarip r = 2\nfloat t = 3\n');
+    const byName = Object.fromEntries(m.variables.map((v) => [v.name, v]));
+    expect(byName.a?.column).toBe(4);
+    expect(byName.r?.column).toBe(6);
+    expect(byName.t?.column).toBe(6);
+  });
+
+  it('declares the counter of a for loop as an int scoped to the loop', () => {
+    const m = buildModel('total = 0\nfor i = 0 to 10\n    total += i\nplot(total)\n');
+    const counter = m.variables.find((v) => v.name === 'i')!;
+    expect(counter).toMatchObject({ declaredType: 'int', line: 1, column: 4 });
+    expect(counter.scope).toEqual({ start: 1, end: 2 });
+  });
+
+  it('declares the element, and the index, of a for in loop', () => {
+    const single = buildModel('for value in prices\n    x = value\n');
+    expect(single.variables.find((v) => v.name === 'value')).toMatchObject({ declaredType: null, column: 4 });
+
+    const pair = buildModel('for [idx, el] in prices\n    x = el\n');
+    expect(pair.variables.find((v) => v.name === 'idx')).toMatchObject({ declaredType: 'int', column: 5 });
+    expect(pair.variables.find((v) => v.name === 'el')).toMatchObject({ declaredType: null, column: 10 });
+  });
+
+  it('keeps a loop scope narrower than the function around it', () => {
+    const m = buildModel('f() =>\n    for i = 0 to 2\n        x = i\n    0\n');
+    expect(m.variables.find((v) => v.name === 'i')?.scope).toEqual({ start: 1, end: 2 });
+  });
+});
+
+describe('buildModel: members among comments', () => {
+  it('records the line each field and member is written on', () => {
+    const m = buildModel(
+      [
+        'type Point',
+        '    // the price',
+        '    float price',
+        '',
+        '    int index',
+        'enum Mode',
+        '    // fast',
+        '    fast = "F"',
+      ].join('\n'),
+    );
+    expect(m.types[0]?.fields.map((f) => f.line)).toEqual([2, 4]);
+    expect(m.enums[0]?.members.map((mem) => mem.line)).toEqual([7]);
   });
 });

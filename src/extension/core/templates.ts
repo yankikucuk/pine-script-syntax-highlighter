@@ -1,5 +1,7 @@
+/** The three script kinds the New File commands can start from. */
 export type TemplateKind = 'indicator' | 'strategy' | 'library';
 
+/** A ready-to-edit v6 script of the given kind. */
 export function renderTemplate(kind: TemplateKind, opts: { title: string; date: string }): string {
   const title = opts.title.replace(/"/g, '\\"');
   const header = `//@version=6\n// ${title}\n// Created ${opts.date}\n\n`;

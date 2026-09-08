@@ -6,6 +6,7 @@ import type { ReferenceIndex } from '../core/reference';
 import { isInStringOrComment, wordAt } from '../core/tokenizer';
 import { analyze } from '../vscode/document-cache';
 
+/** Documents whatever the cursor rests on: built-ins, user symbols, parameters and imports. */
 export class PineHoverProvider implements vscode.HoverProvider {
   constructor(
     private readonly ref: ReferenceIndex,
@@ -81,6 +82,15 @@ export class PineHoverProvider implements vscode.HoverProvider {
     if (type) return new vscode.Hover(new vscode.MarkdownString(typeMarkdown(type)), range);
     const en = model.enums.find((e) => e.name === word.text || word.text.startsWith(`${e.name}.`));
     if (en) return new vscode.Hover(new vscode.MarkdownString(enumMarkdown(en)), range);
+    const enclosing = model.functions.find((f) => position.line >= f.line && position.line <= f.range.end);
+    const parameter = enclosing?.params.find((p) => p.name === word.text);
+    if (parameter) {
+      const decl = `${parameter.type ? `${parameter.type} ` : ''}${parameter.name}${parameter.default !== null ? ` = ${parameter.default}` : ''}`;
+      const described = enclosing!.docs.params[parameter.name];
+      const md = '```pine\n' + decl + '\n```' + (described ? `\n\n${described}` : '');
+      return new vscode.Hover(new vscode.MarkdownString(md), range);
+    }
+
     const variable = visibleVariables(model, position.line).find((v) => v.name === word.text);
     if (variable) {
       const decl = `${variable.qualifier ? `${variable.qualifier} ` : ''}${variable.declaredType ? `${variable.declaredType} ` : ''}${variable.name}${variable.initializer ? ` = ${variable.initializer}` : ''}`;

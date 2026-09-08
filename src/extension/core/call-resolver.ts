@@ -1,5 +1,6 @@
 import type { Token, TokenizedLine } from './tokenizer';
 
+/** The call the cursor sits inside, and which argument it is on. */
 export interface CallInfo {
   name: string;
   argIndex: number;
@@ -28,6 +29,10 @@ function tokensBefore(tokenLines: TokenizedLine[], line: number, col: number): T
   return out;
 }
 
+/**
+ * Finds the innermost call the cursor is inside, looking back over wrapped lines. Grouping
+ * parentheses and index brackets are stepped over, so their commas do not count as arguments.
+ */
 export function enclosingCall(tokenLines: TokenizedLine[], line: number, col: number): CallInfo | null {
   const tokens = tokensBefore(tokenLines, line, col);
   let depth = 0;

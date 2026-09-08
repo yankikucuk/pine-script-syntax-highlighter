@@ -6,6 +6,7 @@ import { functionSignatureLabel } from '../core/markdown';
 import type { ReferenceIndex } from '../core/reference';
 import { analyze } from '../vscode/document-cache';
 
+/** Shows the signature of the call being typed, including library and constructor calls. */
 export class PineSignatureHelpProvider implements vscode.SignatureHelpProvider {
   constructor(
     private readonly ref: ReferenceIndex,

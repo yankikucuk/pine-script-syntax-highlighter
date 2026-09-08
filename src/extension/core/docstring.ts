@@ -3,6 +3,7 @@ import type { DeclSymbol, FunctionSymbol, LineRange } from './document-model';
 const VOID_CALLS =
   /^(?:plot|plotshape|plotchar|plotarrow|plotcandle|plotbar|bgcolor|barcolor|fill|hline|alert|alertcondition|log\.\w+|runtime\.error|strategy\.(?:entry|exit|close|close_all|order|cancel|cancel_all|risk\.\w+)|label\.set_\w+|line\.set_\w+|box\.set_\w+|table\.(?:cell|set_\w+|clear|merge_cells)|array\.(?:push|set|unshift|clear|insert|fill|sort|reverse)|matrix\.(?:set|fill|add_row|add_col|remove_row|remove_col)|map\.(?:put|remove|clear))\s*\(/;
 
+/** The `//@` block above a declaration, or null when the comments above it carry no annotation. */
 export function annotationBlockRange(lines: string[], declLine: number): LineRange | null {
   let start = declLine;
   while (start > 0 && /^\s*\/\//.test(lines[start - 1]!)) start--;
@@ -24,6 +25,7 @@ function bodyReturnsValue(fn: FunctionSymbol): boolean {
   return !fn.lastLine || !VOID_CALLS.test(fn.lastLine);
 }
 
+/** Builds the documentation block for a declaration, keeping whatever the author already wrote. */
 export function docstringLines(symbol: DeclSymbol, existing: string[], indent: string): string[] {
   const wanted: { tag: string; name: string | null }[] = [];
   if (symbol.kind === 'function') {
@@ -57,6 +59,7 @@ export function docstringLines(symbol: DeclSymbol, existing: string[], indent: s
   return out;
 }
 
+/** True when a declaration is missing part of its documentation, which is what offers the fix. */
 export function needsDocstring(symbol: DeclSymbol): boolean {
   if (symbol.kind === 'function') {
     if (!symbol.docs.function && !symbol.docs.description) return true;

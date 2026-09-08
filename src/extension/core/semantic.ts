@@ -1,9 +1,9 @@
 import {
-  flattenTokens,
   isImportPath,
   isMemberAccess,
   isNamedArgument,
   resolveSymbolAt,
+  sourceIndex,
   type SymbolSource,
   type SymbolTarget,
 } from './symbols';
@@ -12,6 +12,7 @@ import {
 export type SemanticKind =
   'function' | 'method' | 'type' | 'enum' | 'enumMember' | 'parameter' | 'variable' | 'property' | 'namespace';
 
+/** One identifier the editor should colour for what it is rather than how it is spelled. */
 export interface SemanticToken {
   line: number;
   startCol: number;
@@ -36,14 +37,15 @@ const OF_TARGET: Partial<Record<SymbolTarget['kind'], SemanticKind>> = {
  * already colours those, and only the document itself knows which names are the author's own.
  */
 export function semanticTokens(source: SymbolSource): SemanticToken[] {
-  const flat = flattenTokens(source.tokens);
+  const index = sourceIndex(source);
+  const { flat } = index;
   const declared = declaredNames(source);
   const out: SemanticToken[] = [];
   for (let i = 0; i < flat.length; i++) {
     const token = flat[i]!;
     if (token.kind !== 'ident') continue;
     if (!declared.has(token.text.split('.')[0]!)) continue;
-    if (isImportPath(flat, i) || isNamedArgument(flat, i) || isMemberAccess(flat, i)) continue;
+    if (isImportPath(index, i) || isNamedArgument(flat, i) || isMemberAccess(flat, i)) continue;
 
     const field = memberDeclaration(source, token.line, token.start, token.text);
     if (field) {
@@ -62,7 +64,7 @@ export function semanticTokens(source: SymbolSource): SemanticToken[] {
       startCol: token.start,
       length: member ? token.text.length : target.name.length,
       kind: member ? 'enumMember' : kind,
-      isDeclaration: target.declaration?.line === token.line && target.declaration.startCol === token.start,
+      isDeclaration: target.declaration?.line === token.line && target.declaration?.startCol === token.start,
     });
   }
   return out;

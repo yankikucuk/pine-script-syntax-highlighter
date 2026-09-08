@@ -1,3 +1,4 @@
+/** One published library as the TradingView library list describes it. */
 export interface RemoteLibrary {
   libId: string;
   user: string;
@@ -7,6 +8,7 @@ export interface RemoteLibrary {
   docs: string;
 }
 
+/** One error or warning as the compiler returns it, with its message placeholders unresolved. */
 export interface RawIssue {
   code?: string;
   message: string;
@@ -15,6 +17,7 @@ export interface RawIssue {
   end?: { line: number; column: number };
 }
 
+/** What the compiler reports about one script. */
 export interface CompileResult {
   success: boolean;
   reason?: string;
@@ -24,6 +27,7 @@ export interface CompileResult {
   functions: { name: string; syntax: string; desc?: string; args: { name: string; type: string; info?: string }[] }[];
 }
 
+/** Seams for tests: a fetch, a clock and a log. */
 export interface FacadeOptions {
   fetch?: typeof fetch;
   now?: () => number;
@@ -39,6 +43,10 @@ const COMPILE_CACHE_SIZE = 100;
 
 type RawResponse = { success?: boolean; reason?: string; result?: Record<string, unknown> };
 
+/**
+ * The TradingView endpoints the extension can use. Every call is cached and de-duplicated, and
+ * repeated failures pause the client for a few minutes rather than retrying in a loop.
+ */
 export class PineFacade {
   private readonly fetchFn: typeof fetch;
   private readonly now: () => number;

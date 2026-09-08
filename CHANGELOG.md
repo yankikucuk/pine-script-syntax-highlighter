@@ -5,6 +5,29 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 
 ## [Unreleased]
 
+## [3.4.0] - 2026-09-08
+
+A review pass over the whole extension: three defects that produced wrong output, a large performance
+fix, and documentation for every exported declaration.
+
+### Fixed
+
+- **Add Type Annotations wrote broken code.** A declaration's column was found by searching the raw line for its name, so `var a = 1` reported column 1 and the command produced `vint ar a = 1`. Columns now come from the tokens. The same column is used by Go to Definition and Rename, which were off by the same amount.
+- **A `for` counter was recorded with `for` as its type**, so a value read from it was annotated `for x = i`. Counters are now typed `int`, and `for x in`, `for [index, element] in` declare their names too. All three are scoped to the loop block rather than the rest of the file.
+- **The Outline pointed at the wrong lines** for the fields of a type or the members of an enum whenever a comment or a blank line sat between them; every entry was off by one per interleaved line. Fields and members now carry the line they are written on.
+- Range formatting on a document with Windows line endings never recognised that nothing had changed, and returned an edit anyway.
+
+### Changed
+
+- The offline checks are 51 times faster on a long script: 160 ms to 3 ms on a 1,500 line document, and now linear rather than quadratic. Semantic highlighting on the same file went from 13 ms to 2 ms. Both used to rescan the token stream for every symbol they looked at; they share one index per document version now.
+- Hovering a function parameter shows its declaration and its `//@param` text instead of nothing.
+- The Outline lists the declarations at the top level of a script and no longer mixes in variables declared inside blocks.
+
+### Documentation
+
+- Every exported function, class, interface and type in `src/extension` now carries a comment saying what it is for and what its contract is, rather than only the ones with surprising behaviour.
+- `CONTRIBUTING.md` covers the formatter, the offline rules, navigation, colours and semantic tokens, and explains where a change that walks every identifier belongs.
+
 ## [3.3.0] - 2026-09-08
 
 ### Added

@@ -4,6 +4,7 @@ import { ReferenceIndex } from './reference';
 import { nearest } from './text';
 import { tokenize, wordAt, type Token } from './tokenizer';
 
+/** One replacement, which may span lines when a fix renames throughout a document. */
 export interface QuickFixEdit {
   startLine: number;
   startCol: number;
@@ -12,6 +13,7 @@ export interface QuickFixEdit {
   newText: string;
 }
 
+/** A named set of edits offered under the lightbulb. */
 export interface QuickFix {
   title: string;
   edits: QuickFixEdit[];

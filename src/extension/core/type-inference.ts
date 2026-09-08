@@ -2,6 +2,7 @@ import { visibleVariables, type DocumentModel } from './document-model';
 import { ReferenceIndex } from './reference';
 import { tokenize, type Token } from './tokenizer';
 
+/** What inference may consult: the reference, the document and, when available, the compiler. */
 export interface InferenceScope {
   ref: ReferenceIndex;
   model: DocumentModel;
@@ -9,6 +10,7 @@ export interface InferenceScope {
   compilerTypes?: ReadonlyMap<string, string>;
 }
 
+/** An insertion that puts a type keyword in front of a declared name. */
 export interface AnnotationEdit {
   line: number;
   column: number;
@@ -34,6 +36,10 @@ const INPUT_TYPES: Record<string, string> = {
 const COMPARISON = new Set(['==', '!=', '<', '<=', '>', '>=']);
 const NOT_A_VALUE = new Set(['plot', 'hline', 'void']);
 
+/**
+ * The type of an initialiser expression, or null when it cannot be known without the compiler.
+ * Returning null is always safe: the caller simply leaves the declaration alone.
+ */
 export function inferType(expr: string, scope: InferenceScope): string | null {
   const tokens = tokenize(expr)[0]?.tokens.filter((t) => t.kind !== 'ws' && t.kind !== 'comment') ?? [];
   if (!tokens.length) return null;
@@ -217,6 +223,7 @@ function numeric(a: string | null, b: string | null): string | null {
   return null;
 }
 
+/** Plans a type keyword for every untyped declaration it can, and names the ones it cannot. */
 export function planTypeAnnotations(
   model: DocumentModel,
   ref: ReferenceIndex,

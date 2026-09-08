@@ -37,6 +37,7 @@ const TOKEN_TYPES: SemanticKind[] = [
 ];
 const TOKEN_MODIFIERS = ['declaration'];
 
+/** The token types and modifiers this extension emits, in the order the builder indexes them. */
 export const SEMANTIC_LEGEND = new vscode.SemanticTokensLegend(TOKEN_TYPES, TOKEN_MODIFIERS);
 
 /**

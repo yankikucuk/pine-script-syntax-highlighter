@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { REFERENCE_URL, loadReference } from '../core/reference';
 import { wordAt } from '../core/tokenizer';
 
+/** Registers the command that opens the reference at the built-in under the cursor. */
 export function registerOpenReference(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     vscode.commands.registerCommand('pinescript.openReference', async () => {

@@ -9,6 +9,7 @@ export interface Rgba {
   alpha: number;
 }
 
+/** One colour found in the document, and the range the picker should replace. */
 export interface ColorSpot {
   line: number;
   startCol: number;

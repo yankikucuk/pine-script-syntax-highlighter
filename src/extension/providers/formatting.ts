@@ -26,7 +26,8 @@ export class PineFormattingProvider
     const last = range.end.character === 0 && range.end.line > first ? range.end.line - 1 : range.end.line;
     const formatted = formatRange(document.getText(), first, last, { useTabs: !options.insertSpaces });
     const target = new vscode.Range(first, 0, last, lineLength(document, last));
-    if (formatted === textOf(document, first, last)) return [];
+    // The document may use CRLF while the comparison text is joined with LF.
+    if (formatted.replace(/\r\n/g, '\n') === textOf(document, first, last)) return [];
     return [vscode.TextEdit.replace(target, formatted)];
   }
 }
